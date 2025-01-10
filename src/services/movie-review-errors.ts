@@ -7,7 +7,7 @@ export class MovieNotFound extends MovieReviewAppError {
   }
 }
 
-export class InvalidMoviePayload extends MovieReviewAppError {
+export class InvalidMovieReviewPayload extends MovieReviewAppError {
   constructor(meta: any) {
     super("Invalid payload", 400, meta);
     Error.captureStackTrace(this);
