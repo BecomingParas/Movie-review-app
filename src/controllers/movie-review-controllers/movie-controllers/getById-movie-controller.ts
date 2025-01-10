@@ -7,6 +7,11 @@ export function getMovieByIdController(
 ) {
   const movieId = Number(req.params.movieId);
   const movie = movieService.getByIdMovie(movieId);
+  if (!movie) {
+    res.status(404).json({
+      message: "Movie not found.",
+    });
+  }
   res.json({
     data: movie,
     message: "Movie get successfully",
