@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { movieService } from "../../../services/movie";
+import { MovieNotFound } from "../../../services/movie-review-errors";
 export function getMovieByIdController(
   req: Request,
   res: Response,
@@ -8,9 +9,9 @@ export function getMovieByIdController(
   const movieId = Number(req.params.movieId);
   const movie = movieService.getByIdMovie(movieId);
   if (!movie) {
-    res.status(404).json({
-      message: "Movie not found.",
-    });
+    const movieNotFoundError = new MovieNotFound();
+    next(movieNotFoundError);
+    return;
   }
   res.json({
     data: movie,
