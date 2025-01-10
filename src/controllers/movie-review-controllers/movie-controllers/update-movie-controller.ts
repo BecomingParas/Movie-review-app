@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { movieService } from "../../../services/movie";
+import { MovieAppError } from "../../../error";
+import { MovieNotFound } from "../../../services/movie-errors";
 
 export function updateMovieController(
   req: Request,
@@ -9,12 +11,11 @@ export function updateMovieController(
   try {
     const movieId = Number(req.params.movieId);
     const body = req.body;
+
     const movie = movieService.getByIdMovie(movieId);
     if (!movie) {
-      next({
-        status: 404,
-        message: "Note not found",
-      });
+      const movieNotFoundError = new MovieNotFound();
+      next(movieNotFoundError);
       return;
     }
 
@@ -29,9 +30,10 @@ export function updateMovieController(
       message: "Movie updated successfully.",
     });
   } catch (error) {
-    console.error("caught error", error);
-    next({
-      message: "Failed to update the movie.Something went wrong in server",
-    });
+    const movieError = new MovieAppError(
+      "Failed to update the movie. something went wrong in server.",
+      500
+    );
+    next(movieError);
   }
 }
