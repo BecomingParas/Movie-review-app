@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { movieService } from "../../../services/movie";
 import { MovieReviewAppError } from "../../../error";
-import { MovieNotReviewFound } from "../../../services/movie-review-errors";
+import { MovieNotFound } from "../../../services/movie-review-errors";
 
 export function updateMovieController(
   req: Request,
@@ -14,7 +14,7 @@ export function updateMovieController(
 
     const movie = movieService.getByIdMovie(movieId);
     if (!movie) {
-      const movieNotFoundError = new MovieNotReviewFound();
+      const movieNotFoundError = new MovieNotFound();
       next(movieNotFoundError);
       return;
     }

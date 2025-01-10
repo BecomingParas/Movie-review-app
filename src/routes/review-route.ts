@@ -2,6 +2,7 @@ import { Express } from "express";
 import { createReviewController } from "../controllers/movie-review-controllers/review-controller/create-review-controller";
 import { getAllReviewController } from "../controllers/movie-review-controllers/review-controller/getAll-review-controller";
 import { updateReviewController } from "../controllers/movie-review-controllers/review-controller/update-review-controller";
+import { getReviewByIdController } from "../controllers/movie-review-controllers/review-controller/getById-review-controller";
 
 export function createReviewRoutes(app: Express) {
   //mutation
@@ -10,4 +11,5 @@ export function createReviewRoutes(app: Express) {
 
   //queries
   app.get("/reviews", getAllReviewController);
+  app.get("/reviews/:reviewId", getReviewByIdController);
 }
