@@ -56,9 +56,23 @@ function updateMovie(toUpdateMovieId: number, input: Omit<TMovie, "id">) {
   movies = updatedMovies;
 }
 
+// delete the movie
+
+function deleteMovie(toDeleteMovieId: number) {
+  const movieAfterDeleation = movies.filter((movie) => {
+    if (movie.id === toDeleteMovieId) {
+      return false;
+    } else {
+      return true;
+    }
+  });
+  movies = movieAfterDeleation;
+}
+
 export const movieService = {
   createMovie,
   getAllMovie,
   updateMovie,
   getByIdMovie,
+  deleteMovie,
 };
