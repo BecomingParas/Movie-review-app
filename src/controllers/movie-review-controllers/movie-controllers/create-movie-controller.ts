@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { movieService } from "../../../services/movie";
-import { CreateMovieSchema } from "../../../services/movie-validations";
-import { InvalidMoviePayload } from "../../../services/movie-errors";
+import { CreateMovieSchema } from "../../../services/movie-review-validations";
+import { InvalidMovieReviewPayload } from "../../../services/movie-review-errors";
 export function createMovieController(
   req: Request,
   res: Response,
@@ -11,7 +11,7 @@ export function createMovieController(
   const parsed = CreateMovieSchema.safeParse(body);
   if (!parsed.success) {
     const parseError = parsed.error.flatten();
-    const invalidPayloadError = new InvalidMoviePayload(parseError);
+    const invalidPayloadError = new InvalidMovieReviewPayload(parseError);
     next(invalidPayloadError);
     return;
   }

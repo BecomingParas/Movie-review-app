@@ -1,13 +1,13 @@
-import { MovieAppError } from "../error";
+import { MovieReviewAppError } from "../error";
 
-export class MovieNotFound extends MovieAppError {
+export class MovieNotReviewFound extends MovieReviewAppError {
   constructor() {
     super("Movie not found", 404);
     Error.captureStackTrace(this);
   }
 }
 
-export class InvalidMoviePayload extends MovieAppError {
+export class InvalidMovieReviewPayload extends MovieReviewAppError {
   constructor(meta: any) {
     super("Invalid payload", 400, meta);
     Error.captureStackTrace(this);

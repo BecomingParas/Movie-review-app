@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { movieService } from "../../../services/movie";
-import { MovieAppError } from "../../../error";
-import { MovieNotFound } from "../../../services/movie-errors";
+import { MovieReviewAppError } from "../../../error";
+import { MovieNotReviewFound } from "../../../services/movie-review-errors";
 
 export function updateMovieController(
   req: Request,
@@ -14,7 +14,7 @@ export function updateMovieController(
 
     const movie = movieService.getByIdMovie(movieId);
     if (!movie) {
-      const movieNotFoundError = new MovieNotFound();
+      const movieNotFoundError = new MovieNotReviewFound();
       next(movieNotFoundError);
       return;
     }
@@ -30,7 +30,7 @@ export function updateMovieController(
       message: "Movie updated successfully.",
     });
   } catch (error) {
-    const movieError = new MovieAppError(
+    const movieError = new MovieReviewAppError(
       "Failed to update the movie. something went wrong in server.",
       500
     );

@@ -1,4 +1,4 @@
-export class MovieAppError extends Error {
+export class MovieReviewAppError extends Error {
   status: number;
   message: string;
   meta?: any;
