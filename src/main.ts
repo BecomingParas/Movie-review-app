@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from "express";
 import { homeController } from "./controllers/home-controller";
 import { createMovieRoutes } from "./routes/movie-route";
 import fs from "fs";
+import "./db";
 import { createReviewRoutes } from "./routes/review-route";
 
 // json parser
@@ -16,9 +17,14 @@ app.get("/home", (req, res) => {
   res.send(homeFile.toString());
 });
 
-//note routes
+//movie routes
 createMovieRoutes(app);
+
+//review routes
 createReviewRoutes(app);
+
+//global error handler
+
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
   console.log("error", error);
 
