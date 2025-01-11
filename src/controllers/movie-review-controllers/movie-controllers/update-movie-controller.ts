@@ -1,7 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import { movieService } from "../../../services/movie";
 import { MovieReviewAppError } from "../../../error";
-import { MovieNotFound } from "../../../services/movie-review-errors";
+import {
+  InvalidMovieReviewPayload,
+  MovieNotFound,
+} from "../../../services/movie-review-errors";
 
 export function updateMovieController(
   req: Request,
@@ -11,6 +14,11 @@ export function updateMovieController(
   try {
     const movieId = Number(req.params.movieId);
     const body = req.body;
+    if (!movieId) {
+      const invalidPayLoadError = new InvalidMovieReviewPayload(movieId);
+      next(invalidPayLoadError);
+      return;
+    }
 
     const movie = movieService.getByIdMovie(movieId);
     if (!movie) {

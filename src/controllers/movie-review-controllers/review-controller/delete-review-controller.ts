@@ -14,7 +14,7 @@ export function deleteReviewController(
   try {
     const reviewId = Number(req.params.reviewId);
     if (!reviewId) {
-      const invalidPayLoadError = new InvalidMovieReviewPayload({ reviewId });
+      const invalidPayLoadError = new InvalidMovieReviewPayload(reviewId);
       next(invalidPayLoadError);
       return;
     }
