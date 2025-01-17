@@ -6,7 +6,7 @@ import {
   MovieNotFound,
 } from "../../../services/movie-review-errors";
 
-export function updateMovieController(
+export async function updateMovieController(
   req: Request,
   res: Response,
   next: NextFunction
@@ -15,12 +15,11 @@ export function updateMovieController(
     const movieId = Number(req.params.movieId);
     const body = req.body;
     if (!movieId) {
-      const invalidPayLoadError = new InvalidMovieReviewPayload(movieId);
-      next(invalidPayLoadError);
+      const invalidPayloadError = new InvalidMovieReviewPayload(movieId);
+      next(invalidPayloadError);
       return;
     }
-
-    const movie = movieService.getByIdMovie(movieId);
+    const movie = await movieService.getByIdMovie(movieId);
     if (!movie) {
       const movieNotFoundError = new MovieNotFound();
       next(movieNotFoundError);

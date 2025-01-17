@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { reviewServices } from "../../../services/reviews";
-import { MovieNotReviewFound } from "../../../services/movie-review-errors";
+import { ReviewNotFound } from "../../../services/movie-review-errors";
 import { MovieReviewAppError } from "../../../error";
 
 export function updateReviewController(
@@ -14,7 +14,7 @@ export function updateReviewController(
 
     const review = reviewServices.getByIdReview(reviewId);
     if (!review) {
-      const reviewNotFoundError = new MovieNotReviewFound();
+      const reviewNotFoundError = new ReviewNotFound();
       next(reviewNotFoundError);
       return;
     }

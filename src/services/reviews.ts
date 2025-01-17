@@ -1,3 +1,4 @@
+import { conn } from "../db";
 type TReviews = {
   id: number;
   movieId: number;

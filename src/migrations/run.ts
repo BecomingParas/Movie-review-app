@@ -25,12 +25,11 @@ const access: ConnectionOptions = {
   port: port,
   database: database,
 };
-
 const conn = mysql.createConnection(access);
-
 console.log("process cwd", process.cwd());
 
 const file = readFileSync(`${process.cwd()}/src/migrations/movie-table.sql`);
+
 const fileContent = file.toString();
 
 console.log("file content", fileContent);

@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import { movieService } from "../../../services/movie";
-export function getAllMovieController(
+export async function getAllMovieController(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
-  const movies = movieService.getAllMovie();
+  const movies = await movieService.getAllMovie();
 
   res.json({
     data: movies,

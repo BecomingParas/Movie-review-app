@@ -3,7 +3,7 @@ import { reviewServices } from "../../../services/reviews";
 import { createReviewSchema } from "../../../services/movie-review-validations";
 import { InvalidMovieReviewPayload } from "../../../services/movie-review-errors";
 
-export function createReviewController(
+export async function createReviewController(
   req: Request,
   res: Response,
   next: NextFunction
@@ -13,6 +13,7 @@ export function createReviewController(
   if (!parsed.success) {
     const parseError = parsed.error.flatten();
     const invalidPayloadError = new InvalidMovieReviewPayload(parseError);
+    next(invalidPayloadError);
     return;
   }
   reviewServices.createReviews({

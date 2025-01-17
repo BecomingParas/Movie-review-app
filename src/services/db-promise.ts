@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-import mysql, { ConnectionOptions } from "mysql2";
+import mysql, { ConnectionOptions } from "mysql2/promise";
 
 const user = process.env.DB_USER;
 const password = process.env.DB_PASSWORD;
@@ -26,12 +26,4 @@ const access: ConnectionOptions = {
   database: database,
 };
 
-export const conn = mysql.createConnection(access);
-
-// conn.query("SHOW DATABASES", (err, result) => {
-//   if (err) {
-//     console.error("Failed to run the command", err);
-//   } else {
-//     console.log("result", result);
-//   }
-// });
+export const connPromise = mysql.createConnection(access);
