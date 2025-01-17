@@ -1,9 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import { reviewServices } from "../../../services/reviews";
-import { ReviewNotFound } from "../../../services/movie-review-errors";
+import {
+  InvalidMovieReviewPayload,
+  ReviewNotFound,
+} from "../../../services/movie-review-errors";
 import { MovieReviewAppError } from "../../../error";
 
-export function updateReviewController(
+export async function updateReviewController(
   req: Request,
   res: Response,
   next: NextFunction
@@ -11,8 +14,13 @@ export function updateReviewController(
   try {
     const reviewId = Number(req.params.reviewId);
     const body = req.body;
+    if (!reviewId) {
+      const invalidPayloadError = new InvalidMovieReviewPayload(reviewId);
+      next(invalidPayloadError);
+      return;
+    }
 
-    const review = reviewServices.getByIdReview(reviewId);
+    const review = await reviewServices.getByIdReview(reviewId);
     if (!review) {
       const reviewNotFoundError = new ReviewNotFound();
       next(reviewNotFoundError);
