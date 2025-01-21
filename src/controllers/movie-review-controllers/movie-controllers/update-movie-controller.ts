@@ -1,7 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import { movieService } from "../../../services/movie";
+import { MovieReviewAppError } from "../../../error";
+import {
+  InvalidMovieReviewPayload,
+  MovieNotFound,
+} from "../../../services/movie-review-errors";
 
-export function updateMovieController(
+export async function updateMovieController(
   req: Request,
   res: Response,
   next: NextFunction
@@ -9,12 +14,15 @@ export function updateMovieController(
   try {
     const movieId = Number(req.params.movieId);
     const body = req.body;
-    const movie = movieService.getByIdMovie(movieId);
+    if (!movieId) {
+      const invalidPayloadError = new InvalidMovieReviewPayload(movieId);
+      next(invalidPayloadError);
+      return;
+    }
+    const movie = await movieService.getByIdMovie(movieId);
     if (!movie) {
-      next({
-        status: 404,
-        message: "Note not found",
-      });
+      const movieNotFoundError = new MovieNotFound();
+      next(movieNotFoundError);
       return;
     }
 
@@ -29,9 +37,10 @@ export function updateMovieController(
       message: "Movie updated successfully.",
     });
   } catch (error) {
-    console.error("caught error", error);
-    next({
-      message: "Failed to update the movie.Something went wrong in server",
-    });
+    const movieError = new MovieReviewAppError(
+      "Failed to update the movie. something went wrong in server.",
+      500
+    );
+    next(movieError);
   }
 }
