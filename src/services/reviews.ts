@@ -42,8 +42,14 @@ function createReviews(input: Omit<TReviews, "id">) {
 
 // get all the reviews
 
-function getAllReviews() {
-  return reviews;
+async function getAllReviews() {
+  const conn = await connPromise;
+  const [rows] = await conn.execute(
+    `
+    SELECT * FROM reviews;
+    `
+  );
+  return rows;
 }
 
 //get by id review

@@ -46,7 +46,7 @@ async function getAllMovie() {
   const conn = await connPromise;
   const [rows] = await conn.execute(
     `
-    SELECT * FROM movies 
+    SELECT * FROM movies
 
     
     `
