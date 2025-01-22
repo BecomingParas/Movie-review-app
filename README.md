@@ -16,6 +16,7 @@ Run the following command to create a `package.json` file:
 npm init -y
 ```
 
+
 ### 2. Install TypeScript and Node Types
 Install TypeScript and Node.js type definitions as development dependencies:
 ```bash

@@ -113,15 +113,31 @@ function updateReview(toUpdateReviewId: number, input: Omit<TReviews, "id">) {
 
 //delete the revies
 
-function deleteReviews(toDeleteMovieId: number) {
-  const reviewAfterDelation = reviews.filter((review) => {
-    if (review.id === toDeleteMovieId) {
-      return false;
-    } else {
-      return true;
+function deleteReviews(toDeleteReviewId: number) {
+  // const reviewAfterDelation = reviews.filter((review) => {
+  //   if (review.id === toDeleteMovieId) {
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // });
+  // reviews = reviewAfterDelation;
+
+  conn.query(
+    `
+    DELETE FROM reviews 
+    WHERE
+    id = ${toDeleteReviewId};
+    
+    `,
+    (err, result) => {
+      if (err) {
+        console.error("Failed to delete", err);
+      } else {
+        console.log("deleted", result);
+      }
     }
-  });
-  reviews = reviewAfterDelation;
+  );
 }
 
 export const reviewServices = {
