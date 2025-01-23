@@ -140,10 +140,24 @@ function deleteReviews(toDeleteReviewId: number) {
   );
 }
 
+async function getReviewByMovieId(movieId: number) {
+  const conn = await connPromise;
+
+  const [rows] = await conn.execute(
+    `
+    SELECT reviews.movieId, reviews.userId,reviews.rating, reviews.review FROM reviews INNER JOIN movies ON reviews.movieId = movies.${movieId}
+    `
+  );
+
+  //@ts-ignore
+  return rows[0];
+}
+
 export const reviewServices = {
   createReviews,
   getAllReviews,
   updateReview,
   deleteReviews,
   getByIdReview,
+  getReviewByMovieId,
 };
