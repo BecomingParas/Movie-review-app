@@ -100,16 +100,46 @@ npm install -D @types/express
 
 ## Directory Structure
 After completing the setup, your project directory structure should look like this:
-```
-project-root/
-├── dist/            # Compiled JavaScript files
-├── node_modules/    # Installed dependencies
-├── src/             # Source TypeScript files
-│   └── main.ts
-├── .gitignore       # Ignored files
-├── package.json     # Project metadata and scripts
-├── tsconfig.json    # TypeScript configuration
-└── package-lock.json
-```
-
+Directory structure:
+````
+└── becomingparas-movie-review-app/
+    ├── README.md
+    ├── package.json
+    ├── tsconfig.json
+    ├── .env.example
+    ├── pages/
+    │   └── home.html
+    └── src/
+        ├── db.ts
+        ├── error.ts
+        ├── main.ts
+        ├── controllers/
+        │   ├── home-controller.ts
+        │   └── movie-review-controllers/
+        │       ├── movie-controllers/
+        │       │   ├── create-movie-controller.ts
+        │       │   ├── delete-movie-controller.ts
+        │       │   ├── getAll-movie-controller.ts
+        │       │   ├── getById-movie-controller.ts
+        │       │   └── update-movie-controller.ts
+        │       └── review-controller/
+        │           ├── create-review-controller.ts
+        │           ├── delete-review-controller.ts
+        │           ├── getAll-review-controller.ts
+        │           ├── getById-review-controller.ts
+        │           ├── getReviewByMovieId.ts
+        │           └── update-review-controller.ts
+        ├── migrations/
+        │   ├── movie-table.sql
+        │   └── run.ts
+        ├── routes/
+        │   ├── movie-route.ts
+        │   └── review-route.ts
+        └── services/
+            ├── db-promise.ts
+            ├── movie-review-errors.ts
+            ├── movie-review-validations.ts
+            ├── movie.ts
+            └── reviews.ts
+````
 You're all set to start building your backend application!
