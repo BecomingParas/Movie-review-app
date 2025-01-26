@@ -145,12 +145,12 @@ async function getReviewByMovieId(movieId: number) {
 
   const [rows] = await conn.execute(
     `
-    SELECT reviews.movieId, reviews.userId,reviews.rating, reviews.review FROM reviews INNER JOIN movies ON reviews.movieId = movies.${movieId}
+    SELECT reviews.movieId, reviews.userId,reviews.rating, reviews.review FROM reviews WHERE  movieId = ${movieId}
     `
   );
 
   //@ts-ignore
-  return rows[0];
+  return rows;
 }
 
 export const reviewServices = {

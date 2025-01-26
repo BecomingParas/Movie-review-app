@@ -15,5 +15,5 @@ export function createReviewRoutes(app: Express) {
   //queries
   app.get("/reviews", getAllReviewController);
   app.get("/reviews/:reviewId", getReviewByIdController);
-  app.get("/reviews/:movieId", getReviewByMovieIdController);
+  app.get("/movie-reviews/:movieId", getReviewByMovieIdController);
 }
