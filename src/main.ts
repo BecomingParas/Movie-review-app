@@ -7,6 +7,10 @@ import { connectMongoDb } from "./mongo-db";
 import { createReviewRoutes } from "./routes/review-route";
 import { MovieReviewAppError } from "./error";
 
+connectMongoDb().then(() => {
+  console.log(`MongoDb connected!1`);
+});
+
 // json parser
 const app = express();
 app.use(express.json());

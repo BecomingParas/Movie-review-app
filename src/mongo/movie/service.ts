@@ -6,6 +6,9 @@ type TMovie = {
   release_year: number;
   genre: string;
 };
+
+//create movie
+
 async function createMovie(input: Omit<TMovie, "id">) {
   const movie = new MovieModel({
     title: input.title,
@@ -14,7 +17,6 @@ async function createMovie(input: Omit<TMovie, "id">) {
     release_year: input.release_year,
   });
   await movie.save();
-  return movie;
 }
 
 // update the movie
@@ -24,13 +26,20 @@ async function updateMovie(toUpdateMovieId: string, input: Omit<TMovie, "id">) {
   if (!movie) {
     throw new Error("Movie not found!");
   }
-  // we movie to update
-  movie.title = input.title;
-  movie.description = input.description;
-  movie.release_year = input.release_year;
-  movie.genre = input.genre;
 
-  await movie.replaceOne(
+  // await MovieModel.replaceOne(
+  //   {
+  //     _id: toUpdateMovieId,
+  //   },
+  //   {
+  //     title: input.title,
+  //     description: input.description,
+  //     genre: input.genre,
+  //     release_year: input.release_year,
+  //   }
+  // );
+
+  await MovieModel.updateOne(
     {
       _id: toUpdateMovieId,
     },
