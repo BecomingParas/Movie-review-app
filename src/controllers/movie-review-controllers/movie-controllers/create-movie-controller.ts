@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { movieService } from "../../../services/movie";
 import { CreateMovieSchema } from "../../../services/movie-review-validations";
 import { InvalidMovieReviewPayload } from "../../../services/movie-review-errors";
+import { movieMongoService } from "../../../mongo/movie/service";
 export async function createMovieController(
   req: Request,
   res: Response,
@@ -16,13 +17,21 @@ export async function createMovieController(
     return;
   }
 
-  movieService.createMovie({
-    title: parsed.data.title,
-    description: parsed.data.description,
-    release_year: parsed.data.release_year,
-    genre: parsed.data.genre,
-  });
-
+  if (process.env.DATABASE_TYPE === "MYSQL") {
+    movieService.createMovie({
+      title: parsed.data.title,
+      description: parsed.data.description,
+      release_year: parsed.data.release_year,
+      genre: parsed.data.genre,
+    });
+  } else {
+    await movieMongoService.createMovie({
+      title: parsed.data.title,
+      description: parsed.data.description,
+      genre: parsed.data.genre,
+      release_year: parsed.data.release_year,
+    });
+  }
   res.json({
     message: "Movie added successfully.",
   });

@@ -3,7 +3,7 @@ import { homeController } from "./controllers/home-controller";
 import { createMovieRoutes } from "./routes/movie-route";
 
 import "./db";
-import "./services/mongo-db";
+import { connectMongoDb } from "./mongo-db";
 import { createReviewRoutes } from "./routes/review-route";
 import { MovieReviewAppError } from "./error";
 

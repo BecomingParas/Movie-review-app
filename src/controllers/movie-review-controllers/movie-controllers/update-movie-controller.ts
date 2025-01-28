@@ -5,6 +5,7 @@ import {
   InvalidMovieReviewPayload,
   MovieNotFound,
 } from "../../../services/movie-review-errors";
+import { movieMongoService } from "../../../mongo/movie/service";
 
 export async function updateMovieController(
   req: Request,
@@ -12,27 +13,37 @@ export async function updateMovieController(
   next: NextFunction
 ) {
   try {
-    const movieId = Number(req.params.movieId);
+    const movieId = req.params.movieId;
     const body = req.body;
     if (!movieId) {
       const invalidPayloadError = new InvalidMovieReviewPayload(movieId);
       next(invalidPayloadError);
       return;
     }
-    const movie = await movieService.getByIdMovie(movieId);
-    if (!movie) {
-      const movieNotFoundError = new MovieNotFound();
-      next(movieNotFoundError);
-      return;
+
+    if (process.env.DATABASE_TYPE === "MYSQL") {
+      const numMovieId = Number(movieId);
+      const movie = await movieService.getByIdMovie(numMovieId);
+      if (!movie) {
+        const movieNotFoundError = new MovieNotFound();
+        next(movieNotFoundError);
+        return;
+      }
+
+      movieService.updateMovie(numMovieId, {
+        title: body.title,
+        description: body.description,
+        release_year: body.release_year,
+        genre: body.genre,
+      });
+    } else {
+      await movieMongoService.updateMovie(movieId, {
+        title: body.title,
+        description: body.description,
+        release_year: body.release_year,
+        genre: body.genre,
+      });
     }
-
-    movieService.updateMovie(movieId, {
-      title: body.title,
-      description: body.description,
-      release_year: body.release_year,
-      genre: body.genre,
-    });
-
     res.json({
       message: "Movie updated successfully.",
     });
