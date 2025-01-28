@@ -3,12 +3,10 @@ import { homeController } from "./controllers/home-controller";
 import { createMovieRoutes } from "./routes/movie-route";
 
 import "./db";
-import { connectMongoDb } from "./services/mongo-db";
+
 import { createReviewRoutes } from "./routes/review-route";
 import { MovieReviewAppError } from "./error";
 
-// connection mongodb
-connectMongoDb();
 // json parser
 const app = express();
 app.use(express.json());
