@@ -52,7 +52,19 @@ async function updateMovie(toUpdateMovieId: string, input: Omit<TMovie, "id">) {
   );
 }
 
+// get by id movie
+
+async function getByIdMovie(toGetMovieId: string) {
+  const movie = await MovieModel.findById(toGetMovieId);
+
+  if (!movie) {
+    throw new Error("Movie not found");
+  }
+  return movie;
+}
+
 export const movieMongoService = {
   createMovie,
   updateMovie,
+  getByIdMovie,
 };

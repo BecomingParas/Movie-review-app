@@ -5,24 +5,34 @@ import {
   MovieNotFound,
 } from "../../../services/movie-review-errors";
 import { MovieReviewAppError } from "../../../error";
+import { movieMongoService } from "../../../mongo/movie/service";
 export async function getMovieByIdController(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
   try {
-    const movieId = Number(req.params.movieId);
-    const movie = await movieService.getByIdMovie(movieId);
+    const movieId = req.params.movieId;
+
     if (!movieId) {
       const invalidPayloadError = new InvalidMovieReviewPayload(movieId);
       next(invalidPayloadError);
       return;
     }
-    if (!movie) {
-      const movieNotFoundError = new MovieNotFound();
-      next(movieNotFoundError);
-      return;
+    let movie;
+    if (process.env.DATABASE_TYPE === "MYSQL") {
+      const numMovieId = Number(movieId);
+      movie = await movieService.getByIdMovie(numMovieId);
+      if (!movie) {
+        const movieNotFoundError = new MovieNotFound();
+        next(movieNotFoundError);
+        return;
+      }
+    } else {
+      movie = await movieMongoService.getByIdMovie(movieId);
+      return movie;
     }
+
     res.json({
       data: movie,
       message: "Movie get successfully",
