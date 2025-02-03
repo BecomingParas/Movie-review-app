@@ -1,3 +1,4 @@
+import { InvalidMovieReviewPayload } from "../../services/movie-review-errors";
 import { MovieModel } from "./model";
 type TMovie = {
   id: string;
@@ -69,9 +70,21 @@ async function getByIdMovie(toGetMovieId: string) {
   return movie;
 }
 
+// deleteMovie
+
+async function deleteMovie(toDeleteMovieId: string) {
+  const movie = await MovieModel.findByIdAndDelete(toDeleteMovieId);
+  if (!movie) {
+    throw InvalidMovieReviewPayload;
+  }
+  await MovieModel.deleteOne({ _id: toDeleteMovieId });
+  return movie;
+}
+
 export const movieMongoService = {
   createMovie,
   updateMovie,
   getByIdMovie,
   getAllMovie,
+  deleteMovie,
 };
