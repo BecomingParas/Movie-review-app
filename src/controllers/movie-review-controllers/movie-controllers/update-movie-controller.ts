@@ -5,7 +5,7 @@ import {
   InvalidMovieReviewPayload,
   MovieNotFound,
 } from "../../../services/movie-review-errors";
-import { movieMongoService } from "../../../mongo/movie/service";
+import { movieMongoService } from "../../../mongo/movie/mongoMovieService";
 
 export async function updateMovieController(
   req: Request,

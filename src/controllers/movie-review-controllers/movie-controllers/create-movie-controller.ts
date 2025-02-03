@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { movieService } from "../../../services/movie";
 import { CreateMovieSchema } from "../../../services/movie-review-validations";
 import { InvalidMovieReviewPayload } from "../../../services/movie-review-errors";
-import { movieMongoService } from "../../../mongo/movie/service";
+import { movieMongoService } from "../../../mongo/movie/mongoMovieService";
 import { MovieReviewAppError } from "../../../error";
 export async function createMovieController(
   req: Request,

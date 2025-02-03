@@ -51,6 +51,12 @@ async function updateMovie(toUpdateMovieId: string, input: Omit<TMovie, "id">) {
     }
   );
 }
+// get all movie
+
+async function getAllMovie() {
+  const movies = await MovieModel.find();
+  return movies;
+}
 
 // get by id movie
 
@@ -67,4 +73,5 @@ export const movieMongoService = {
   createMovie,
   updateMovie,
   getByIdMovie,
+  getAllMovie,
 };
