@@ -141,5 +141,4 @@ Directory structure:
             ├── movie-review-validations.ts
             ├── movie.ts
             └── reviews.ts
-````
-You're all set to start building your backend application!
+
