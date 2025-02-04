@@ -2,12 +2,12 @@ import mongoose from "mongoose";
 
 const reviewSchema = new mongoose.Schema({
   userId: {
-    type: String,
+    type: Number,
     required: true,
   },
   movieId: {
     type: mongoose.Types.ObjectId,
-    ref: "Movie",
+    ref: "movie",
   },
   rating: {
     type: Number,
@@ -19,4 +19,4 @@ const reviewSchema = new mongoose.Schema({
   },
 });
 
-export const ReviewModel = mongoose.model("ReviewModel", reviewSchema);
+export const ReviewModel = mongoose.model("review", reviewSchema);

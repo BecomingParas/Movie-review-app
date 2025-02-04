@@ -1,6 +1,6 @@
 import { InvalidMovieReviewPayload } from "../../services/movie-review-errors";
 import { MovieModel } from "./movieModel";
-type TMovie = {
+type TMovies = {
   id: string;
   title: string;
   description: string;
@@ -10,7 +10,7 @@ type TMovie = {
 
 //create movie
 
-async function createMovie(input: Omit<TMovie, "id">) {
+async function createMovie(input: Omit<TMovies, "id">) {
   const movie = new MovieModel({
     title: input.title,
     description: input.description,
@@ -22,7 +22,10 @@ async function createMovie(input: Omit<TMovie, "id">) {
 
 // update the movie
 
-async function updateMovie(toUpdateMovieId: string, input: Omit<TMovie, "id">) {
+async function updateMovie(
+  toUpdateMovieId: string,
+  input: Omit<TMovies, "id">
+) {
   const movie = await MovieModel.findById(toUpdateMovieId);
   if (!movie) {
     throw new Error("Movie not found!");

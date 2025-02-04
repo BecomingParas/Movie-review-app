@@ -21,4 +21,4 @@ const movieSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
-export const MovieModel = mongoose.model("MovieModel", movieSchema);
+export const MovieModel = mongoose.model("movie", movieSchema);

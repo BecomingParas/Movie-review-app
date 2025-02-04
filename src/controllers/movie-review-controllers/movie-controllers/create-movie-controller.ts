@@ -26,6 +26,9 @@ export async function createMovieController(
         release_year: parsed.data.release_year,
         genre: parsed.data.genre,
       });
+      res.json({
+        message: "Movie added successfully.",
+      });
     } else {
       await movieMongoService.createMovie({
         title: parsed.data.title,

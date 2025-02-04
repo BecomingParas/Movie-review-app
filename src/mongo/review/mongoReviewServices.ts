@@ -1,11 +1,27 @@
 // type declaration
 
+import { ReviewModel } from "./reviewModel";
+
 type TReviews = {
-  id: Number;
-  userId: string;
-  movieId: Number;
-  rating: Number;
+  id: string;
+  userId: number;
+  movieId: string;
+  rating: number;
   review: string;
 };
 
-async function createReview(input: Omit<TReviews, "id">) {}
+// create review
+
+async function createReview(input: Omit<TReviews, "id">) {
+  const review = new ReviewModel({
+    userId: input.userId,
+    movieId: input.movieId,
+    rating: input.rating,
+    review: input.review,
+  });
+  await review.save();
+}
+
+export const mongoReviewServices = {
+  createReview,
+};
