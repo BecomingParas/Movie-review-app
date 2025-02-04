@@ -16,6 +16,7 @@ Run the following command to create a `package.json` file:
 npm init -y
 ```
 
+
 ### 2. Install TypeScript and Node Types
 Install TypeScript and Node.js type definitions as development dependencies:
 ```bash
@@ -140,7 +141,4 @@ Directory structure:
             ├── movie-review-validations.ts
             ├── movie.ts
             └── reviews.ts
-````
-You're all set to start building your backend application!
 
-You're all set to start building your backend application!

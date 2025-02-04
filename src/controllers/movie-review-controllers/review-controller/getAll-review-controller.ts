@@ -6,10 +6,10 @@ export async function getAllReviewController(
   res: Response,
   next: NextFunction
 ) {
-  const revies = await reviewServices.getAllReviews();
+  const reviews = await reviewServices.getAllReviews();
 
   res.json({
-    data: revies,
+    data: reviews,
     message: "Reviews get all successfully.",
   });
 }
