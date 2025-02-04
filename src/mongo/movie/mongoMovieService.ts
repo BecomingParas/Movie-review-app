@@ -1,5 +1,5 @@
 import { InvalidMovieReviewPayload } from "../../services/movie-review-errors";
-import { MovieModel } from "./model";
+import { MovieModel } from "./movieModel";
 type TMovie = {
   id: string;
   title: string;
