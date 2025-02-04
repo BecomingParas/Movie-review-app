@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { hashPassword } from "../../utils/bcrypt";
 import { userMongoService } from "../../mongo/auth/service";
 
-async function signUpController(
+export async function signUpController(
   req: Request,
   res: Response,
   next: NextFunction
