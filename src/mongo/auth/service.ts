@@ -1,3 +1,5 @@
+import { InvalidMovieReviewPayload } from "../../services/movie-review-errors";
+
 import { UserModel } from "./model";
 
 type TCreateUserInput = {
@@ -38,8 +40,49 @@ async function updateUser(toUpdateUserId: string, input: TUpdateUserInput) {
     }
   );
 }
+// delete user
+
+async function deleteUser(toDeleteUserId: string) {
+  const user = await UserModel.findByIdAndDelete(toDeleteUserId);
+  if (!user) {
+    throw InvalidMovieReviewPayload;
+  }
+  await UserModel.deleteOne({
+    _id: toDeleteUserId,
+  });
+  return user;
+}
+
+// getAllUser
+
+async function getAllUser() {
+  const users = await UserModel.find();
+  return users;
+}
+
+// getUserById
+
+async function getUserById(toGetUserId: string) {
+  const user = await UserModel.findById(toGetUserId);
+  if (!user) {
+    throw new Error("user not found");
+  }
+  return user;
+}
+// getUserByEmail
+
+async function getUserByEmail(email: string) {
+  try {
+    return await UserModel.findOne({ email });
+  } catch (error) {
+    throw new Error(`Error: ${error}`);
+  }
+}
 
 export const userMongoService = {
   createUser,
   updateUser,
+  deleteUser,
+  getAllUser,
+  getUserById,
 };
