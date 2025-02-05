@@ -22,7 +22,7 @@ export async function createReviewController(
 
     if (process.env.DATABASE_TYPE === "MYSQL") {
       reviewServices.createReviews({
-        movieId: parsed.data.movieId,
+        movieId: Number(parsed.data.movieId),
         userId: parsed.data.userId,
         rating: parsed.data.rating,
         review: parsed.data.review,
@@ -32,7 +32,7 @@ export async function createReviewController(
       });
     } else {
       await mongoReviewServices.createReview({
-        movieId: parsed.data.movieId.toString(),
+        movieId: parsed.data.movieId,
         userId: parsed.data.userId,
         rating: parsed.data.rating,
         review: parsed.data.review,

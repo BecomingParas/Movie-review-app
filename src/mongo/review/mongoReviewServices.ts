@@ -1,5 +1,6 @@
 // type declaration
 
+import { Types } from "mongoose";
 import { ReviewModel } from "./reviewModel";
 
 type TReviews = {
