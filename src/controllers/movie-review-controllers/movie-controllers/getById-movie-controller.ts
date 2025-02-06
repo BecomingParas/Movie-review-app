@@ -13,36 +13,20 @@ export async function getMovieByIdController(
   next: NextFunction
 ) {
   try {
-    //   const movieId = req.params.movieId;
-
-    //   if (!movieId) {
-    //     const invalidPayloadError = new InvalidMovieReviewPayload(movieId);
-    //     next(invalidPayloadError);
-    //     return;
-    //   }
-    //   let movie;
-    //   if (process.env.DATABASE_TYPE === "MYSQL") {
-    //     const numMovieId = Number(movieId);
-    //     movie = await movieService.getByIdMovie(numMovieId);
-    //     if (!movie) {
-    //       const movieNotFoundError = new MovieNotFound();
-    //       next(movieNotFoundError);
-    //       return;
-    //     }
-    //   } else {
-    //     movie = await movieMongoService.getByIdMovie(movieId);
-    //     return movie;
-    //   }
-
-    //   res.json({
-    //     data: movie,
-    //     message: "Movie get successfully",
-    //   });
-
     if (process.env.DATABASE_TYPE === "MYSQL") {
       const movieId = Number(req.params.movieId);
+      if (!movieId) {
+        const invalidPayloadError = new InvalidMovieReviewPayload(movieId);
+        next(invalidPayloadError);
+        return;
+      }
 
       const movie = movieService.getByIdMovie(movieId);
+      if (!movie) {
+        const reviewNotFoundError = new MovieNotFound();
+        next(reviewNotFoundError);
+        return;
+      }
       res.json({
         data: movie,
         message: "Movies get by id successfully",
@@ -52,7 +36,7 @@ export async function getMovieByIdController(
       const movie = await movieMongoService.getByIdMovie(movieId);
       res.json({
         data: movie,
-        message: "Movies get by Id successfully.",
+        message: "Movie get by Id successfully.",
       });
     }
   } catch (error) {
