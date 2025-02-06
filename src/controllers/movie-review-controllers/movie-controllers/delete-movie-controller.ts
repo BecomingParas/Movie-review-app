@@ -13,28 +13,28 @@ export async function deleteMovieController(
   next: NextFunction
 ) {
   try {
+    const movieId = req.params.movieId;
     if (process.env.DATABASE_TYPE === "MYSQL") {
-      const movieId = Number(req.params.movieId);
+      const numReviewId = Number(movieId);
       if (!movieId) {
         const invalidPayLoadError = new InvalidMovieReviewPayload(movieId);
         next(invalidPayLoadError);
         return;
       }
 
-      const movie = await movieService.getByIdMovie(movieId);
+      const movie = await movieService.getByIdMovie(numReviewId);
       if (!movie) {
         const movieNotFoundError = new MovieNotFound();
         next(movieNotFoundError);
         return;
       }
 
-      movieService.deleteMovie(movieId);
+      movieService.deleteMovie(numReviewId);
 
       res.json({
         message: "Movie deleted successfully.",
       });
     } else {
-      const movieId = req.params.movieId;
       await movieMongoService.deleteMovie(movieId);
       res.json({
         message: "Movies deleted successfully.",
