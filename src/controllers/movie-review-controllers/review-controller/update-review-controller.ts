@@ -5,6 +5,8 @@ import {
   ReviewNotFound,
 } from "../../../services/movie-review-errors";
 import { MovieReviewAppError } from "../../../error";
+import { mongoReviewServices } from "../../../mongo/review/mongoReviewServices";
+import { strict } from "assert";
 
 export async function updateReviewController(
   req: Request,
@@ -12,7 +14,7 @@ export async function updateReviewController(
   next: NextFunction
 ) {
   try {
-    const reviewId = Number(req.params.reviewId);
+    const reviewId = req.params.reviewId;
     const body = req.body;
     if (!reviewId) {
       const invalidPayloadError = new InvalidMovieReviewPayload(reviewId);
@@ -20,23 +22,36 @@ export async function updateReviewController(
       return;
     }
 
-    const review = await reviewServices.getByIdReview(reviewId);
-    if (!review) {
-      const reviewNotFoundError = new ReviewNotFound();
-      next(reviewNotFoundError);
-      return;
+    if (process.env.DATABASE_TYPE === "MYSQL") {
+      const numReviewId = Number(reviewId);
+      const review = await reviewServices.getByIdReview(numReviewId);
+      if (!review) {
+        const reviewNotFoundError = new ReviewNotFound();
+        next(reviewNotFoundError);
+        return;
+      }
+
+      reviewServices.updateReview(numReviewId, {
+        movieId: body.movieId,
+        userId: body.userId,
+        rating: body.rating,
+        review: body.review,
+      });
+
+      res.json({
+        message: "Movie updated successfully.",
+      });
+    } else {
+      await mongoReviewServices.updateReview(reviewId, {
+        movieId: body.movieId,
+        userId: body.userId,
+        rating: body.rating,
+        review: body.review,
+      });
+      res.json({
+        message: "Review updated successfully.",
+      });
     }
-
-    reviewServices.updateReview(reviewId, {
-      movieId: body.movieId,
-      userId: body.userId,
-      rating: body.rating,
-      review: body.review,
-    });
-
-    res.json({
-      message: "Movie updated successfully.",
-    });
   } catch (error) {
     const reviewerror = new MovieReviewAppError(
       "Failed to update the review. something went wrong in server.",
