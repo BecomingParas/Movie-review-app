@@ -2,22 +2,54 @@ import express, { Request, Response, NextFunction } from "express";
 import { homeController } from "./controllers/home-controller";
 import { createMovieRoutes } from "./routes/movie-route";
 
+import "./db";
+import { connectMongoDb } from "./mongo-db";
+import { createReviewRoutes } from "./routes/review-route";
+import { MovieReviewAppError } from "./error";
+import { createAuthRoutes } from "./routes/auth-route";
+
+connectMongoDb().then(() => {
+  console.log(`MongoDb connected!1`);
+});
+
 // json parser
 const app = express();
 app.use(express.json());
 
 app.get("/", homeController);
 
-//note routes
+// // page templates
+// app.get("/home", (req, res) => {
+//   const homeFile = fs.readFileSync(`${process.cwd()}/pages/home.html`);
+//   res.send(homeFile.toString());
+// });
+
+//movie routes
 createMovieRoutes(app);
 
-app.use((error: any, req: Request, res: Response, next: NextFunction) => {
-  console.log("error", error);
+//review routes
+createReviewRoutes(app);
 
-  res.status(error.status || 500).json({
-    message: error.message,
-  });
-});
+// auth routes
+createAuthRoutes(app);
+
+//global error handler
+
+app.use(
+  (
+    error: MovieReviewAppError,
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    console.log("error", error);
+
+    res.status(error.status || 500).json({
+      message: error.message,
+      meta: error.meta,
+    });
+  }
+);
 
 app.listen(4002, () => {
   console.log("server started at http://localhost:4002");

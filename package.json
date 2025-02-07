@@ -3,18 +3,33 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-   "dev":"npx tsx --watch src/main.ts",
-   "build":"tsc",
-   "start":"node dist/main.js"
-   
+    "dev": "npx tsx --watch src/main.ts",
+    "build": "tsc",
+    "start": "node dist/main.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.8",
     "@types/node": "^22.10.5",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.5.1",
+    "tailwindcss": "^4.0.0",
+    "ts-node": "^10.9.2",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.5",
+    "mysql2": "^3.12.0",
+    "zod": "^3.24.1"
   }
 }

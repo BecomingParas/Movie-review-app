@@ -1,37 +1,57 @@
 import { Request, Response, NextFunction } from "express";
 import { movieService } from "../../../services/movie";
+import { MovieReviewAppError } from "../../../error";
+import {
+  InvalidMovieReviewPayload,
+  MovieNotFound,
+} from "../../../services/movie-review-errors";
+import { movieMongoService } from "../../../mongo/movie/mongoMovieService";
 
-export function updateMovieController(
+export async function updateMovieController(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
   try {
-    const movieId = Number(req.params.movieId);
+    const movieId = req.params.movieId;
     const body = req.body;
-    const movie = movieService.getByIdMovie(movieId);
-    if (!movie) {
-      next({
-        status: 404,
-        message: "Note not found",
-      });
+    if (!movieId) {
+      const invalidPayloadError = new InvalidMovieReviewPayload(movieId);
+      next(invalidPayloadError);
       return;
     }
 
-    movieService.updateMovie(movieId, {
-      title: body.title,
-      description: body.description,
-      release_year: body.release_year,
-      genre: body.genre,
-    });
+    if (process.env.DATABASE_TYPE === "MYSQL") {
+      const numMovieId = Number(movieId);
+      const movie = await movieService.getByIdMovie(numMovieId);
+      if (!movie) {
+        const movieNotFoundError = new MovieNotFound();
+        next(movieNotFoundError);
+        return;
+      }
 
+      movieService.updateMovie(numMovieId, {
+        title: body.title,
+        description: body.description,
+        release_year: body.release_year,
+        genre: body.genre,
+      });
+    } else {
+      await movieMongoService.updateMovie(movieId, {
+        title: body.title,
+        description: body.description,
+        release_year: body.release_year,
+        genre: body.genre,
+      });
+    }
     res.json({
       message: "Movie updated successfully.",
     });
   } catch (error) {
-    console.error("caught error", error);
-    next({
-      message: "Failed to update the movie.Something went wrong in server",
-    });
+    const movieError = new MovieReviewAppError(
+      "Failed to update the movie. something went wrong in server.",
+      500
+    );
+    next(movieError);
   }
 }
