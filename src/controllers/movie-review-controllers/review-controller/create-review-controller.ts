@@ -21,7 +21,11 @@ export async function createReviewController(
     }
 
     if (process.env.DATABASE_TYPE === "MYSQL") {
-      reviewServices.createReviews({
+
+      await reviewServices.createReviews({
+
+    
+
         movieId: Number(parsed.data.movieId),
         userId: parsed.data.userId,
         rating: parsed.data.rating,
