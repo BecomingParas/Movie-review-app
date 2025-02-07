@@ -1,5 +1,5 @@
 import { sign } from "jsonwebtoken";
-type TPayload = {
+export type TPayload = {
   id: string;
   username: string;
   email: string;
