@@ -6,6 +6,7 @@ type TMovies = {
   description: string;
   release_year: number;
   genre: string;
+  created_by_id: string;
 };
 
 //create movie
@@ -16,6 +17,7 @@ async function createMovie(input: Omit<TMovies, "id">) {
     description: input.description,
     genre: input.genre,
     release_year: input.release_year,
+    created_by_id: input.created_by_id,
   });
   await movie.save();
 }

@@ -20,5 +20,9 @@ const movieSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  created_by_id: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User",
+  },
 });
 export const MovieModel = mongoose.model("movie", movieSchema);

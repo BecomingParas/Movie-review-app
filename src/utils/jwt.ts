@@ -1,4 +1,4 @@
-import { sign } from "jsonwebtoken";
+import { sign, verify } from "jsonwebtoken";
 export type TPayload = {
   id: string;
   username: string;
@@ -15,4 +15,10 @@ export function generateToken(payload: TPayload) {
     expiresIn: 60,
   });
   return token;
+}
+
+export function verifyToken(token: string): TPayload {
+  const validatedToken = verify(token, jwtSecret);
+  console.log("validatedToken :", validatedToken);
+  return validatedToken as TPayload;
 }
