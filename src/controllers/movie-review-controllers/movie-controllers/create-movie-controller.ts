@@ -42,7 +42,7 @@ export async function createMovieController(
     });
   } catch (error) {
     console.error(error);
-    if ((error as any).errorResponse.code === 11000) {
+    if ((error as any).errorResponse?.code === 11000) {
       const movieError = new MovieReviewAppError(
         "Failed to create the movie.please choose unique title",
         400
