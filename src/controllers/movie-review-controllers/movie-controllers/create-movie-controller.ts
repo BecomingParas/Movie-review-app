@@ -4,12 +4,14 @@ import { CreateMovieSchema } from "../../../services/movie-review-validations";
 import { InvalidMovieReviewPayload } from "../../../services/movie-review-errors";
 import { movieMongoService } from "../../../mongo/movie/mongoMovieService";
 import { MovieReviewAppError } from "../../../error";
+import { TPayload } from "../../../utils/jwt";
 export async function createMovieController(
-  req: Request,
+  req: Request & { user?: TPayload },
   res: Response,
   next: NextFunction
 ) {
   try {
+    const authenticatedUser = req.user as TPayload;
     const body = req.body;
     const parsed = CreateMovieSchema.safeParse(body);
     if (!parsed.success) {
@@ -35,6 +37,7 @@ export async function createMovieController(
         description: parsed.data.description,
         genre: parsed.data.genre,
         release_year: parsed.data.release_year,
+        created_by_id: authenticatedUser.id,
       });
     }
     res.json({

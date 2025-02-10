@@ -1,7 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import { verifyToken } from "./jwt";
+import { TPayload, verifyToken } from "./jwt";
 
-export function authMiddlare(req: Request, res: Response, next: NextFunction) {
+export function authMiddlare(
+  req: Request & { user?: TPayload },
+  res: Response,
+  next: NextFunction
+) {
   try {
     const token = req.headers.mytoken;
     if (!token) {
@@ -16,7 +20,10 @@ export function authMiddlare(req: Request, res: Response, next: NextFunction) {
       });
       return;
     }
-    verifyToken(token);
+    const payload = verifyToken(token);
+
+    req.user = payload;
+
     next();
   } catch (error) {
     console.error(error);
