@@ -1,4 +1,5 @@
 import { sign, verify } from "jsonwebtoken";
+import { EXPIRY_TIME_IN_SECONDS } from "./constant";
 export type TPayload = {
   id: string;
   username: string;
@@ -12,7 +13,7 @@ if (!jwtSecret) {
 export function generateToken(payload: TPayload) {
   const token = sign(payload, jwtSecret, {
     // in second
-    expiresIn: 60,
+    expiresIn: EXPIRY_TIME_IN_SECONDS,
   });
   return token;
 }
