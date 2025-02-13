@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { userMongoService } from "../../mongo/auth/service";
 import { comparePassword } from "../../utils/bcrypt";
 import { generateToken, TPayload } from "../../utils/jwt";
+import { EXPIRY_TIME_IN_SECONDS } from "../../utils/constant";
 
 export async function loginController(
   req: Request,
@@ -36,9 +37,17 @@ export async function loginController(
   };
   const token = generateToken(userPayload);
   console.log("generated token", token);
+  const bearerToken = `Bearer ${token}`;
+  res.cookie("authorization", bearerToken, {
+    path: "/",
+    httpOnly: true,
+    expires: new Date(Date.now() + EXPIRY_TIME_IN_SECONDS * 1000),
+    sameSite: "lax",
+    secure: process.env["ENVIRONMENT"] === "prod",
+  });
   res.status(200).json({
     data: {
-      token,
+      token: bearerToken,
     },
     message: "you are logged in successfully",
   });

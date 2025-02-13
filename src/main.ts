@@ -1,4 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
+import cookieParser from "cookie-parser";
 import { homeController } from "./controllers/home-controller";
 import { createMovieRoutes } from "./routes/movie-route";
 
@@ -14,6 +15,7 @@ connectMongoDb().then(() => {
 
 // json parser
 const app = express();
+app.use(cookieParser());
 app.use(express.json());
 
 app.get("/", homeController);
