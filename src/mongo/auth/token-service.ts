@@ -29,12 +29,17 @@ async function deleteToken(input: TDeleteTokenInput) {
   });
 }
 
+// get Token
 
-// get Token 
-
-async function getToken(){
-    await TokenModel.
+async function getToken(input: { token: string }) {
+  const token = await TokenModel.findOne({
+    token: input.token,
+  });
+  return token;
 }
 
-
-
+export const tokenService = {
+  createToken,
+  deleteToken,
+  getToken,
+};

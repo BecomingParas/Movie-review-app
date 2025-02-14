@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { TPayload, verifyToken } from "./jwt";
+import { tokenService } from "../mongo/auth/token-service";
 
-export function authMiddlare(
+export async function authMiddlare(
   req: Request & { user?: TPayload },
   res: Response,
   next: NextFunction
@@ -30,6 +31,17 @@ export function authMiddlare(
     }
 
     const payload = verifyToken(token);
+
+    // is the token in the database
+    const tokenInDb = await tokenService.getToken({
+      token: authorizationHeader,
+    });
+    if (!tokenInDb) {
+      res.status(401).json({
+        message: "Token not found.It seems you are logged out!!",
+      });
+      return;
+    }
 
     req.user = payload;
 
