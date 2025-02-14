@@ -24,7 +24,7 @@ type TDeleteTokenInput = {
 
 async function deleteToken(input: TDeleteTokenInput) {
   await TokenModel.deleteOne({
-    user_id: input,
+    user_id: input.userId,
     token: input.token,
   });
 }
