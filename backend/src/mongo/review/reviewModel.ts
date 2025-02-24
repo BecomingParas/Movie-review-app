@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const reviewSchema = new mongoose.Schema({
   userId: {
-    type: Number,
+    type: mongoose.Schema.ObjectId,
     required: true,
   },
   movieId: {

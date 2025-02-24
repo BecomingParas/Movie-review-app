@@ -1,6 +1,4 @@
 // type declaration
-
-import { Types } from "mongoose";
 import { ReviewModel } from "./reviewModel";
 import { InvalidMovieReviewPayload } from "../../services/movie-review-errors";
 
@@ -28,7 +26,7 @@ async function createReview(input: Omit<TReviews, "id">) {
 
 async function updateReview(
   toUpdateReviewId: string,
-  input: Omit<TReviews, "id">
+  input: Omit<TReviews, "id" | "movieId" | "userId">
 ) {
   const review = await ReviewModel.findById(toUpdateReviewId);
 
@@ -40,8 +38,8 @@ async function updateReview(
       _id: toUpdateReviewId,
     },
     {
-      userId: input.userId,
-      movieId: input.movieId,
+      // userId: input.userId,
+      // movieId: input.movieId,
       rating: input.rating,
       review: input.review,
     }
