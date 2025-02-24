@@ -19,13 +19,12 @@ export async function createReviewController(
       next(invalidPayloadError);
       return;
     }
+    // check
+    const loggedinUser = req.user;
+    console.log(loggedinUser);
 
     if (process.env.DATABASE_TYPE === "MYSQL") {
-
       await reviewServices.createReviews({
-
-    
-
         movieId: Number(parsed.data.movieId),
         userId: parsed.data.userId,
         rating: parsed.data.rating,

@@ -19,3 +19,9 @@ export class ReviewNotFound extends MovieReviewAppError {
     super("Review not found", 404);
   }
 }
+
+export class UnAuthorized extends MovieReviewAppError {
+  constructor() {
+    super("You are not authorized", 403);
+  }
+}

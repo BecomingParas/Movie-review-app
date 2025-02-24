@@ -3,6 +3,7 @@ import { reviewServices } from "../../../services/reviews";
 import {
   InvalidMovieReviewPayload,
   ReviewNotFound,
+  UnAuthorized,
 } from "../../../services/movie-review-errors";
 import { MovieReviewAppError } from "../../../error";
 import { mongoReviewServices } from "../../../mongo/review/mongoReviewServices";
@@ -42,9 +43,29 @@ export async function updateReviewController(
         message: "Movie updated successfully.",
       });
     } else {
+      const reviewToBeUpdated = await mongoReviewServices.getByIdReview(
+        reviewId
+      );
+      if (!reviewToBeUpdated) {
+        const reviewNotFoundError = new ReviewNotFound();
+        next(reviewNotFoundError);
+        return;
+      }
+      const isUserOwner = req.user?.id === reviewToBeUpdated.userId?.toString();
+      console.log({
+        isUserOwner,
+        user: req.user,
+        id: reviewToBeUpdated.userId?.toString(),
+      });
+      if (!isUserOwner) {
+        const unAuthorizedError = new UnAuthorized();
+        next(unAuthorizedError);
+        return;
+      }
+
       await mongoReviewServices.updateReview(reviewId, {
-        movieId: body.movieId,
-        userId: body.userId,
+        // movieId: body.movieId,
+        // userId: body.userId,
         rating: body.rating,
         review: body.review,
       });
