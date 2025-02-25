@@ -1,10 +1,12 @@
 import "./App.css";
+import { QueryClientProvider } from "./utils/query";
+import { RouterProvider } from "./utils/router";
 
 function App() {
   return (
-    <>
-      <div>Frontend movie-app</div>
-    </>
+    <QueryClientProvider>
+      <RouterProvider />
+    </QueryClientProvider>
   );
 }
 
