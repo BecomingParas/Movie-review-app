@@ -11,8 +11,8 @@ type TCreateUserInput = {
 async function createUser(input: TCreateUserInput) {
   const user = new UserModel({
     username: input.username,
-    password: input.password,
     email: input.email,
+    password: input.password,
   });
   await user.save();
 }
