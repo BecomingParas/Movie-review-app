@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { movieService } from "../../service/movieService";
 import MovieCard from "../../components/movie/MovieCard";
-import Spinner from "../components/Spinner";
+import Spinner from "../../components/Spinner";
 
 export default function MovieListPage() {
   const { data, isLoading, error } = useQuery({

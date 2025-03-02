@@ -7,6 +7,7 @@ import RegisterPage from "../pages/register";
 
 import DashboardPage from "../pages/dashboard";
 import Login from "../components/auth/Login";
+import MovieListPage from "../pages/movie/MovieListPage";
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ export const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: <DashboardPage />,
+  },
+  {
+    path: "/movielist",
+    element: <MovieListPage />,
   },
 ]);
 export function RouterProvider() {
