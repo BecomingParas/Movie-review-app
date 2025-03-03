@@ -18,14 +18,20 @@ export const InputField: FC<InputFieldProps> = ({
   } = useFormContext();
   return (
     <div className="mb-4">
-      <label className=" block font-medium">{label}</label>
+      <label className=" block text-sm font-medium mb-1 text-gray-700">
+        {label}
+      </label>
       <input
         {...register(name)}
         type={type}
         placeholder={placeholder}
-        className="w-full p-2 border rounded "
+        className="w-full px-4 py-2  border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
       />
-      {errors[name] && <p>{errors[name]?.message as string}</p>}
+      {errors[name] && (
+        <p className="text-red-700 bg-red-200 p-2 rounded-md mt-2">
+          {errors[name]?.message as string}
+        </p>
+      )}
     </div>
   );
 };

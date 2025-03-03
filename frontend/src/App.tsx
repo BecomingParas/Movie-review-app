@@ -6,6 +6,7 @@ import Footer from "./components/Footer";
 import MovieList from "./components/movie/MovieList";
 import ReviewList from "./components/review/ReviewList";
 import MovieDetail from "./components/movie/MovieDetail";
+import SignUpForm from "./components/auth/SignUpForm";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: "/movies/:movieId",
         element: <MovieDetail />,
+      },
+      {
+        path: "/signup",
+        element: <SignUpForm />,
       },
     ],
   },
