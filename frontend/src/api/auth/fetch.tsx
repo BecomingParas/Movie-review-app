@@ -1,11 +1,11 @@
 import { env } from "../../utils/config";
 // for register api
-export type TRegisterUserInput = {
+export type TSignUpUserInput = {
   username: string;
   email: string;
   password: string;
 };
-export type TRegisterUserOutput = {
+export type TSignUpUserOutput = {
   message: string;
   isSuccess: boolean;
   data: {
@@ -15,10 +15,10 @@ export type TRegisterUserOutput = {
   };
 };
 
-export async function registerUser(
-  input: TRegisterUserInput
-): Promise<TRegisterUserOutput> {
-  const res = await fetch(`${env.BACKEND_URL}/api/auth/register`, {
+export async function SignUpUser(
+  input: TSignUpUserInput
+): Promise<TSignUpUserOutput> {
+  const res = await fetch(`${env.BACKEND_URL}/auth/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
