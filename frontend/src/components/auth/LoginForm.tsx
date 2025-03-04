@@ -3,7 +3,7 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import z from "zod";
 import { InputField } from "../../utils/ui/InputField";
 import { useLoginUserMutation } from "../../api/auth/query";
-import { errorToast, successToast } from "../toaster";
+import { errorToast, successToast } from "../../utils/toast";
 import { useNavigate } from "react-router-dom";
 import {
   FiMail,

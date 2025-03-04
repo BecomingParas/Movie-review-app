@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useMovies } from "../api/movie/hooks";
+import { useMovies } from "../../api/movie/hooks";
 import { FiStar, FiClock, FiHeart, FiTrendingUp } from "react-icons/fi";
 import { Link } from "react-router-dom";
 

@@ -1,18 +1,19 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./App.css";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import MovieList from "./components/movie/MovieList";
+import Navbar from "./components/common/Navbar";
+import Footer from "./components/common/Footer";
+
 import ReviewList from "./components/review/ReviewList";
 import MovieDetail from "./components/movie/MovieDetail";
 import SignUpForm from "./components/auth/SignUpForm";
-import LoginPage from "./pages/LoginPage";
-import Home from "./pages/home";
+import LoginPage from "./pages/auth/LoginPage";
+import Home from "./pages/home/home";
 
 import ContactPage from "./pages/contact/Contact";
 import AboutPage from "./pages/about/About";
-import DashboardPage from "./pages/dashboard";
+import DashboardPage from "./pages/dashboard/dashboard";
+import { MovieList } from "./components/movie/MovieList";
 
 const router = createBrowserRouter([
   {
@@ -42,12 +43,8 @@ const router = createBrowserRouter([
         element: <DashboardPage />,
       },
       {
-        path: "/",
-        element: <MovieList />,
-      },
-      {
         path: "/movies",
-        element: <MovieList />,
+        element: <MovieList title="All Movies" movies={[]} />,
       },
       {
         path: "/reviews",

@@ -1,13 +1,31 @@
 import { Link } from "react-router-dom";
 import { FiStar, FiClock, FiCalendar, FiHeart, FiPlay } from "react-icons/fi";
-import { MovieCardProps } from "./types";
+import { useState } from "react";
+
+interface MovieCardProps {
+  movie: {
+    id: string;
+    title: string;
+    imageUrl: string;
+    rating: number;
+    releaseDate: string;
+    duration?: string;
+    genre: string[];
+    description?: string;
+  };
+  variant?: "default" | "featured" | "compact";
+}
 
 export function MovieCard({ movie, variant = "default" }: MovieCardProps) {
+  const [isHovered, setIsHovered] = useState(false);
+
   if (variant === "featured") {
     return (
       <Link
         to={`/movies/${movie.id}`}
         className="group relative h-[500px] overflow-hidden rounded-2xl"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
         <div className="absolute inset-0 overflow-hidden">
           <img
@@ -23,7 +41,7 @@ export function MovieCard({ movie, variant = "default" }: MovieCardProps) {
             <div className="flex items-center gap-3 mb-3">
               <span className="flex items-center gap-1 bg-blue-500/80 px-3 py-1 rounded-full text-sm font-medium">
                 <FiStar className="text-yellow-400" />
-                {(movie.rating ?? 0).toFixed(1)}
+                {movie.rating.toFixed(1)}
               </span>
               {movie.duration && (
                 <span className="flex items-center gap-1 text-sm text-gray-300">
@@ -43,7 +61,7 @@ export function MovieCard({ movie, variant = "default" }: MovieCardProps) {
             </div>
 
             <div className="flex flex-wrap gap-2 mb-4">
-              {(Array.isArray(movie.genre) ? movie.genre : []).map((genre) => (
+              {movie.genre.map((genre) => (
                 <span
                   key={genre}
                   className="bg-gray-700/60 px-3 py-1 rounded-full text-sm text-gray-200"
@@ -53,12 +71,14 @@ export function MovieCard({ movie, variant = "default" }: MovieCardProps) {
               ))}
             </div>
 
-            <p className="text-gray-300 line-clamp-2 mb-4">
-              {movie.description}
-            </p>
+            {movie.description && (
+              <p className="text-gray-300 line-clamp-2 mb-4">
+                {movie.description}
+              </p>
+            )}
 
             <div className="flex items-center gap-3">
-              <button className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition-colors">
+              <button className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition-all duration-300 transform -translate-y-2 group-hover:translate-y-0">
                 <FiPlay size={18} />
                 Watch Now
               </button>
@@ -90,7 +110,7 @@ export function MovieCard({ movie, variant = "default" }: MovieCardProps) {
           <div className="flex items-center gap-2 mt-1">
             <span className="flex items-center gap-1 text-yellow-400 text-sm">
               <FiStar size={14} />
-              {(movie.rating ?? 0).toFixed(1)}
+              {movie.rating.toFixed(1)}
             </span>
             <span className="text-sm text-gray-400">{movie.releaseDate}</span>
           </div>
@@ -103,6 +123,8 @@ export function MovieCard({ movie, variant = "default" }: MovieCardProps) {
     <Link
       to={`/movies/${movie.id}`}
       className="group relative overflow-hidden rounded-xl bg-gray-800 transition-all duration-300 hover:scale-105"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <div className="aspect-[2/3] overflow-hidden">
         <img
@@ -110,7 +132,7 @@ export function MovieCard({ movie, variant = "default" }: MovieCardProps) {
           alt={movie.title}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
         {/* Hover Overlay */}
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -126,7 +148,7 @@ export function MovieCard({ movie, variant = "default" }: MovieCardProps) {
           <div className="flex items-center justify-between mb-2">
             <span className="flex items-center gap-1 bg-blue-500/80 px-2 py-1 rounded-full text-sm">
               <FiStar className="text-yellow-400" />
-              {(movie.rating ?? 0).toFixed(1)}
+              {movie.rating.toFixed(1)}
             </span>
             {movie.duration && (
               <span className="flex items-center gap-1 text-sm text-gray-300">
@@ -146,19 +168,19 @@ export function MovieCard({ movie, variant = "default" }: MovieCardProps) {
           </div>
 
           <div className="flex flex-wrap gap-1">
-            {(Array.isArray(movie.genre) ? movie.genre : [])
-              .slice(0, 2)
-              .map((genre) => (
-                <span
-                  key={genre}
-                  className="text-xs bg-gray-700/60 px-2 py-1 rounded-full text-gray-300"
-                >
-                  {genre}
-                </span>
-              ))}
+            {movie.genre.slice(0, 2).map((genre) => (
+              <span
+                key={genre}
+                className="text-xs bg-gray-700/60 px-2 py-1 rounded-full text-gray-300"
+              >
+                {genre}
+              </span>
+            ))}
           </div>
         </div>
       </div>
     </Link>
   );
 }
+
+export default MovieCard;
