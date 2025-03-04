@@ -1,248 +1,165 @@
+import React from "react";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import z from "zod";
-import { InputField } from "../../utils/ui/InputField";
 import { useSignUpUserMutation } from "../../api/auth/query";
-import { errorToast, successToast } from "../../utils/toast";
-import { useNavigate } from "react-router-dom";
 import {
-  FiMail,
-  FiLock,
-  FiUser,
-  FiEye,
-  FiEyeOff,
-  FiFilm,
-  FiStar,
-  FiUsers,
-} from "react-icons/fi";
-import { useState } from "react";
+  signupSchema,
+  type SignupFormData,
+} from "../../utils/validation/authSchemas";
+import { successToast, errorToast } from "../../utils/toast";
+import { useNavigate } from "react-router-dom";
 
-const signupSchema = z
-  .object({
-    username: z.string().min(3, "Username must be at least 3 characters."),
-    email: z.string().email("Invalid email."),
-    password: z
-      .string()
-      .min(6, "Password must be at least 6 characters.")
-      .max(20),
-    confirmPassword: z.string().min(6).max(20),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
-
-type SignupFormData = z.infer<typeof signupSchema>;
-
-export function SignUpForm() {
+/**
+ * SignUpForm Component
+ *
+ * @component
+ * @description Handles new user registration with form validation and error handling
+ *
+ * @example
+ * ```tsx
+ * <SignUpForm />
+ * ```
+ *
+ * Features:
+ * - Form validation using Zod
+ * - Password confirmation
+ * - Integration with signup API
+ * - Error handling and user feedback
+ * - Loading states
+ * - Redirect after successful registration
+ *
+ * Form Fields:
+ * - Username (required, 3-30 characters)
+ * - Email (required, must be valid email)
+ * - Password (required, min 6 characters)
+ * - Confirm Password (must match password)
+ *
+ * States:
+ * - Loading state during submission
+ * - Error states for invalid input
+ * - Success state after registration
+ *
+ * Dependencies:
+ * - react-hook-form for form handling
+ * - zod for validation
+ * - react-router-dom for navigation
+ */
+export const SignUpForm: React.FC = () => {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const signUpUserMutation = useSignUpUserMutation();
+  const signupMutation = useSignUpUserMutation();
 
-  const methods = useForm<SignupFormData>({
-    mode: "all",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
-    defaultValues: {
-      email: "",
-      username: "",
-      password: "",
-      confirmPassword: "",
-    },
   });
 
-  const onSubmit: SubmitHandler<SignupFormData> = (data) => {
-    signUpUserMutation.mutateAsync(
-      {
-        email: data.email,
-        username: data.username,
-        password: data.password,
-      },
-      {
-        onSuccess(response) {
-          successToast(response.message);
-          methods.reset();
-          navigate("/login");
-        },
-        onError(error) {
-          console.error("error", error);
-          errorToast(error.message);
-        },
+  const onSubmit = async (data: SignupFormData) => {
+    try {
+      const response = await signupMutation.mutateAsync(data);
+      if (response.isSuccess) {
+        successToast("Account created successfully!");
+        navigate("/login");
       }
-    );
+    } catch (error) {
+      errorToast("Failed to create account. Please try again.");
+    }
   };
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left Side - Movie Background */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gray-900 relative overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage:
-              "url('https://image.tmdb.org/t/p/original/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg')",
-          }}
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <div>
+        <label
+          htmlFor="username"
+          className="block text-sm font-medium text-white mb-1"
         >
-          <div className="absolute inset-0 bg-black bg-opacity-60"></div>
-        </div>
-        <div className="relative z-10 flex flex-col justify-center items-center text-white p-8 text-center">
-          <h1 className="text-4xl font-bold mb-4">Welcome to MovieReviews</h1>
-          <p className="text-xl text-gray-300 mb-8">
-            Join our community of movie enthusiasts
+          Username
+        </label>
+        <input
+          id="username"
+          type="text"
+          {...register("username")}
+          className="w-full px-3 py-2 bg-gray-800 text-white rounded-md border border-gray-700 focus:outline-none focus:border-red-500"
+          placeholder="Choose a username"
+        />
+        {errors.username && (
+          <p className="mt-1 text-sm text-red-500">{errors.username.message}</p>
+        )}
+      </div>
+
+      <div>
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-white mb-1"
+        >
+          Email
+        </label>
+        <input
+          id="email"
+          type="email"
+          {...register("email")}
+          className="w-full px-3 py-2 bg-gray-800 text-white rounded-md border border-gray-700 focus:outline-none focus:border-red-500"
+          placeholder="Enter your email"
+        />
+        {errors.email && (
+          <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
+        )}
+      </div>
+
+      <div>
+        <label
+          htmlFor="password"
+          className="block text-sm font-medium text-white mb-1"
+        >
+          Password
+        </label>
+        <input
+          id="password"
+          type="password"
+          {...register("password")}
+          className="w-full px-3 py-2 bg-gray-800 text-white rounded-md border border-gray-700 focus:outline-none focus:border-red-500"
+          placeholder="Create a password"
+        />
+        {errors.password && (
+          <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>
+        )}
+      </div>
+
+      <div>
+        <label
+          htmlFor="confirmPassword"
+          className="block text-sm font-medium text-white mb-1"
+        >
+          Confirm Password
+        </label>
+        <input
+          id="confirmPassword"
+          type="password"
+          {...register("confirmPassword")}
+          className="w-full px-3 py-2 bg-gray-800 text-white rounded-md border border-gray-700 focus:outline-none focus:border-red-500"
+          placeholder="Confirm your password"
+        />
+        {errors.confirmPassword && (
+          <p className="mt-1 text-sm text-red-500">
+            {errors.confirmPassword.message}
           </p>
-          <div className="space-y-4">
-            <div className="flex items-center justify-center space-x-2">
-              <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
-                <FiFilm size={24} />
-              </div>
-              <div className="text-left">
-                <h3 className="font-semibold">Discover Movies</h3>
-                <p className="text-gray-300">Explore our vast collection</p>
-              </div>
-            </div>
-            <div className="flex items-center justify-center space-x-2">
-              <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center">
-                <FiStar size={24} />
-              </div>
-              <div className="text-left">
-                <h3 className="font-semibold">Write Reviews</h3>
-                <p className="text-gray-300">Share your thoughts</p>
-              </div>
-            </div>
-            <div className="flex items-center justify-center space-x-2">
-              <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
-                <FiUsers size={24} />
-              </div>
-              <div className="text-left">
-                <h3 className="font-semibold">Join Community</h3>
-                <p className="text-gray-300">Connect with others</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        )}
       </div>
 
-      {/* Right Side - Sign Up Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center bg-gray-900 p-8">
-        <div className="w-full max-w-md">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-white mb-2">
-              Create Account
-            </h2>
-            <p className="text-gray-400">
-              Already have an account?{" "}
-              <button
-                onClick={() => navigate("/login")}
-                className="text-blue-500 hover:text-blue-400"
-              >
-                Sign in
-              </button>
-            </p>
-          </div>
-
-          <FormProvider {...methods}>
-            <form
-              onSubmit={methods.handleSubmit(onSubmit)}
-              className="space-y-6"
-            >
-              <div>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <FiUser className="text-gray-400" size={20} />
-                  </div>
-                  <InputField
-                    name="username"
-                    label="Username"
-                    placeholder="Choose a username"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <FiMail className="text-gray-400" size={20} />
-                  </div>
-                  <InputField
-                    name="email"
-                    label="Email"
-                    type="email"
-                    placeholder="Enter your email"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <FiLock className="text-gray-400" size={20} />
-                  </div>
-                  <InputField
-                    name="password"
-                    label="Password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Create a password"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  >
-                    {showPassword ? (
-                      <FiEyeOff className="text-gray-400" size={20} />
-                    ) : (
-                      <FiEye className="text-gray-400" size={20} />
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <FiLock className="text-gray-400" size={20} />
-                  </div>
-                  <InputField
-                    name="confirmPassword"
-                    label="Confirm Password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Confirm your password"
-                  />
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition-colors font-medium"
-              >
-                {signUpUserMutation.isPending
-                  ? "Creating Account..."
-                  : "Create Account"}
-              </button>
-            </form>
-          </FormProvider>
-
-          <div className="mt-6 text-center">
-            <p className="text-gray-400 text-sm">
-              By signing up, you agree to our{" "}
-              <button
-                onClick={() => navigate("/terms")}
-                className="text-blue-500 hover:text-blue-400"
-              >
-                Terms of Service
-              </button>{" "}
-              and{" "}
-              <button
-                onClick={() => navigate("/privacy")}
-                className="text-blue-500 hover:text-blue-400"
-              >
-                Privacy Policy
-              </button>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className={`w-full py-2 px-4 rounded-md text-white font-medium transition-colors
+          ${
+            isSubmitting
+              ? "bg-gray-600 cursor-not-allowed"
+              : "bg-red-500 hover:bg-red-600"
+          }`}
+      >
+        {isSubmitting ? "Creating Account..." : "Sign Up"}
+      </button>
+    </form>
   );
-}
-
-export default SignUpForm;
+};

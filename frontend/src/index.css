@@ -1,1 +1,18 @@
 @import "tailwindcss";
+
+@import "./styles/animations.css";
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: #000;
+  color: #fff;
+}
+
+html {
+  font-feature-settings: "kern";
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}

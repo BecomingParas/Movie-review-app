@@ -187,7 +187,17 @@ const MovieLayout: React.FC = () => {
           </article>
           <div className="grid gap-8 grid-cols-[repeat(3,1fr)] max-sm:grid-cols-[1fr]">
             {upcomingMovies.map((movie, index) => (
-              <MovieCard key={index} movie={movie} />
+              <MovieCard
+                key={index}
+                movie={{
+                  id: movie.id,
+                  title: movie.title,
+                  imageUrl: movie.imageUrl,
+                  duration: movie.duration,
+                  genre: [movie.genre[0]],
+                  description: movie.description,
+                }}
+              />
             ))}
           </div>
         </section>

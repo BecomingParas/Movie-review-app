@@ -229,7 +229,9 @@ export function MovieDetail() {
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-full bg-gray-700" />
                   <div>
-                    <h3 className="font-medium">{review.user.username}</h3>
+                    <h3 className="font-medium">
+                      {review.user?.name || "Anonymous"}
+                    </h3>
                     <div className="flex items-center gap-2">
                       <FiStar className="text-yellow-400" />
                       <span>{review.rating.toFixed(1)}</span>
