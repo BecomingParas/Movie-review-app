@@ -7,6 +7,7 @@ import MovieList from "./components/movie/MovieList";
 import ReviewList from "./components/review/ReviewList";
 import MovieDetail from "./components/movie/MovieDetail";
 import SignUpForm from "./components/auth/SignUpForm";
+import LoginPage from "./pages/LoginPage";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <SignUpForm />,
+      },
+      {
+        path: "/login",
+        element: <LoginPage />,
       },
     ],
   },
