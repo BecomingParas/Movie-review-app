@@ -8,6 +8,11 @@ import ReviewList from "./components/review/ReviewList";
 import MovieDetail from "./components/movie/MovieDetail";
 import SignUpForm from "./components/auth/SignUpForm";
 import LoginPage from "./pages/LoginPage";
+import Home from "./pages/home";
+
+import ContactPage from "./pages/contact/Contact";
+import AboutPage from "./pages/about/About";
+import DashboardPage from "./pages/dashboard";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +25,22 @@ const router = createBrowserRouter([
       </>
     ),
     children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/contact",
+        element: <ContactPage />,
+      },
+      {
+        path: "/about",
+        element: <AboutPage />,
+      },
+      {
+        path: "/dashboard",
+        element: <DashboardPage />,
+      },
       {
         path: "/",
         element: <MovieList />,
