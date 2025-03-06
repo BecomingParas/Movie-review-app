@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, QueryClient } from "@tanstack/react-query";
 import {
   createReview,
   fetchMovie,
@@ -6,6 +6,8 @@ import {
   fetchMovies,
 } from "./fetch";
 import { errorToast } from "../../utils/toast";
+
+const queryClient = new QueryClient();
 
 /**
  * Hook to fetch all movies
@@ -140,7 +142,7 @@ export function useCreateReviewMutation() {
     }) => createReview(movieId, data),
     onError: (error: Error) => {
       errorToast(
-        error.message || "Failed to submit review. Please try again later.",
+        error.message || "Failed to submit review. Please try again later."
       );
     },
     onSuccess: () => {

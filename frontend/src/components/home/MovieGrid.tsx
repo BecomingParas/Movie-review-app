@@ -1,4 +1,3 @@
-import React from "react";
 import { MovieCard } from "../movie/MovieCard";
 import { SectionHeader } from "../common/SectionHeader";
 import { useMovies } from "../../api/movie/hooks";
@@ -44,45 +43,87 @@ export const MovieGrid = () => {
 
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
           <MovieCard
-            id="1"
-            title="Avengers"
-            image="https://cdn.builder.io/api/v1/image/assets/0329669a448f4e19b213ca65eb35fcc4/95ded6d2f8f596bdc5c8a3c26622240a8cdfde026938857e2f91e9cd359ea27f?placeholderIfAbsent=true"
+            movie={{
+              id: "1",
+              title: "Avengers",
+              imageUrl:
+                "https://cdn.builder.io/api/v1/image/assets/0329669a448f4e19b213ca65eb35fcc4/95ded6d2f8f596bdc5c8a3c26622240a8cdfde026938857e2f91e9cd359ea27f",
+              rating: 4.5,
+              genre: ["Action"],
+              releaseDate: "2024",
+            }}
           />
           <MovieCard
-            id="2"
-            title="Inception"
-            image="https://cdn.builder.io/api/v1/image/assets/0329669a448f4e19b213ca65eb35fcc4/de103c5e44afe0299611f385daa7195b3f610457c8364cda9ed4535dcb34435e?placeholderIfAbsent=true"
+            movie={{
+              id: "2",
+              title: "Inception",
+              imageUrl:
+                "https://cdn.builder.io/api/v1/image/assets/0329669a448f4e19b213ca65eb35fcc4/de103c5e44afe0299611f385daa7195b3f610457c8364cda9ed4535dcb34435e",
+              rating: 4.5,
+              genre: ["Action"],
+              releaseDate: "2024",
+            }}
           />
           <MovieCard
-            id="3"
-            title="The Dark Knight"
-            image="https://cdn.builder.io/api/v1/image/assets/0329669a448f4e19b213ca65eb35fcc4/948ddaa098bb6cdce6b42e3ad67b09a91ea9b255c65b8423b9d24503a7b54d97?placeholderIfAbsent=true"
+            movie={{
+              id: "3",
+              title: "The Dark Knight",
+              imageUrl:
+                "https://cdn.builder.io/api/v1/image/assets/0329669a448f4e19b213ca65eb35fcc4/948ddaa098bb6cdce6b42e3ad67b09a91ea9b255c65b8423b9d24503a7b54d97",
+              rating: 4.5,
+              genre: ["Action"],
+              releaseDate: "2024",
+            }}
           />
           <MovieCard
-            id="4"
-            title="The Lord of the Rings"
-            image="https://cdn.builder.io/api/v1/image/assets/0329669a448f4e19b213ca65eb35fcc4/19d1aa4440ed540ed47a57665bc1bfa1ace09349ee2affd9e073ea7213675261?placeholderIfAbsent=true"
+            movie={{
+              id: "4",
+              title: "The Lord of the Rings",
+              imageUrl:
+                "https://cdn.builder.io/api/v1/image/assets/0329669a448f4e19b213ca65eb35fcc4/19d1aa4440ed540ed47a57665bc1bfa1ace09349ee2affd9e073ea7213675261",
+              rating: 4.5,
+              genre: ["Action"],
+              releaseDate: "2024",
+            }}
           />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-8 sm:mt-16">
           <MovieCard
-            id="5"
-            title="The Wolf of Wall Street"
-            image="https://cdn.builder.io/api/v1/image/assets/0329669a448f4e19b213ca65eb35fcc4/00383e879271b350eb361dff93a98b122db96c6980fe249ebc75b6da25963996?placeholderIfAbsent=true"
-            variant="large"
+            movie={{
+              id: "5",
+              title: "The Wolf of Wall Street",
+              imageUrl:
+                "https://cdn.builder.io/api/v1/image/assets/0329669a448f4e19b213ca65eb35fcc4/00383e879271b350eb361dff93a98b122db96c6980fe249ebc75b6da25963996",
+              rating: 4.5,
+              genre: ["Action"],
+              releaseDate: "2024",
+            }}
+            variant="featured"
           />
           <MovieCard
-            id="6"
-            title="Top Gun: Maverick"
-            image="https://cdn.builder.io/api/v1/image/assets/0329669a448f4e19b213ca65eb35fcc4/5f8c4771ae011105f035286523b9ad4eb6d93ce07fc98b2cfc0cf3a9a99e0b67?placeholderIfAbsent=true"
-            variant="large"
+            movie={{
+              id: "6",
+              title: "Top Gun: Maverick",
+              imageUrl:
+                "https://cdn.builder.io/api/v1/image/assets/0329669a448f4e19b213ca65eb35fcc4/5f8c4771ae011105f035286523b9ad4eb6d93ce07fc98b2cfc0cf3a9a99e0b67",
+              rating: 4.5,
+              genre: ["Action"],
+              releaseDate: "2024",
+            }}
+            variant="featured"
           />
           <MovieCard
-            id="7"
-            title="Interstellar"
-            image="https://cdn.builder.io/api/v1/image/assets/0329669a448f4e19b213ca65eb35fcc4/5f4878f5ee18c2c1e8ee3bf275048d634d6271b058f2dc1e71ac1a95bae2bf06?placeholderIfAbsent=true"
-            variant="large"
+            movie={{
+              id: "7",
+              title: "Interstellar",
+              imageUrl:
+                "https://cdn.builder.io/api/v1/image/assets/0329669a448f4e19b213ca65eb35fcc4/5f4878f5ee18c2c1e8ee3bf275048d634d6271b058f2dc1e71ac1a95bae2bf06",
+              rating: 4.5,
+              genre: ["Action"],
+              releaseDate: "2024",
+            }}
+            variant="featured"
           />
         </div>
       </div>

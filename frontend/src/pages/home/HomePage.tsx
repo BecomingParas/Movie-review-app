@@ -1,4 +1,3 @@
-import React from "react";
 import { HeroSection } from "../../components/home/HeroSection";
 import { MovieGrid } from "../../components/home/MovieGrid";
 import { UpcomingMovies } from "../../components/home/UpcomingMovies";
