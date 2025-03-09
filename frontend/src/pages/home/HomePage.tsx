@@ -1,7 +1,8 @@
-import { HeroSection } from "../../components/home/HeroSection";
-import { MovieGrid } from "../../components/home/MovieGrid";
-import { UpcomingMovies } from "../../components/home/UpcomingMovies";
-import { AboutSection } from "../../components/home/AboutSection";
+import React from "react";
+import { MainLayout } from "../../components/layout/MainLayout";
+import { HeroSection } from "../../components/movie/HeroSection";
+import MovieGrid from "../../components/movie/MovieGrid";
+import { useMovies } from "../../api/movie/hooks";
 
 /**
  * HomePage Component
@@ -32,14 +33,49 @@ import { AboutSection } from "../../components/home/AboutSection";
  * - React Query for data fetching
  * - Tailwind CSS for styling
  */
-export const HomePage = () => {
+export const HomePage: React.FC = () => {
+  const { data: movies, isLoading } = useMovies();
+
+  const featuredMovies = movies?.data?.slice(0, 4) || [];
+  const latestMovies = movies?.data?.slice(4, 8) || [];
+  const upcomingMovies = movies?.data?.slice(8, 12) || [];
+
   return (
-    <main className="min-h-screen bg-black">
-      <HeroSection />
-      <MovieGrid />
-      <UpcomingMovies />
-      <AboutSection />
-    </main>
+    <MainLayout>
+      <div className="animate-fade-in">
+        <HeroSection />
+
+        {/* Featured Movies */}
+        <section className="py-16">
+          <MovieGrid
+            title="Featured Movies"
+            movies={featuredMovies}
+            showMore
+            onShowMore={() => console.log("Show more featured movies")}
+          />
+        </section>
+
+        {/* Latest Releases */}
+        <section className="py-16 bg-background-alt">
+          <MovieGrid
+            title="Latest Releases"
+            movies={latestMovies}
+            showMore
+            onShowMore={() => console.log("Show more latest movies")}
+          />
+        </section>
+
+        {/* Upcoming Movies */}
+        <section className="py-16">
+          <MovieGrid
+            title="Coming Soon"
+            movies={upcomingMovies}
+            showMore
+            onShowMore={() => console.log("Show more upcoming movies")}
+          />
+        </section>
+      </div>
+    </MainLayout>
   );
 };
 

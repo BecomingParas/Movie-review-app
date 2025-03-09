@@ -1,85 +1,24 @@
-"use client";
-import React, { useState } from "react";
+import * as React from "react";
 
-const Navigation: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const navItems = [
-    "Home",
-    "Distributions",
-    "Production",
-    "About Us",
-    "Contact Us",
-  ];
-
+export const Navigation: React.FC = () => {
   return (
-    <nav className="relative flex justify-between items-center px-28 py-7 max-md:px-5">
+    <nav className="flex flex-wrap gap-5 justify-between self-stretch w-full text-sm font-semibold tracking-widest leading-none max-w-[1268px] max-md:max-w-full">
       <img
-        src="https://cdn.builder.io/api/v1/image/assets/TEMP/cbfa68bdf9fe830345b513a3b2f10d5338e3d202"
+        src="https://cdn.builder.io/api/v1/image/assets/0329669a448f4e19b213ca65eb35fcc4/a8a5dc41e8d040d4cca9d38a1dc94f8242644a4105ba5b533d386e4cee4aa1bc?placeholderIfAbsent=true"
         alt="Logo"
-        className="h-[92px] w-[85px]"
+        className="object-contain shrink-0 aspect-[0.92] w-[85px]"
       />
-
-      {/* Desktop Menu */}
-      <div className="hidden md:flex gap-7">
-        {navItems.map((item, index) => (
-          <button
-            key={index}
-            className="text-sm font-medium tracking-widest text-white cursor-pointer opacity-[0.67] hover:opacity-100"
-          >
-            {item}
-          </button>
-        ))}
+      <div className="flex gap-6 my-auto max-md:max-w-full">
+        <a href="#" className="grow text-rose-600">
+          Home
+        </a>
+        <a href="#" className="basis-auto">
+          Distributions
+        </a>
+        <a href="#">Production</a>
+        <a href="#">About Us</a>
+        <a href="#">Contact Us</a>
       </div>
-
-      {/* Mobile Menu Button */}
-      <button
-        className="md:hidden text-white p-2"
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-        aria-label="Toggle menu"
-      >
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          {isMenuOpen ? (
-            <path
-              d="M18 6L6 18M6 6L18 18"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          ) : (
-            <path
-              d="M4 6H20M4 12H20M4 18H20"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          )}
-        </svg>
-      </button>
-
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="absolute top-full left-0 right-0 bg-neutral-900 py-4 px-5 md:hidden z-50">
-          {navItems.map((item, index) => (
-            <button
-              key={index}
-              className="block w-full text-left text-sm font-medium tracking-widest text-white cursor-pointer opacity-[0.67] hover:opacity-100 py-3"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {item}
-            </button>
-          ))}
-        </div>
-      )}
     </nav>
   );
 };
-
-export default Navigation;

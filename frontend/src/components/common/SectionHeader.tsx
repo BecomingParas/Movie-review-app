@@ -1,4 +1,5 @@
 import React from "react";
+import { FiChevronRight } from "react-icons/fi";
 
 /**
  * Props for the SectionHeader component
@@ -47,19 +48,19 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   onShowMore,
 }) => {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full mb-4 sm:mb-8 gap-2">
-      <div className="flex items-center gap-1">
-        <h2 className="text-xl sm:text-2xl font-semibold text-white tracking-wide">
-          {title}
-        </h2>
-        <div className="w-[40px] sm:w-[60px] h-[2px] bg-red-500 mt-3 sm:mt-4 ml-1" />
+    <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center gap-4">
+        <h2 className="text-2xl font-bold text-white">{title}</h2>
+        <div className="h-[2px] w-12 bg-primary" />
       </div>
+
       {showMore && (
         <button
           onClick={onShowMore}
-          className="text-sm font-normal text-white tracking-wider hover:text-red-500 transition-colors"
+          className="flex items-center gap-2 text-primary hover:text-primary-light transition-colors"
         >
-          SEE MORE
+          View All
+          <FiChevronRight className="w-4 h-4" />
         </button>
       )}
     </div>
