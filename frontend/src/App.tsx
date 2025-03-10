@@ -7,6 +7,7 @@ import Profile from "./page/Profile";
 import About from "./page/About";
 import Contact from "./page/Contact";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { NotFound } from "./page/NotFound";
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
   {
@@ -28,9 +29,9 @@ const router = createBrowserRouter([
   {
     path: "/profile",
     element: (
-      <ProtectedRoute>
-        <Profile />
-      </ProtectedRoute>
+      // <ProtectedRoute>
+      <Profile />
+      // </ProtectedRoute>
     ),
   },
   {
@@ -51,11 +52,12 @@ const router = createBrowserRouter([
   },
 ]);
 
-function App() {
-  return;
-  <QueryClientProvider client={queryClient}>
-    <RouterProvider router={router} />
-  </QueryClientProvider>;
-}
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  );
+};
 
 export default App;
