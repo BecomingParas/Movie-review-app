@@ -1,51 +1,20 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import "./App.css";
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import MovieList from "./components/movie/MovieList";
-import ReviewList from "./components/review/ReviewList";
-import MovieDetail from "./components/movie/MovieDetail";
-
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <>
-        <Navbar />
-        <Outlet />
-        <Footer />
-      </>
-    ),
-    children: [
-      {
-        path: "/",
-        element: <MovieList />,
-      },
-      {
-        path: "/movies",
-        element: <MovieList />,
-      },
-      {
-        path: "/reviews",
-        element: <ReviewList />,
-      },
-      {
-        path: "/movies/:movieId",
-        element: <MovieDetail />,
-      },
-    ],
+    element: <Index />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
   },
 ]);
-
-const queryclient = new QueryClient();
-
 function App() {
-  return (
-    <QueryClientProvider client={queryclient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
