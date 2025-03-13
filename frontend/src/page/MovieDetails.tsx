@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Clock, Film, ThumbsUp } from "lucide-react";
-import Navbar from "@/components/layout/Navbar";
+// import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import RatingStars from "@/components/RatingStars";
 import { getMovieById, Movie } from "@/data/mockData";
@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import Navbar from "@/components/Navbar";
 
 const MovieDetails = () => {
   const { id } = useParams<{ id: string }>();

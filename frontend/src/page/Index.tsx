@@ -1,4 +1,3 @@
-import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/Herosection";
 import MovieList from "@/components/MovieList";
@@ -7,8 +6,6 @@ import { featuredMovies, topRatedMovies, recentMovies } from "@/data/mockData";
 const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
-
       <main className="flex-grow pt-16">
         <HeroSection
           title="Discover & Share Your Thoughts on Films"
@@ -35,8 +32,6 @@ const Index = () => {
           className="animate-fade-in"
         />
       </main>
-
-      <Footer />
     </div>
   );
 };
