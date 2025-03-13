@@ -1,28 +1,39 @@
 import { create } from "zustand";
-import { LoginCredentials, User } from "../utils/types";
+import { persist } from "zustand/middleware";
 
-interface AuthState {
+export type User = {
+  id: string;
+  username: string;
+  email: string;
+  avatar?: string;
+};
+
+type AuthState = {
   user: User | null;
   isAuthenticated: boolean;
-  login: (credentials: LoginCredentials) => Promise<void>;
+  accessToken: string | null;
+  login: (user: User, token: string) => void;
   logout: () => void;
-}
+  updateUser: (user: Partial<User>) => void;
+};
 
-const useAuthStore = create<AuthState>((set) => ({
-  user: null,
-  isAuthenticated: false,
-
-  login: async (credentials) => {
-    // Implement login API call
-    set({
-      user: { id: "1", name: "Test User", email: credentials.email },
-      isAuthenticated: true,
-    });
-  },
-
-  logout: () => {
-    set({ user: null, isAuthenticated: false });
-  },
-}));
-
-export default useAuthStore;
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      user: null,
+      isAuthenticated: false,
+      accessToken: null,
+      login: (user, token) =>
+        set({ user, isAuthenticated: true, accessToken: token }),
+      logout: () =>
+        set({ user: null, isAuthenticated: false, accessToken: null }),
+      updateUser: (userData) =>
+        set((state) => ({
+          user: state.user ? { ...state.user, ...userData } : null,
+        })),
+    }),
+    {
+      name: "cinema-auth-storage",
+    }
+  )
+);

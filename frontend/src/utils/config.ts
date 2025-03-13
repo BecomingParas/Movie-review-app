@@ -1,4 +1,3 @@
 export const env = {
-  NODE_ENV: import.meta.env.NODE_ENV || "development",
-  BACKEND_URL: import.meta.env.VITE_BACKEND_URL || "",
+  VITE_API_URL: import.meta.env.VITE_API_URL || "http://localhost:3000/api",
 };
