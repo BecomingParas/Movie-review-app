@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import { InputField } from "../ui/InputField";
 const registerSchema = z
   .object({
     email: z.string().email("Invalid email format"),
@@ -19,7 +20,7 @@ const registerSchema = z
       .string()
       .min(6, "Password must be at least 6 characters")
       .max(20, "Password must be less than 20 characters."),
-    confirmPassword: z.string().min(6).max(20),
+    confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Password do not match",
@@ -28,7 +29,7 @@ const registerSchema = z
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
-function SignForm() {
+function RegisterForm() {
   const methods = useForm<RegisterFormData>({
     mode: "all",
     defaultValues: {
@@ -43,16 +44,44 @@ function SignForm() {
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold text-center">Log In</CardTitle>
+        <CardTitle className="text-2xl font-bold text-center">
+          Create Account
+        </CardTitle>
         <CardDescription className=" text-center">
-          Sign in to your account to access your profile and reviews
+          Join our community of movie lovers
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <FormProvider {...methods}></FormProvider>
+        <FormProvider {...methods}>
+          <form className="space-y-4">
+            <InputField
+              label="Username"
+              name="username"
+              placeholder="Enter your username"
+            />
+            <InputField
+              label="Email"
+              name="email"
+              type="email"
+              placeholder="Enter your Email"
+            />
+            <InputField
+              label="Password"
+              name="password"
+              type="password"
+              placeholder="•••••••"
+            />
+            <InputField
+              label="Confirm Password"
+              name="confirmPassword"
+              type="password"
+              placeholder="•••••••"
+            />
+          </form>
+        </FormProvider>
       </CardContent>
     </Card>
   );
 }
 
-export default SignForm;
+export default RegisterForm;
