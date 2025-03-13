@@ -20,7 +20,6 @@
     "@tanstack/react-query": "^5.66.9",
     "@tanstack/react-query-devtools": "^5.66.9",
     "axios": "^1.8.1",
-<<<<<<< HEAD
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.479.0",
@@ -34,16 +33,6 @@
     "tailwind-merge": "^3.0.2",
     "tailwindcss": "^4.0.12",
     "tailwindcss-animate": "^1.0.7",
-=======
-    "framer-motion": "^12.4.10",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-hook-form": "^7.54.2",
-    "react-hot-toast": "^2.5.2",
-    "react-icons": "^5.5.0",
-    "react-router-dom": "^7.2.0",
-    "tailwindcss": "^4.0.9",
->>>>>>> ed3a28e8a194a1af007d60680a8b81eea39cba6f
     "zod": "^3.24.2",
     "zustand": "^5.0.3"
   },
