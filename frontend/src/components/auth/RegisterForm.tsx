@@ -1,6 +1,6 @@
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { registerSchema } from "@/lib/schema";
 import {
   Card,
   CardContent,
@@ -9,27 +9,13 @@ import {
   CardTitle,
 } from "../ui/card";
 import { InputField } from "../ui/InputField";
-const registerSchema = z
-  .object({
-    email: z.string().email("Invalid email format"),
-    username: z
-      .string()
-      .min(3, "Username must be at least 3 characters")
-      .max(20, "Username must be less than the 20 characters"),
-    password: z
-      .string()
-      .min(6, "Password must be at least 6 characters")
-      .max(20, "Password must be less than 20 characters."),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Password do not match",
-    path: ["confirmPassword"],
-  });
+import { Button } from "../ui/button";
+import { useNavigate } from "react-router-dom";
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
 function RegisterForm() {
+  const navigate = useNavigate();
   const methods = useForm<RegisterFormData>({
     mode: "all",
     defaultValues: {
@@ -40,6 +26,17 @@ function RegisterForm() {
     },
     resolver: zodResolver(registerSchema),
   });
+  // const { handleSubmit, reset } = methods;
+  // const onSubmit = async () => {
+  //   try {
+  //   } catch (error) {
+  //     if (error instanceof Error) {
+  //       setServerError(error.message);
+  //       errorToast(error.message);
+  //     } else {
+  //     }
+  //   }
+  // };
 
   return (
     <Card className="w-full max-w-md mx-auto">
@@ -77,6 +74,9 @@ function RegisterForm() {
               type="password"
               placeholder="•••••••"
             />
+            <Button type="submit" className="w-full">
+              {}
+            </Button>
           </form>
         </FormProvider>
       </CardContent>

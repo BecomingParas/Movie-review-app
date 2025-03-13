@@ -1,14 +1,19 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Index from "./page/Index";
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Index from "@/page/Index";
+import MovieDetails from "@/page/MovieDetails";
+import NotFound from "@/page/NotFound";
 import Login from "./page/Login";
 import Register from "./page/Register";
-import MovieDetails from "./page/MovieDetails";
 import Profile from "./page/Profile";
 import About from "./page/About";
 import Contact from "./page/Contact";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { NotFound } from "./page/NotFound";
+
 const queryClient = new QueryClient();
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -23,16 +28,12 @@ const router = createBrowserRouter([
     element: <Register />,
   },
   {
-    path: "/movies/:movieId",
+    path: "/movie/:id", // Ensure this comes before the catch-all route
     element: <MovieDetails />,
   },
   {
     path: "/profile",
-    element: (
-      // <ProtectedRoute>
-      <Profile />
-      // </ProtectedRoute>
-    ),
+    element: <Profile />,
   },
   {
     path: "/users/:userId",
@@ -48,16 +49,18 @@ const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <NotFound />,
+    element: <NotFound />, // This will only trigger for undefined routes
   },
 ]);
 
-const App = () => {
-  return (
-    <QueryClientProvider client={queryClient}>
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
       <RouterProvider router={router} />
-    </QueryClientProvider>
-  );
-};
+    </TooltipProvider>
+  </QueryClientProvider>
+);
 
 export default App;
