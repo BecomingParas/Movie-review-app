@@ -10,12 +10,13 @@ import {
 } from "../ui/card";
 import { InputField } from "../ui/InputField";
 import { Button } from "../ui/button";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
+import { z } from "zod";
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
 function RegisterForm() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const methods = useForm<RegisterFormData>({
     mode: "all",
     defaultValues: {
