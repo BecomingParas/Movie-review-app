@@ -1,206 +1,213 @@
-import { useState } from "react";
-import { useMovies } from "../api/movie/hooks";
-import { FiStar, FiClock, FiHeart, FiTrendingUp } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import React from "react";
 
-function DashboardPage() {
-  const { data: movies } = useMovies();
-  const [activeTab, setActiveTab] = useState("recent");
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import {
+  Film,
+  Clock,
+  Star,
+  BookMarked,
+  User,
+  ChevronRight,
+  BarChart,
+} from "lucide-react";
+import { featuredMovies } from "@/data/mockData";
 
-  // Mock data for user stats (replace with actual data from your backend)
-  const userStats = {
-    totalReviews: 24,
-    averageRating: 4.5,
-    favoriteMovies: 12,
-    watchlistCount: 8,
-  };
+// Mock data for user and stats
+const userActivity = [
+  { id: 1, action: "Added a review for Interstellar", time: "2 hours ago" },
+  { id: 2, action: "Added The Matrix to watchlist", time: "1 day ago" },
+  { id: 3, action: "Rated Inception 4.5 stars", time: "3 days ago" },
+];
 
-  // Mock data for recent reviews (replace with actual data)
-  const recentReviews = [
-    {
-      id: 1,
-      movieTitle: "Inception",
-      rating: 5,
-      comment: "A masterpiece of modern cinema",
-      date: "2024-03-04",
-    },
-    {
-      id: 2,
-      movieTitle: "The Dark Knight",
-      rating: 4.5,
-      comment: "Heath Ledger's performance is legendary",
-      date: "2024-03-03",
-    },
-    // Add more mock reviews as needed
-  ];
-
-  // Get top rated movies from the API data
-  const topRatedMovies =
-    movies?.data.sort((a, b) => b.rating - a.rating).slice(0, 5) || [];
-
+const DashboardPage = () => {
   return (
-    <div className="min-h-screen bg-gray-900 text-white pt-16">
-      <div className="container mx-auto px-4 py-8">
-        {/* Welcome Section */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Welcome back, John!</h1>
-          <p className="text-gray-400">
-            Here's what's happening with your movie reviews
+    <div className="min-h-screen flex flex-col bg-gray-900  text-foreground">
+      <main className="flex-grow pt-16">
+        <div className="container mx-auto px-4 sm:px-6 py-12">
+          <h1 className="text-3xl md:text-4xl font-bold mb-4">Dashboard</h1>
+          <p className="text-muted-foreground mb-8">
+            Welcome back! Here's an overview of your movie activities.
           </p>
-        </div>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-gray-800 rounded-lg p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-gray-400">Total Reviews</h3>
-              <FiStar className="text-yellow-400" size={24} />
-            </div>
-            <p className="text-3xl font-bold">{userStats.totalReviews}</p>
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1  sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <StatCard
+              title="Movies Watched"
+              value="27"
+              icon={Film}
+              description="All time"
+            />
+            <StatCard
+              title="Watchlist"
+              value="12"
+              icon={BookMarked}
+              description="Movies to watch"
+            />
+            <StatCard
+              title="Reviews"
+              value="18"
+              icon={Star}
+              description="Written reviews"
+            />
+            <StatCard
+              title="Hours Watched"
+              value="43"
+              icon={Clock}
+              description="This month"
+            />
           </div>
 
-          <div className="bg-gray-800 rounded-lg p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-gray-400">Avg. Rating</h3>
-              <FiTrendingUp className="text-green-400" size={24} />
-            </div>
-            <p className="text-3xl font-bold">{userStats.averageRating}</p>
-          </div>
-
-          <div className="bg-gray-800 rounded-lg p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-gray-400">Favorite Movies</h3>
-              <FiHeart className="text-red-400" size={24} />
-            </div>
-            <p className="text-3xl font-bold">{userStats.favoriteMovies}</p>
-          </div>
-
-          <div className="bg-gray-800 rounded-lg p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-gray-400">Watchlist</h3>
-              <FiClock className="text-blue-400" size={24} />
-            </div>
-            <p className="text-3xl font-bold">{userStats.watchlistCount}</p>
-          </div>
-        </div>
-
-        {/* Tabs */}
-        <div className="mb-6">
-          <div className="border-b border-gray-700">
-            <nav className="-mb-px flex space-x-8">
-              <button
-                onClick={() => setActiveTab("recent")}
-                className={`${
-                  activeTab === "recent"
-                    ? "border-blue-500 text-blue-500"
-                    : "border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300"
-                } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
-              >
-                Recent Reviews
-              </button>
-              <button
-                onClick={() => setActiveTab("favorites")}
-                className={`${
-                  activeTab === "favorites"
-                    ? "border-blue-500 text-blue-500"
-                    : "border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300"
-                } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
-              >
-                Top Rated Movies
-              </button>
-            </nav>
-          </div>
-        </div>
-
-        {/* Tab Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Recent Reviews */}
-          {activeTab === "recent" && (
-            <div className="bg-gray-800 rounded-lg p-6">
-              <h2 className="text-xl font-semibold mb-4">Recent Reviews</h2>
-              <div className="space-y-4">
-                {recentReviews.map((review) => (
-                  <div
-                    key={review.id}
-                    className="border-b border-gray-700 pb-4 last:border-0"
-                  >
-                    <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-medium">{review.movieTitle}</h3>
-                      <div className="flex items-center text-yellow-400">
-                        <FiStar className="mr-1" />
-                        {review.rating}
+          {/* Main Dashboard Content */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Recent Activity */}
+            <Card className="lg:col-span-2 bg-gray-800">
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <BarChart className="mr-2 h-5 w-5" />
+                  Recent Activity
+                </CardTitle>
+                <CardDescription>
+                  Your latest interactions with movies
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {userActivity.map((activity) => (
+                    <div key={activity.id}>
+                      <div className="flex items-start justify-between">
+                        <div className="space-y-1">
+                          <p className="text-sm font-medium">
+                            {activity.action}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            {activity.time}
+                          </p>
+                        </div>
+                        <Button variant="ghost" size="icon">
+                          <ChevronRight className="h-4 w-4" />
+                        </Button>
                       </div>
+                      <Separator className="mt-4" />
                     </div>
-                    <p className="text-gray-400 text-sm mb-2">
-                      {review.comment}
-                    </p>
-                    <p className="text-gray-500 text-xs">{review.date}</p>
+                  ))}
+                </div>
+                <div className="mt-6">
+                  <Button variant="outline" className="w-full">
+                    View All Activity
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* User Profile Summary */}
+            <Card className="bg-gray-800">
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <User className="mr-2 h-5 w-5" />
+                  Profile Summary
+                </CardTitle>
+                <CardDescription>Your reviewer profile</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="h-20 w-20 rounded-full bg-primary/10 flex items-center justify-center">
+                    <User className="h-10 w-10 text-primary" />
                   </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Top Rated Movies */}
-          {activeTab === "favorites" && (
-            <div className="bg-gray-800 rounded-lg p-6">
-              <h2 className="text-xl font-semibold mb-4">Top Rated Movies</h2>
-              <div className="space-y-4">
-                {topRatedMovies.map((movie) => (
-                  <Link
-                    key={movie.id}
-                    to={`/movies/${movie.id}`}
-                    className="flex items-center space-x-4 hover:bg-gray-700 p-2 rounded-lg transition-colors"
-                  >
-                    <img
-                      src={movie.imageUrl}
-                      alt={movie.title}
-                      className="w-16 h-24 object-cover rounded"
-                    />
-                    <div>
-                      <h3 className="font-medium">{movie.title}</h3>
-                      <div className="flex items-center text-yellow-400 text-sm">
-                        <FiStar className="mr-1" />
-                        {movie.rating.toFixed(1)}
-                      </div>
-                      <p className="text-gray-400 text-sm">
-                        {movie.releaseDate}
-                      </p>
+                  <div className="text-center">
+                    <h3 className="text-lg font-medium">Movie Enthusiast</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Member since October 2023
+                    </p>
+                  </div>
+                  <Separator />
+                  <div className="w-full space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-sm">Favorite Genre:</span>
+                      <span className="text-sm font-medium">Sci-Fi</span>
                     </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
+                    <div className="flex justify-between">
+                      <span className="text-sm">Average Rating:</span>
+                      <span className="text-sm font-medium">4.2/5</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm">Total Reviews:</span>
+                      <span className="text-sm font-medium">18</span>
+                    </div>
+                  </div>
+                  <Button className="w-full">Edit Profile</Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
 
-          {/* Quick Actions */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
-            <div className="space-y-4">
-              <Link
-                to="/movies"
-                className="block w-full bg-blue-500 text-white text-center py-2 rounded-lg hover:bg-blue-600 transition-colors"
-              >
-                Browse Movies
-              </Link>
-              <Link
-                to="/reviews/new"
-                className="block w-full bg-gray-700 text-white text-center py-2 rounded-lg hover:bg-gray-600 transition-colors"
-              >
-                Write a Review
-              </Link>
-              <Link
-                to="/profile"
-                className="block w-full bg-gray-700 text-white text-center py-2 rounded-lg hover:bg-gray-600 transition-colors"
-              >
-                Edit Profile
-              </Link>
-            </div>
+          {/* Recommended Movies */}
+          <h2 className="text-2xl font-bold mt-12 mb-6">Recommended For You</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {featuredMovies.slice(0, 4).map((movie) => (
+              <Card key={movie.id} className="overflow-hidden group">
+                <div className="aspect-[2/3] relative">
+                  <img
+                    src={movie.posterUrl}
+                    alt={`${movie.title} poster`}
+                    className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-0 left-0 p-4">
+                    <h3 className="text-white font-medium">{movie.title}</h3>
+                    <div className="flex items-center text-yellow-400">
+                      <Star className="h-3 w-3 fill-current mr-1" />
+                      <span className="text-xs text-white">
+                        {movie.rating.toFixed(1)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+          <div className="mt-6 text-center">
+            <Button variant="outline" asChild>
+              <a href="/movies">See All Recommendations</a>
+            </Button>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
-}
+};
+
+// Helper component for stat cards
+const StatCard = ({
+  title,
+  value,
+  icon: Icon,
+  description,
+}: {
+  title: string;
+  value: string;
+  icon: React.ElementType;
+  description: string;
+}) => {
+  return (
+    <Card className="bg-gray-800">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium">{title}</CardTitle>
+        <Icon className="h-4 w-4 text-muted-foreground" />
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold">{value}</div>
+        <p className="text-xs text-muted-foreground">{description}</p>
+      </CardContent>
+    </Card>
+  );
+};
 
 export default DashboardPage;
