@@ -5,16 +5,7 @@ import { InputField } from "../../utils/ui/InputField";
 import { useSignUpUserMutation } from "../../api/auth/query";
 import { errorToast, successToast } from "../toaster";
 import { useNavigate } from "react-router-dom";
-import {
-  FiMail,
-  FiLock,
-  FiUser,
-  FiEye,
-  FiEyeOff,
-  FiFilm,
-  FiStar,
-  FiUsers,
-} from "react-icons/fi";
+import { FiFilm, FiStar, FiUsers } from "react-icons/fi";
 import { useState } from "react";
 
 const signupSchema = z
@@ -146,9 +137,7 @@ export function SignUpForm() {
             >
               <div>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <FiUser className="text-gray-400" size={20} />
-                  </div>
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"></div>
                   <InputField
                     name="username"
                     label="Username"
@@ -159,9 +148,7 @@ export function SignUpForm() {
 
               <div>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <FiMail className="text-gray-400" size={20} />
-                  </div>
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"></div>
                   <InputField
                     name="email"
                     label="Email"
@@ -173,9 +160,7 @@ export function SignUpForm() {
 
               <div>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <FiLock className="text-gray-400" size={20} />
-                  </div>
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"></div>
                   <InputField
                     name="password"
                     label="Password"
@@ -186,21 +171,13 @@ export function SignUpForm() {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  >
-                    {showPassword ? (
-                      <FiEyeOff className="text-gray-400" size={20} />
-                    ) : (
-                      <FiEye className="text-gray-400" size={20} />
-                    )}
-                  </button>
+                  ></button>
                 </div>
               </div>
 
               <div>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <FiLock className="text-gray-400" size={20} />
-                  </div>
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"></div>
                   <InputField
                     name="confirmPassword"
                     label="Confirm Password"

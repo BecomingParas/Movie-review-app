@@ -1,11 +1,10 @@
-import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/Herosection";
 import MovieList from "@/components/MovieList";
 import { featuredMovies, topRatedMovies, recentMovies } from "@/data/mockData";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gray-900">
       <main className="flex-grow pt-16">
         <HeroSection
           title="Discover & Share Your Thoughts on Films"
