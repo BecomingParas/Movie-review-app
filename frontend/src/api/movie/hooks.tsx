@@ -48,7 +48,7 @@ export function useCreateReview() {
 
   return useMutation({
     mutationFn: createReview,
-    onSuccess: (data, variables: TCreateReviewInput) => {
+    onSuccess: (_data, variables: TCreateReviewInput) => {
       // Invalidate and refetch movie reviews
       queryClient.invalidateQueries({
         queryKey: reviewKeys.list(variables.movieId),
@@ -68,7 +68,7 @@ export function useUpdateReview() {
       reviewId: string;
       input: Partial<TCreateReviewInput>;
     }) => updateReview(reviewId, input),
-    onSuccess: (data, variables) => {
+    onSuccess: (_, variables) => {
       // Invalidate and refetch movie reviews
       if (variables.input.movieId) {
         queryClient.invalidateQueries({

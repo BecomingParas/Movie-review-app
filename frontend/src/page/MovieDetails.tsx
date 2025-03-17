@@ -1,41 +1,63 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Clock, ThumbsUp } from "lucide-react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import RatingStars from "@/components/RatingStars";
-import { getMovieById, Movie } from "@/data/mockData";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import {
+  getMovieById,
+  createReview,
+  movieKeys,
+  reviewKeys,
+  TMovie,
+} from "@/api/movie/fetch";
+import ReviewList from "@/components/ReviewList";
 
 const MovieDetails = () => {
   const { id } = useParams<{ id: string }>();
-  const [movie, setMovie] = useState<Movie | null>(null);
-  const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    // Simulate loading
-    setLoading(true);
+  const { data: movieData, isLoading } = useQuery({
+    queryKey: movieKeys.detail(id || ""),
+    queryFn: () => getMovieById(id || ""),
+    enabled: !!id,
+  });
 
-    setTimeout(() => {
-      if (id) {
-        const foundMovie = getMovieById(Number(id));
-        setMovie(foundMovie || null);
-      }
-      setLoading(false);
-    }, 500);
-  }, [id]);
+  const createReviewMutation = useMutation({
+    mutationFn: createReview,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: reviewKeys.list(id || ""),
+      });
+      toast({
+        title: "Review submitted",
+        description: "Your review has been submitted successfully.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to submit review",
+        variant: "destructive",
+      });
+    },
+  });
 
   const handleRatingChange = (rating: number) => {
-    toast({
-      title: "Rating submitted",
-      description: `You rated this movie ${rating} stars.`,
+    if (!id) return;
+    createReviewMutation.mutate({
+      movieId: id,
+      rating: rating * 2, // Convert 5-star rating to 10-point scale
+      comment: "", // You might want to add a comment field to the UI
     });
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen flex flex-col bg-background text-foreground">
         <div className="flex-grow flex items-center justify-center">
@@ -51,6 +73,7 @@ const MovieDetails = () => {
     );
   }
 
+  const movie = movieData?.data;
   if (!movie) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -83,7 +106,7 @@ const MovieDetails = () => {
               <div className="w-full md:w-1/4 shrink-0">
                 <div className="aspect-[2/3] overflow-hidden rounded-lg shadow-lg border border-border/50 relative">
                   <img
-                    src={movie.posterUrl}
+                    src={movie.imageUrl}
                     alt={`${movie.title} poster`}
                     className="w-full h-full object-cover"
                   />
@@ -107,7 +130,9 @@ const MovieDetails = () => {
               <div className="w-full md:w-3/4">
                 <h1 className="text-3xl md:text-4xl font-bold mb-2">
                   {movie.title}{" "}
-                  <span className="text-muted-foreground">({movie.year})</span>
+                  <span className="text-muted-foreground">
+                    ({new Date(movie.releaseDate).getFullYear()})
+                  </span>
                 </h1>
 
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-6">
@@ -118,13 +143,8 @@ const MovieDetails = () => {
                     </span>
                   </div>
 
-                  <div className="flex items-center text-sm text-muted-foreground">
-                    <Clock className="h-4 w-4 mr-1" />
-                    <span>{movie.runtime} min</span>
-                  </div>
-
                   <div className="flex flex-wrap gap-2">
-                    {movie.genres.map((genre) => (
+                    {movie.genre.map((genre) => (
                       <span
                         key={genre}
                         className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground"
@@ -136,7 +156,9 @@ const MovieDetails = () => {
                 </div>
 
                 <h2 className="text-xl font-medium mb-4">Synopsis</h2>
-                <p className="text-muted-foreground mb-8">{movie.plot}</p>
+                <p className="text-muted-foreground mb-8">
+                  {movie.description}
+                </p>
 
                 <Separator className="my-8" />
 

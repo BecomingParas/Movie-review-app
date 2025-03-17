@@ -1,4 +1,4 @@
-import { env } from "../../utils/config";
+import { api } from "../index";
 
 // Types for Movie
 export type TMovie = {
@@ -54,65 +54,28 @@ export type TReviewsResponse = {
 
 // Movie API Functions
 export async function getMovies(): Promise<TMoviesResponse> {
-  const res = await fetch(`${env.BACKEND_URL}/api/movies`, {
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const data = await res.json();
-  if (!res.ok) {
-    throw new Error(data.message);
-  }
-  return data;
+  const response = await api.get("/api/movies");
+  return response.data;
 }
 
 export async function getMovieById(id: string): Promise<TMovieResponse> {
-  const res = await fetch(`${env.BACKEND_URL}/api/movies/${id}`, {
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const data = await res.json();
-  if (!res.ok) {
-    throw new Error(data.message);
-  }
-  return data;
+  const response = await api.get(`/api/movies/${id}`);
+  return response.data;
 }
 
 export async function searchMovies(query: string): Promise<TMoviesResponse> {
-  const res = await fetch(
-    `${env.BACKEND_URL}/api/movies/search?q=${encodeURIComponent(query)}`,
-    {
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
+  const response = await api.get(
+    `/api/movies/search?q=${encodeURIComponent(query)}`
   );
-  const data = await res.json();
-  if (!res.ok) {
-    throw new Error(data.message);
-  }
-  return data;
+  return response.data;
 }
 
 // Review API Functions
 export async function getMovieReviews(
   movieId: string
 ): Promise<TReviewsResponse> {
-  const res = await fetch(`${env.BACKEND_URL}/api/movies/${movieId}/reviews`, {
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const data = await res.json();
-  if (!res.ok) {
-    throw new Error(data.message);
-  }
-  return data;
+  const response = await api.get(`/api/movies/${movieId}/reviews`);
+  return response.data;
 }
 
 export type TCreateReviewInput = {
@@ -124,55 +87,23 @@ export type TCreateReviewInput = {
 export async function createReview(
   input: TCreateReviewInput
 ): Promise<TReviewResponse> {
-  const res = await fetch(`${env.BACKEND_URL}/api/reviews`, {
-    method: "POST",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(input),
-  });
-  const data = await res.json();
-  if (!res.ok) {
-    throw new Error(data.message);
-  }
-  return data;
+  const response = await api.post("/api/reviews", input);
+  return response.data;
 }
 
 export async function updateReview(
   reviewId: string,
   input: Partial<TCreateReviewInput>
 ): Promise<TReviewResponse> {
-  const res = await fetch(`${env.BACKEND_URL}/api/reviews/${reviewId}`, {
-    method: "PUT",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(input),
-  });
-  const data = await res.json();
-  if (!res.ok) {
-    throw new Error(data.message);
-  }
-  return data;
+  const response = await api.put(`/api/reviews/${reviewId}`, input);
+  return response.data;
 }
 
 export async function deleteReview(
   reviewId: string
 ): Promise<{ message: string; isSuccess: boolean }> {
-  const res = await fetch(`${env.BACKEND_URL}/api/reviews/${reviewId}`, {
-    method: "DELETE",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const data = await res.json();
-  if (!res.ok) {
-    throw new Error(data.message);
-  }
-  return data;
+  const response = await api.delete(`/api/reviews/${reviewId}`);
+  return response.data;
 }
 
 // React Query Keys

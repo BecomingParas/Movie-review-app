@@ -18,7 +18,7 @@ export type TSignUpUserOutput = {
 export async function SignUpUser(
   input: TSignUpUserInput
 ): Promise<TSignUpUserOutput> {
-  const res = await fetch(`${env.BACKEND_URL}/auth/signup`, {
+  const res = await fetch(`${env.VITE_BACKEND_URL}/auth/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -57,7 +57,7 @@ export type TLoginUserOutput = {
 export async function loginUser(
   input: TLoginUserInput
 ): Promise<TLoginUserOutput> {
-  const res = await fetch(`${env.BACKEND_URL}/api/auth/login`, {
+  const res = await fetch(`${env.VITE_BACKEND_URL}/api/auth/login`, {
     method: "POST",
     credentials: "include",
     headers: {

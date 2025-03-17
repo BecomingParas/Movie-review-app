@@ -4,7 +4,7 @@ import { Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface MovieCardProps {
-  id: number;
+  id: string;
   title: string;
   posterUrl: string;
   rating: number;
@@ -24,7 +24,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
     <Link
       to={`/movie/${id}`}
       className={cn("movie-card group block animate-enter", className)}
-      style={{ animationDelay: `${(id % 10) * 50}ms` }}
+      style={{ animationDelay: `${(parseInt(id) % 10) * 50}ms` }}
     >
       <div className="aspect-[2/3] overflow-hidden rounded-lg relative">
         <img
