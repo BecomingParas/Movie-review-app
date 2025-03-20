@@ -1,5 +1,7 @@
-import { env } from "../../utils/config";
+import { env } from "@/utils/config";
+
 // for register api
+
 export type TSignUpUserInput = {
   username: string;
   email: string;
@@ -14,11 +16,10 @@ export type TSignUpUserOutput = {
     id: string;
   };
 };
-
 export async function SignUpUser(
   input: TSignUpUserInput
 ): Promise<TSignUpUserOutput> {
-  const res = await fetch(`${env.BACKEND_URL}/auth/signup`, {
+  const res = await fetch(`${env.BACKEND_URL}/api/auth/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -42,7 +43,6 @@ export type TLoginUserInput = {
   password: string;
 };
 export type TUserRole = "admin" | "user";
-
 export type TLoginUserOutput = {
   message: string;
   isSuccess: boolean;
@@ -53,7 +53,6 @@ export type TLoginUserOutput = {
     role: TUserRole;
   };
 };
-
 export async function loginUser(
   input: TLoginUserInput
 ): Promise<TLoginUserOutput> {
