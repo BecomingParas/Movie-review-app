@@ -5,7 +5,7 @@ import { Express } from "express";
 import { authMiddlare } from "../utils/auth-middleware";
 export function createAuthRoutes(app: Express) {
   // mutation
-  app.post("/auth/signup", signUpController);
-  app.post("/auth/login", loginController);
-  app.post("/auth/logout", authMiddlare, logoutController);
+  app.post("/api/auth/signup", signUpController);
+  app.post("/api/auth/login", loginController);
+  app.post("/api/auth/logout", authMiddlare, logoutController);
 }
