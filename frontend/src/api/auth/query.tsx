@@ -8,7 +8,8 @@ import {
   TSignUpUserOutput,
 } from "./fetch";
 
-// for register api
+// for signup api
+
 export function useSignUpUserMutation() {
   return useMutation<TSignUpUserOutput, Error, TSignUpUserInput>({
     mutationFn: SignUpUser,
@@ -16,6 +17,7 @@ export function useSignUpUserMutation() {
 }
 
 // for login api
+
 export function useLoginUserMutation() {
   return useMutation<TLoginUserOutput, Error, TLoginUserInput>({
     mutationFn: loginUser,
