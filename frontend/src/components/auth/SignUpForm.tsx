@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import z from "zod";
-import { InputField } from "../../utils/ui/InputField";
+import { InputField } from "../InputField";
 import { useSignUpUserMutation } from "../../api/auth/query";
 import { errorToast, successToast } from "../toaster";
 import { useNavigate } from "react-router-dom";

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FiSearch } from "react-icons/fi";
-import Navbar from "../components/layout/Navbar";
+import Navbar from "../../components/layout/Navbar";
 
 function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");
