@@ -47,10 +47,13 @@ export type TLoginUserOutput = {
   message: string;
   isSuccess: boolean;
   data: {
-    username: string;
-    email: string;
-    id: string;
-    role: TUserRole;
+    token: string;
+    user: {
+      username: string;
+      email: string;
+      id: string;
+      role: TUserRole;
+    };
   };
 };
 export async function loginUser(
@@ -71,5 +74,11 @@ export async function loginUser(
   if (!res.ok) {
     throw new Error(data.message);
   }
+
+  // Store the token from the response
+  if (data.data?.token) {
+    localStorage.setItem("token", data.data.token);
+  }
+
   return data;
 }

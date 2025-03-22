@@ -9,6 +9,7 @@ import { MovieReviewAppError } from "./error";
 import { createAuthRoutes } from "./routes/auth-route";
 import cors = require("cors");
 import { env } from "process";
+
 connectMongoDb().then(() => {
   console.log(`MongoDb connected!1`);
 });
@@ -17,7 +18,7 @@ connectMongoDb().then(() => {
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "http://localhost:4200"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -44,7 +45,6 @@ createReviewRoutes(app);
 createAuthRoutes(app);
 
 //global error handler
-
 app.use(
   (
     error: MovieReviewAppError,

@@ -15,7 +15,7 @@ import Navbar from "./components/layout/Navbar";
 import SignUpForm from "./components/auth/SignUpForm";
 import Reviews from "./page/review";
 import Movies from "./page/movies";
-import DashboardPage from "./page/Dashboard";
+import DashboardPage from "./pages/Dashboard/Dashboard";
 import Watchlist from "./page/WatchList";
 
 const queryClient = new QueryClient();
