@@ -23,12 +23,14 @@ export interface Review {
   likes: number;
 }
 
-export interface User {
+// types.ts
+export type User = {
   id: string;
   username: string;
   email: string;
-  avatar: string;
-}
+  role?: "user" | "admin";
+  avatar?: string;
+};
 
 export interface PaginatedResponse<T> {
   data: T[];
