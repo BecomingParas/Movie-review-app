@@ -1,28 +1,34 @@
 import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
+import Spinner from "./ui/Spinner";
+import { User } from "@/types/index";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  requireAdmin?: boolean;
+  requiredRole?: "user" | "admin";
 }
 
 export function ProtectedRoute({
   children,
-  requireAdmin = false,
+  requiredRole = "user",
 }: ProtectedRouteProps) {
-  const { isAuthenticated, isLoading, isAdmin } = useAuth();
   const location = useLocation();
+  const { user, isAuthenticated, isLoading } = useAuth();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Spinner />
+      </div>
+    );
   }
 
   if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  if (requireAdmin && !isAdmin) {
-    return <Navigate to="/unauthorized" replace />;
+  if (requiredRole === "admin" && (user as User).role !== "admin") {
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;

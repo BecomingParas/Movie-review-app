@@ -1,6 +1,8 @@
 import { User } from "@/types";
 import { api } from "./api";
 
+// ... existing interfaces ...
+
 export interface LoginData {
   email: string;
   password: string;
@@ -29,12 +31,17 @@ export const authService = {
   },
 
   logout: async (): Promise<void> => {
-    // In a real app, we would call an API endpoint to invalidate the token
-    return Promise.resolve();
+    // Add actual logout API call if needed
+    await api.post("/auth/logout");
   },
 
   getCurrentUser: async (): Promise<User> => {
-    const response = await api.get<User>("api/auth/me");
+    const response = await api.get<User>("/api/auth/me");
+    return response.data;
+  },
+
+  refreshToken: async (): Promise<{ accessToken: string }> => {
+    const response = await api.post<{ accessToken: string }>("/auth/refresh");
     return response.data;
   },
 };

@@ -7,16 +7,19 @@ import { ThemeProvider } from "next-themes";
 import Index from "@/page/Index";
 import MovieDetails from "@/page/MovieDetails";
 import NotFound from "@/page/NotFound";
-import Login from "@/components/auth/LoginForm";
-import About from "./page/About";
-import Contact from "./page/Contact";
+import LoginForm from "@/pages/auth/LoginPage";
+import About from "./pages/about/About";
+import Contact from "./pages/contact/Contact";
 import Footer from "./components/layout/Footer";
 import Navbar from "./components/layout/Navbar";
 import SignUpForm from "./components/auth/SignUpForm";
-import Reviews from "./page/review";
-import Movies from "./page/movies";
+import Reviews from "./pages/review/review";
+import Movies from "./pages/movie/movies";
 import DashboardPage from "./pages/Dashboard/Dashboard";
-import Watchlist from "./page/WatchList";
+import Watchlist from "./pages/watchlist/WatchList";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+import { setupAuthInterceptor } from "./services/authInterceptor";
+import { useEffect } from "react";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -52,7 +55,12 @@ const router = createBrowserRouter([
       },
       {
         path: "/dashboard",
-        element: <DashboardPage />,
+
+        element: (
+          <ProtectedRoute requiredRole="admin">
+            <DashboardPage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/about",
@@ -68,7 +76,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/login",
-        element: <Login />,
+        element: <LoginForm />,
       },
     ],
   },
@@ -79,6 +87,9 @@ const router = createBrowserRouter([
   },
 ]);
 const App = () => {
+  useEffect(() => {
+    setupAuthInterceptor();
+  }, []);
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
