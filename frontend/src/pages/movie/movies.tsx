@@ -1,4 +1,4 @@
-import MovieList from "@/components/MovieList";
+import MovieList from "@/pages/movie/MovieList";
 import { featuredMovies, topRatedMovies, recentMovies } from "@/data/mockData";
 
 const Movies = () => {

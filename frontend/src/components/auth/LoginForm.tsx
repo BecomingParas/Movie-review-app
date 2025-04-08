@@ -41,6 +41,7 @@ export function LoginForm() {
       {
         onSuccess(response) {
           successToast(response.message);
+          localStorage.setItem("isLoggedIn", "true");
           methods.reset();
           navigate("/dashboard");
         },

@@ -59,7 +59,7 @@ const fetchUserData = (): Promise<boolean> => {
 
 const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   const [dataAvailable, setDataAvailable] = useState(true);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -68,8 +68,6 @@ const Dashboard = () => {
     const verifyAuth = async () => {
       try {
         const authStatus = await checkAuth();
-        setIsAuthenticated(authStatus);
-
         if (!authStatus) {
           toast({
             title: "Authentication required",
