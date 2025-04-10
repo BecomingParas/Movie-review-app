@@ -41,7 +41,7 @@ const watchlistMovies = [
 const Watchlist = () => {
   const { toast } = useToast();
 
-  const handleRemoveFromWatchlist = (movieId: number, movieTitle: string) => {
+  const handleRemoveFromWatchlist = (_: number, movieTitle: string) => {
     // In a real app, this would remove the movie from the watchlist
     // For now, just show a toast message
     toast({

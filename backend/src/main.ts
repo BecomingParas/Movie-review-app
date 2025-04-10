@@ -1,50 +1,45 @@
 import express, { Request, Response, NextFunction } from "express";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import { homeController } from "./controllers/home-controller";
 import { createMovieRoutes } from "./routes/movie-route";
+import { createReviewRoutes } from "./routes/review-route";
+import { createAuthRoutes } from "./routes/auth-route";
+import { MovieReviewAppError } from "./error";
 import "./db";
 import { connectMongoDb } from "./mongo-db";
-import { createReviewRoutes } from "./routes/review-route";
-import { MovieReviewAppError } from "./error";
-import { createAuthRoutes } from "./routes/auth-route";
-import cors = require("cors");
 import { env } from "process";
 
+const app = express();
+const PORT = env.PORT || 4002;
+
+// Connect to MongoDB
 connectMongoDb().then(() => {
-  console.log(`MongoDb connected!1`);
+  console.log(`MongoDB connected ✅`);
 });
 
-// json parser
-const app = express();
+// CORS Setup
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:4200"],
+    origin: ["http://localhost:4200", "http://localhost:5173"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+// Middleware
 app.use(cookieParser());
 app.use(express.json());
 
+// Routes
 app.get("/", homeController);
 
-// // page templates
-// app.get("/home", (req, res) => {
-//   const homeFile = fs.readFileSync(`${process.cwd()}/pages/home.html`);
-//   res.send(homeFile.toString());
-// });
-
-//movie routes
 createMovieRoutes(app);
-
-//review routes
 createReviewRoutes(app);
-
-// auth routes
 createAuthRoutes(app);
 
-//global error handler
+// Global Error Handler
 app.use(
   (
     error: MovieReviewAppError,
@@ -52,7 +47,7 @@ app.use(
     res: Response,
     next: NextFunction
   ) => {
-    console.log("error", error);
+    console.error("App error: ", error);
 
     res.status(error.status || 500).json({
       message: error.message,
@@ -61,6 +56,7 @@ app.use(
   }
 );
 
-app.listen(env.PORT, () => {
-  console.log(`server started at http://localhost:${env.PORT}`);
+// Start Server
+app.listen(PORT, () => {
+  console.log(`Server started at http://localhost:${PORT} 🚀`);
 });

@@ -1,12 +1,13 @@
-import { InvalidMovieReviewPayload } from "../../services/movie-review-errors";
 import { UserModel } from "./model";
+
 type TCreateUserInput = {
   username: string;
   email: string;
   password: string;
 };
 
-//create users
+type TUpdateUserInput = Partial<TCreateUserInput>;
+// Create user
 
 async function createUser(input: TCreateUserInput) {
   const user = new UserModel({
@@ -14,68 +15,52 @@ async function createUser(input: TCreateUserInput) {
     email: input.email,
     password: input.password,
   });
-  await user.save();
+  const createdUser = await user.save();
+  return createdUser;
 }
-
-type TUpdateUserInput = {
-  username: string;
-  email: string;
-  password: string;
-};
-
-// update the user
-
+// updated user
 async function updateUser(toUpdateUserId: string, input: TUpdateUserInput) {
   const user = await UserModel.findById(toUpdateUserId);
   if (!user) {
     throw new Error("User not found");
   }
 
-  await UserModel.replaceOne(
-    // updateOne is another method
-    {
-      _id: toUpdateUserId,
-    },
-    {
-      username: input.username,
-      email: input.email,
-      password: input.password,
-    }
-  );
+  const updatedUser = await UserModel.findByIdAndUpdate(toUpdateUserId, input, {
+    new: true,
+  });
+  return updatedUser;
 }
 
-//get all users
+// Get all users
 async function getAllUsers() {
   const users = await UserModel.find();
   return users;
 }
+// Get user by id
 
-// get by id user
 async function getUserById(toGetUserId: string) {
   const user = await UserModel.findById(toGetUserId);
+  if (!user) {
+    throw new Error("User not found");
+  }
+}
+
+// Delete user
+async function deleteUser(toDeleteUserId: string) {
+  const user = await UserModel.findByIdAndDelete(toDeleteUserId);
   if (!user) {
     throw new Error("User not found");
   }
   return user;
 }
 
-// deleteUsers
-async function deleteUser(toDeleteUserId: string) {
-  const user = await UserModel.findByIdAndDelete(toDeleteUserId);
-  //   await UserModel.deleteOne({ _id: toDeleteUserId });
-  if (!user) {
-    throw InvalidMovieReviewPayload;
-  }
-
-  return user;
-}
-
+//Get user by email
 async function getUserByEmail(input: { email: string }) {
-  const user = await UserModel.findOne({
-    email: input.email,
-  });
+  const user = await UserModel.findOne({ email: input.email });
   return user;
 }
+
+//Final export
 
 export const userMongoService = {
   createUser,

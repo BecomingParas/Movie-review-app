@@ -8,7 +8,10 @@ export interface Movie {
   genre: string[];
   director: string;
   cast: string[];
-  plot: string;
+  plot?: string;
+  posterUrl?: string;
+  year?: number;
+  runtime?: number;
 }
 
 export interface Review {

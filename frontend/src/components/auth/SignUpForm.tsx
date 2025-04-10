@@ -1,12 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import z from "zod";
-import { InputField } from "../InputField";
 import { useSignUpUserMutation } from "../../api/auth/query";
 import { errorToast, successToast } from "../toaster";
 import { useNavigate } from "react-router-dom";
 import { FiFilm, FiStar, FiUsers } from "react-icons/fi";
 import { useState } from "react";
+import { InputField } from "../ui/InputField";
 
 const signupSchema = z
   .object({
