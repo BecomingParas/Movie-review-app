@@ -17,9 +17,10 @@ import Reviews from "./pages/review/review";
 import Movies from "./pages/movie/movies";
 import DashboardPage from "./pages/Dashboard/Dashboard";
 import Watchlist from "./pages/watchlist/WatchList";
-import { ProtectedRoute } from "./components/ProtectedRoute";
 import { setupAuthInterceptor } from "./services/authInterceptor";
 import { useEffect } from "react";
+import MovieForm from "./components/movie-form/movie-create";
+import MovieList from "./pages/movie/MovieList";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -56,11 +57,7 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
 
-        element: (
-          <ProtectedRoute requiredRole="admin">
-            <DashboardPage />
-          </ProtectedRoute>
-        ),
+        element: <DashboardPage />,
       },
       {
         path: "/about",
@@ -77,6 +74,14 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <LoginForm />,
+      },
+      {
+        path: "/movieform",
+        element: <MovieForm />,
+      },
+      {
+        path: "/movielist",
+        element: <MovieList />,
       },
     ],
   },

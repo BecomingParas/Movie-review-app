@@ -42,7 +42,7 @@ export type TLoginUserInput = {
   email: string;
   password: string;
 };
-export type TUserRole = "admin" | "user";
+
 export type TLoginUserOutput = {
   message: string;
   isSuccess: boolean;
@@ -52,7 +52,6 @@ export type TLoginUserOutput = {
       username: string;
       email: string;
       id: string;
-      role: TUserRole;
     };
   };
 };

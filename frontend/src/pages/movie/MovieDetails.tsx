@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { ReviewForm } from "../review/review-form";
+import { ReviewList } from "../review/review-list";
 
 const MovieDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -161,13 +163,14 @@ const MovieDetails = () => {
                         placeholder="Write your review here..."
                         className="w-full h-32 px-4 py-3 rounded-lg border border-border bg-background/50 focus:outline-none focus:ring-1 focus:ring-ring"
                       />
-
                       <div className="flex justify-end">
                         <Button>
                           <ThumbsUp className="h-4 w-4 mr-2" />
                           Submit Review
                         </Button>
                       </div>
+                      <ReviewForm movieId={String(movie.id)} />
+                      <ReviewList movieId={String(movie.id)} />
                     </div>
                   </div>
                 </div>
@@ -198,3 +201,75 @@ const InfoBlock: React.FC<InfoBlockProps> = ({ label, value, className }) => {
 };
 
 export default MovieDetails;
+// import { useParams, Link } from "react-router-dom";
+// import { getMovieById } from "@/data/mockData";
+// import { Separator } from "@/components/ui/separator";
+
+// import { Star, Clock, ArrowLeft } from "lucide-react";
+// import { ReviewForm } from "../review/review-form";
+// import { ReviewList } from "../review/review-list";
+
+// export default function MovieDetails() {
+//   const { id } = useParams();
+//   const movie = getMovieById(Number(id));
+
+//   if (!movie) {
+//     return (
+//       <div className="min-h-screen flex items-center justify-center">
+//         <h2 className="text-2xl font-bold">Movie Not Found</h2>
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div className="min-h-screen flex flex-col bg-background">
+//       <main className="flex-grow pt-16 animate-fade-in">
+//         <div className="container mx-auto px-4 py-8">
+//           <Link
+//             to="/movies"
+//             className="inline-flex items-center mb-6 text-muted-foreground hover:text-foreground"
+//           >
+//             <ArrowLeft className="h-4 w-4 mr-2" />
+//             Back to Movies
+//           </Link>
+
+//           <div className="flex flex-col md:flex-row gap-8">
+//             <div className="w-full md:w-1/4">
+//               <div className="aspect-[2/3] overflow-hidden rounded-lg border border-border">
+//                 <img
+//                   src={movie.posterUrl}
+//                   alt={movie.title}
+//                   className="object-cover w-full h-full"
+//                 />
+//               </div>
+//             </div>
+
+//             <div className="w-full md:w-3/4">
+//               <h1 className="text-3xl font-bold mb-2">
+//                 {movie.title} ({movie.year})
+//               </h1>
+
+//               <div className="flex items-center gap-4 mb-4">
+//                 <div className="flex items-center">
+//                   <Star className="h-4 w-4 text-yellow-500" />
+//                   <span className="ml-2">{movie.rating}/10</span>
+//                 </div>
+//                 <div className="flex items-center text-sm text-muted-foreground">
+//                   <Clock className="h-4 w-4 mr-1" />
+//                   {movie.runtime} min
+//                 </div>
+//               </div>
+
+//               <p className="text-muted-foreground mb-6">{movie.plot}</p>
+
+//               <Separator className="my-6" />
+
+//               <ReviewForm movieId={String(movie.id)} />
+//               <ReviewList movieId={String(movie.id)} />
+//             </div>
+//           </div>
+//         </div>
+//       </main>
+//     </div>
+//   );
+// }

@@ -18,6 +18,7 @@ export async function signUpController(
       username: body.username,
       email: body.email,
       password: hashedPassword,
+      // role: body.role,
     });
     res.status(201).json({
       message: "You are signed up successfully!",

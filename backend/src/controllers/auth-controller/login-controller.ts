@@ -10,56 +10,42 @@ export async function loginController(
   res: Response,
   next: NextFunction
 ) {
-  const body = req.body;
-  // validate the user in database
-  const user = await userMongoService.getUserByEmail({
-    email: body.email,
-  });
-  if (!user) {
-    res.status(404).json({
-      message: "User not found",
-    });
-    return;
-  }
-  const isPasswordCorrect = await comparePassword({
-    hashedPassword: user.password,
-    plainTextPassword: body.password,
-  });
-  if (!isPasswordCorrect) {
-    res.status(400).json({
-      message: "Incorrect email or password",
-    });
-    return;
-  }
-  const userPayload: TPayload = {
-    id: user.id,
-    username: user.username,
-    email: user.email,
-  };
-  const token = generateToken(userPayload);
-  console.log("generated token", token);
-  const bearerToken = `Bearer ${token}`;
-  res.cookie("authorization", bearerToken, {
-    path: "/",
-    httpOnly: true,
-    expires: new Date(Date.now() + EXPIRY_TIME_IN_SECONDS * 1000),
-    sameSite: "lax",
-    secure: process.env["ENVIRONMENT"] === "prod",
-  });
-  await tokenService.createToken({
-    userId: user.id,
-    token: bearerToken,
-  });
-  res.status(200).json({
-    data: {
-      token: bearerToken,
-    },
-    message: "you are logged in successfully",
-  });
-
   try {
+    const { email, password } = req.body;
+    const user = await userMongoService.getUserByEmail({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isPasswordCorrect = await comparePassword({
+      hashedPassword: user.password,
+      plainTextPassword: password,
+    });
+    if (!isPasswordCorrect) {
+      return res.status(401).json({ message: "Incorrect email or password" });
+    }
+    const userPayload: TPayload = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+    };
+    const token = generateToken(userPayload);
+
+    res.cookie("authorization", `Bearer ${token}`, {
+      path: "/",
+      httpOnly: true,
+      expires: new Date(Date.now() + EXPIRY_TIME_IN_SECONDS * 1000),
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+    });
+
+    await tokenService.createToken({ userId: user.id, token });
+    res.status(200).json({
+      data: { token: `Bearer ${token}` },
+      message: "You are logged in successfully",
+    });
   } catch (error) {
-    console.error("Failed to signup", error);
+    console.error("Failed to login", error);
     next(error);
   }
 }
