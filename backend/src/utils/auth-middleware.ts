@@ -32,9 +32,9 @@ export async function authMiddlare(
 
     const payload = verifyToken(token);
 
-    // is the token in the database
+    // Match only the raw token with DB
     const tokenInDb = await tokenService.getToken({
-      token: authorizationHeader,
+      token,
     });
     if (!tokenInDb) {
       res.status(401).json({

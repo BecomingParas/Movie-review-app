@@ -35,6 +35,19 @@ const movieSchema = new mongoose.Schema(
       type: mongoose.Schema.ObjectId,
       ref: "User",
     },
+    isTopRated: {
+      type: Boolean,
+      default: false,
+    },
+    isRecent: {
+      type: Boolean,
+      default: false,
+    },
+    category: {
+      type: String,
+      enum: ["featured", "top_rated", "recent"],
+      default: "featured",
+    },
   },
   {
     timestamps: true,

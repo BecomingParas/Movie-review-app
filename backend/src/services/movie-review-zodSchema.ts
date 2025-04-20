@@ -4,6 +4,7 @@ export const CreateMovieSchema = z.object({
   description: z.string().min(5).max(255),
   release_year: z.number().min(1990).max(2030),
   genre: z.string().min(1).max(25),
+  category: z.enum(["featured", "top_rated", "recent"]).default("featured"),
 });
 
 export const createReviewSchema = z.object({
