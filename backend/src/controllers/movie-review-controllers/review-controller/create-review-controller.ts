@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { reviewServices } from "../../../services/reviews";
-import { createReviewSchema } from "../../../services/movie-review-validations";
+import { createReviewSchema } from "../../../services/movie-review-zodSchema";
 import { InvalidMovieReviewPayload } from "../../../services/movie-review-errors";
 import { MovieReviewAppError } from "../../../error";
 import { mongoReviewServices } from "../../../mongo/review/mongoReviewServices";

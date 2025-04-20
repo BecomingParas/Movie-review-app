@@ -1,14 +1,7 @@
 import { InvalidMovieReviewPayload } from "../../services/movie-review-errors";
 import { MovieModel } from "./movieModel";
-type TMovies = {
-  id: string;
-  title: string;
-  description: string;
-  release_year: number;
-  genre: string;
-  created_by_id: string;
-};
 
+import { TMovies } from "../../types/movie.type";
 //create movie
 
 async function createMovie(input: Omit<TMovies, "id">) {
@@ -18,6 +11,7 @@ async function createMovie(input: Omit<TMovies, "id">) {
     genre: input.genre,
     release_year: input.release_year,
     created_by_id: input.created_by_id,
+    category: input.category,
   });
   await movie.save();
 }
