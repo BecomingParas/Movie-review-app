@@ -7,6 +7,8 @@ interface InputFieldProps {
   placeholder?: string;
   name: string;
   className?: string;
+  defaultValueProp?: string;
+  stepValueProp?: string;
 }
 export const InputField: FC<InputFieldProps> = ({
   label,
@@ -14,6 +16,8 @@ export const InputField: FC<InputFieldProps> = ({
   placeholder,
   name,
   className = "",
+  defaultValueProp,
+  stepValueProp,
 }) => {
   const {
     register,
@@ -28,6 +32,8 @@ export const InputField: FC<InputFieldProps> = ({
       <input
         type={type}
         placeholder={placeholder}
+        defaultValue={defaultValueProp}
+        step={stepValueProp}
         className={clsx(
           "w-full px-4 py-2 border  rounded-md focus:ring-2  focus:outline-none transition duration-150",
           hasError
