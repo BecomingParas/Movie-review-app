@@ -4,7 +4,19 @@ import { FormProvider, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { z } from "zod";
 import { InputField } from "../ui/InputField";
+import { CheckboxGroupField } from "../ui/CheckboxGroupField";
+import { SelectField } from "../ui/selectField";
 type TMovieForm = z.infer<typeof movieSchema>;
+const genreOptions = [
+  "Action",
+  "Romantic",
+  "Sci-Fi",
+  "Drama",
+  "Horror",
+  "Comedy",
+];
+
+const categoryOptions = ["featured", "trending_now", "top_rated"];
 
 const CreateMovie = () => {
   const methods = useForm<TMovieForm>({
@@ -22,7 +34,6 @@ const CreateMovie = () => {
   });
 
   const {
-    register,
     handleSubmit,
     control,
     formState: { errors },
@@ -49,18 +60,67 @@ const CreateMovie = () => {
           onSubmit={handleSubmit(onSubmit)}
           className=" space-y-6 bg-gray-800 p-8 rounded-xl shadow-xl"
         >
-          <InputField
-            label="Title: "
-            type="text"
-            name="title"
-            className=" text-white block mb-2"
-          />
-          <InputField
-            label="Description:"
-            type="text"
-            name="description"
-            className=" text-white block mb-2"
-          />
+          <div>
+            <InputField
+              label="Title: "
+              type="text"
+              name="title"
+              className=" text-white block mb-2"
+            />
+          </div>
+          <div>
+            <InputField
+              label="Description:"
+              type="text"
+              name="description"
+              className=" text-white block mb-2"
+            />
+          </div>
+          <div>
+            <CheckboxGroupField
+              label="Genres:"
+              name="genre"
+              options={genreOptions}
+              className="mb-4"
+            />
+          </div>
+          <div>
+            <SelectField
+              label="Category:"
+              name="category"
+              options={categoryOptions}
+              className="mb-4"
+            />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+              <InputField
+                label="Director:"
+                name="director"
+                type="text"
+                className="w-full p-3 bg-gray-700 text-white rounded"
+              />
+            </div>
+            <div>
+              <InputField
+                label="Release Year:"
+                name="release_year"
+                type="number"
+                className="w-full p-3 bg-gray-700 text-white rounded"
+                defaultValueProp="2020"
+              />
+            </div>
+            <div>
+              <InputField
+                label="Average Rating:"
+                type="number"
+                stepValueProp="0.1"
+                name="average_rating"
+                className="w-full p-3 bg-gray-700 text-white rounded"
+              />
+            </div>
+          </div>
+          <div></div>
         </form>
       </FormProvider>
     </div>
