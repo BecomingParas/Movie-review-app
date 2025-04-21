@@ -1,118 +1,144 @@
-# 🚀 TypeScript + Express Starter Template
+# Backend Setup Guide
 
-A minimal and modern boilerplate to kickstart your **Node.js** backend using **TypeScript** and **Express**.
+This guide outlines the steps to set up a basic backend environment using TypeScript and Node.js.
 
----
+## Prerequisites
+Ensure you have the following installed:
+- Node.js (LTS version recommended)
+- npm (comes with Node.js)
+- A code editor (e.g., VS Code)
 
-## 📦 Project Initialization
+## Steps
 
+### 1. Initialize the Project
+Run the following command to create a `package.json` file:
 ```bash
 npm init -y
-🔧 Development Setup
-1. Install Dev Dependencies
-bash
-Copy
-Edit
-npm install -D typescript @types/node tsx
-2. Initialize TypeScript Configuration
-bash
-Copy
-Edit
+```
+
+
+### 2. Install TypeScript and Node Types
+Install TypeScript and Node.js type definitions as development dependencies:
+```bash
+npm install -D typescript @types/node
+```
+
+### 3. Initialize TypeScript Configuration
+Generate a `tsconfig.json` file:
+```bash
 npx tsc --init
-Then, in tsconfig.json, update:
+```
 
-json
-Copy
-Edit
-"rootDir": "./src",
-"outDir": "./dist",
-📁 Project Structure
-pgsql
-Copy
-Edit
-your-project/
-├── src/
-│   └── main.ts
-├── dist/               # Compiled files (after build)
-├── .gitignore
-├── tsconfig.json
-├── package.json
-└── README.md
-📝 .gitignore
-Create a .gitignore file:
+### 4. Update `tsconfig.json`
+Modify the `tsconfig.json` file:
+- Uncomment the line for `"rootDir"` and set it to `"./src"`.
+- Uncomment the line for `"outDir"` and set it to `"./dist"`.
 
-nginx
-Copy
-Edit
+### 5. Create a `.gitignore` File
+Add the following lines to a new `.gitignore` file to exclude unnecessary files and directories:
+```
 node_modules
-dist
-✨ Create Entry File
-src/main.ts
-ts
-Copy
-Edit
-console.log("running server");
-⚙️ Scripts Configuration
-Update your package.json:
+/dist
+```
 
-json
-Copy
-Edit
+### 6. Create the Source Directory
+Create a directory named `src`:
+```bash
+mkdir src
+```
+
+### 7. Create the Main TypeScript File
+Inside the `src` directory, create a file named `main.ts` and add the following code:
+```typescript
+console.log("Running server");
+```
+
+### 8. Install TSX for Development
+Install TSX as a development dependency:
+```bash
+npm install -D tsx
+```
+
+### 9. Update `package.json` Scripts
+Add the following scripts to the `package.json` file:
+```json
 "scripts": {
   "dev": "npx tsx --watch src/main.ts",
   "build": "tsc",
   "start": "node dist/main.js",
   "dev:start": "npm run build && npm run start"
 }
-🌐 Add Express
-1. Install Express
-bash
-Copy
-Edit
+```
+
+### 10. Install Express
+Install Express for handling HTTP requests:
+```bash
 npm install express
-2. Install Type Definitions
-bash
-Copy
-Edit
+```
+
+### 11. Install Express Type Definitions
+Install type definitions for Express as a development dependency:
+```bash
 npm install -D @types/express
-🛠 Build & Run Commands
-Build TypeScript → JavaScript
-bash
-Copy
-Edit
-npm run build
-Run in Development Mode (Live Reload)
-bash
-Copy
-Edit
-npm run dev
-Build + Start (Production)
-bash
-Copy
-Edit
-npm run dev:start
-⚡ Sample Express Server
-Update main.ts to:
+```
 
-ts
-Copy
-Edit
-import express from "express";
+### 12. Build and Run the Application
+- To build the TypeScript code:
+  ```bash
+  npm run build
+  ```
 
-const app = express();
-const PORT = 3000;
+- To run the application in development mode:
+  ```bash
+  npm run dev
+  ```
 
-app.get("/", (_req, res) => {
-  res.send("Server is running!");
-});
+- To build and start the application:
+  ```bash
+  npm run dev:start
+  ```
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server is listening on http://localhost:${PORT}`);
-});
-🧠 Script Reference
+## Directory Structure
+After completing the setup, your project directory structure should look like this:
+Directory structure:
+````
+└── becomingparas-movie-review-app/
+    ├── README.md
+    ├── package.json
+    ├── tsconfig.json
+    ├── .env.example
+    ├── pages/
+    │   └── home.html
+    └── src/
+        ├── db.ts
+        ├── error.ts
+        ├── main.ts
+        ├── controllers/
+        │   ├── home-controller.ts
+        │   └── movie-review-controllers/
+        │       ├── movie-controllers/
+        │       │   ├── create-movie-controller.ts
+        │       │   ├── delete-movie-controller.ts
+        │       │   ├── getAll-movie-controller.ts
+        │       │   ├── getById-movie-controller.ts
+        │       │   └── update-movie-controller.ts
+        │       └── review-controller/
+        │           ├── create-review-controller.ts
+        │           ├── delete-review-controller.ts
+        │           ├── getAll-review-controller.ts
+        │           ├── getById-review-controller.ts
+        │           ├── getReviewByMovieId.ts
+        │           └── update-review-controller.ts
+        ├── migrations/
+        │   ├── movie-table.sql
+        │   └── run.ts
+        ├── routes/
+        │   ├── movie-route.ts
+        │   └── review-route.ts
+        └── services/
+            ├── db-promise.ts
+            ├── movie-review-errors.ts
+            ├── movie-review-validations.ts
+            ├── movie.ts
+            └── reviews.ts
 
-Command	Description
-npm run dev	Start server in watch mode
-npm run build	Compile TypeScript to JavaScript
-npm run start	Run the compiled server
-npm run dev:start	Build and run server in production mode

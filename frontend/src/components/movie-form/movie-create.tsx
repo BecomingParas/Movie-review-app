@@ -1,8 +1,9 @@
 import { movieSchema } from "@/lib/movieSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
-import { data, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { z } from "zod";
+import { InputField } from "../ui/InputField";
 type TMovieForm = z.infer<typeof movieSchema>;
 
 const CreateMovie = () => {
@@ -44,7 +45,23 @@ const CreateMovie = () => {
         </Link>
       </div>
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmit)}></form>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className=" space-y-6 bg-gray-800 p-8 rounded-xl shadow-xl"
+        >
+          <InputField
+            label="Title: "
+            type="text"
+            name="title"
+            className=" text-white block mb-2"
+          />
+          <InputField
+            label="Description:"
+            type="text"
+            name="description"
+            className=" text-white block mb-2"
+          />
+        </form>
       </FormProvider>
     </div>
   );
