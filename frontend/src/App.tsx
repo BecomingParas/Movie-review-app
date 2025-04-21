@@ -6,7 +6,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
 import Index from "@/pages/home/Index";
 import MovieDetails from "@/pages/movie/MovieDetails";
-import NotFound from "@/page/NotFound";
 import LoginForm from "@/pages/auth/LoginPage";
 import About from "./pages/about/About";
 import Contact from "./pages/contact/Contact";
@@ -21,6 +20,8 @@ import { setupAuthInterceptor } from "./services/authInterceptor";
 import { useEffect } from "react";
 import MovieForm from "./components/movie-form/movie-create";
 import MovieList from "./pages/movie/MovieList";
+import CreateMovie from "./components/movie-form/movie-create";
+import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: "/reviews",
         element: <Reviews />,
+      },
+      {
+        path: "/movies/create-movie",
+        element: <CreateMovie />,
       },
       {
         path: "/dashboard",

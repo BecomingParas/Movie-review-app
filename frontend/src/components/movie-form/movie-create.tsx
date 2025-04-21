@@ -1,79 +1,70 @@
-import { FC } from "react";
-import { useForm, FormProvider } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { movieSchema } from "@/lib/movieSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FormProvider, useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+import { z } from "zod";
 import { InputField } from "../ui/InputField";
-import { env } from "@/utils/config";
+type TMovieForm = z.infer<typeof movieSchema>;
 
-interface MovieFormProps {
-  initialValues?: any;
-  onSuccess?: () => void;
-}
-
-const MovieForm: FC<MovieFormProps> = ({ initialValues, onSuccess }) => {
-  const methods = useForm({
-    defaultValues: initialValues || {
+const CreateMovie = () => {
+  const methods = useForm<TMovieForm>({
+    resolver: zodResolver(movieSchema),
+    defaultValues: {
+      genre: [],
+      cast: [""],
       title: "",
       description: "",
-      genre: "",
-      release_year: "",
+      director: "",
+      release_year: 2024,
+      average_rating: 5,
+      category: "featured",
     },
   });
 
-  const queryClient = useQueryClient();
-
-  const createMovie = async (data: any) => {
-    const res = await fetch(`${env.BACKEND_URL}/api/movies/create`, {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!res.ok) throw new Error("Failed to create movie");
-
-    return res.json();
-  };
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: createMovie,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["movies"] });
-      methods.reset();
-      onSuccess?.();
-    },
-  });
-
-  const onSubmit = (data: any) => {
-    mutate(data);
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = methods;
+  const onSubmit = async (data: TMovieForm) => {
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("description", data.description);
   };
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)} className="max-w-md">
-        <InputField label="Title" name="title" placeholder="Movie Title" />
-        <InputField
-          label="Description"
-          name="description"
-          placeholder="Movie Description"
-        />
-        <InputField label="Genre" name="genre" placeholder="Action, Comedy" />
-        <InputField
-          label="Release Year"
-          name="release_year"
-          type="number"
-          placeholder="2024"
-        />
-        <button
-          type="submit"
-          disabled={isPending}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
+    <div className="min-h-screen pt-20 p-6 max-w-2xl mx-auto">
+      <div className=" flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold text-white ">Create New Movie</h1>
+        <Link
+          to="/movies"
+          className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors"
         >
-          {isPending ? "Saving..." : "Save"}
-        </button>
-      </form>
-    </FormProvider>
+          Bact to list
+        </Link>
+      </div>
+      <FormProvider {...methods}>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className=" space-y-6 bg-gray-800 p-8 rounded-xl shadow-xl"
+        >
+          <InputField
+            label="Title: "
+            type="text"
+            name="title"
+            className=" text-white block mb-2"
+          />
+          <InputField
+            label="Description:"
+            type="text"
+            name="description"
+            className=" text-white block mb-2"
+          />
+        </form>
+      </FormProvider>
+    </div>
   );
 };
 
-export default MovieForm;
+export default CreateMovie;

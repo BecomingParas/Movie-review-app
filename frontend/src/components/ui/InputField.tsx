@@ -22,7 +22,7 @@ export const InputField: FC<InputFieldProps> = ({
   const hasError = !!errors[name];
   return (
     <div>
-      <label className=" block text-sm font-medium mb-1 text-gray-700">
+      <label className=" block text-sm font-medium mb-1 text-white">
         {label}
       </label>
       <input
