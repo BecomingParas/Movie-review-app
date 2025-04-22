@@ -3,7 +3,7 @@ import { reviewServices } from "../../../services/reviews";
 import {
   InvalidMovieReviewPayload,
   ReviewNotFound,
-} from "../../../services/movie-review-errors";
+} from "../../../utils/movie-review-errors";
 import { MovieReviewAppError } from "../../../error";
 import { mongoReviewServices } from "../../../mongo/review/mongoReviewServices";
 

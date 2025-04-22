@@ -12,6 +12,10 @@ const movieSchema = new mongoose.Schema(
       required: true,
     },
     genre: {
+      type: [String],
+      required: true,
+    },
+    director: {
       type: String,
       required: true,
     },
@@ -19,10 +23,7 @@ const movieSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    created_at: {
-      type: Date,
-      default: Date.now,
-    },
+
     average_rating: {
       type: Number,
       default: 0,
@@ -31,22 +32,22 @@ const movieSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    created_by_id: {
-      type: mongoose.Schema.ObjectId,
-      ref: "User",
+    poster_url: {
+      type: String,
+      required: true,
     },
-    isTopRated: {
-      type: Boolean,
-      default: false,
-    },
-    isRecent: {
-      type: Boolean,
-      default: false,
+    video_url: {
+      type: String,
+      required: true,
     },
     category: {
       type: String,
       enum: ["featured", "top_rated", "recent"],
       default: "featured",
+    },
+    created_by_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
     },
   },
   {

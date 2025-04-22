@@ -4,7 +4,7 @@ import {
   InvalidMovieReviewPayload,
   ReviewNotFound,
   UnAuthorized,
-} from "../../../services/movie-review-errors";
+} from "../../../utils/movie-review-errors";
 import { MovieReviewAppError } from "../../../error";
 import { mongoReviewServices } from "../../../mongo/review/mongoReviewServices";
 import { strict } from "assert";

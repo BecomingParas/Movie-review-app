@@ -1,7 +1,7 @@
-import { InvalidMovieReviewPayload } from "../../services/movie-review-errors";
-import { MovieModel } from "./movieModel";
+import { MovieModel } from "../model/movieModel";
+import { InvalidMovieReviewPayload } from "../utils/movie-review-errors";
 
-import { TMovies } from "../../types/movie.type";
+import { TMovies } from "../types/movie.type";
 //create movie
 
 async function createMovie(input: Omit<TMovies, "id">) {
@@ -9,8 +9,10 @@ async function createMovie(input: Omit<TMovies, "id">) {
     title: input.title,
     description: input.description,
     genre: input.genre,
+    director: input.director,
     release_year: input.release_year,
-    created_by_id: input.created_by_id,
+    poster_url: input.poster_url,
+    video_url: input.video_url,
     category: input.category,
   });
   await movie.save();
@@ -24,7 +26,7 @@ async function updateMovie(
 ) {
   const movie = await MovieModel.findById(toUpdateMovieId);
   if (!movie) {
-    throw new Error("Movie not found!");
+    throw InvalidMovieReviewPayload;
   }
 
   // await MovieModel.replaceOne(
@@ -48,13 +50,17 @@ async function updateMovie(
       description: input.description,
       genre: input.genre,
       release_year: input.release_year,
+      director: input.director,
+      poster_url: input.poster_url,
+      video_url: input.video_url,
+      category: input.category,
     }
   );
 }
 // get all movie
 
 async function getAllMovie() {
-  const movies = await MovieModel.find();
+  const movies = await MovieModel.find().lean();
   return movies;
 }
 
@@ -64,7 +70,7 @@ async function getByIdMovie(toGetMovieId: string) {
   const movie = await MovieModel.findById(toGetMovieId);
 
   if (!movie) {
-    throw new Error("Movie not found");
+    throw InvalidMovieReviewPayload;
   }
   return movie;
 }
@@ -72,7 +78,7 @@ async function getByIdMovie(toGetMovieId: string) {
 // deleteMovie
 
 async function deleteMovie(toDeleteMovieId: string) {
-  const movie = await MovieModel.findByIdAndDelete(toDeleteMovieId);
+  const movie = await MovieModel.findById(toDeleteMovieId);
   if (!movie) {
     throw InvalidMovieReviewPayload;
   }

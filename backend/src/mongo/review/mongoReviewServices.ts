@@ -1,6 +1,6 @@
 // type declaration
 import { ReviewModel } from "./reviewModel";
-import { InvalidMovieReviewPayload } from "../../services/movie-review-errors";
+import { InvalidMovieReviewPayload } from "../../utils/movie-review-errors";
 
 type TReviews = {
   id: string;

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { movieService } from "../../../services/movie";
-import { movieMongoService } from "../../../mongo/movie/mongoMovieService";
+import { movieMongoService } from "../../../services/MovieService";
 import { MovieReviewAppError } from "../../../error";
 export async function getAllMovieController(
   req: Request,

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { InvalidMovieReviewPayload } from "../../../services/movie-review-errors";
+import { InvalidMovieReviewPayload } from "../../../utils/movie-review-errors";
 import { reviewServices } from "../../../services/reviews";
 import { MovieReviewAppError } from "../../../error";
 import { reverse } from "dns";
