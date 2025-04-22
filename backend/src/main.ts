@@ -7,7 +7,7 @@ import { createReviewRoutes } from "./routes/review-route";
 import { createAuthRoutes } from "./routes/auth-route";
 import { MovieReviewAppError } from "./error";
 import "./db";
-import { connectMongoDb } from "./mongo-db";
+import { connectMongoDb } from "./utils/mongo-db";
 import { env } from "process";
 
 const app = express();

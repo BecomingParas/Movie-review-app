@@ -1,15 +1,16 @@
 import { movieSchema } from "@/lib/movieSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { InputField } from "../ui/InputField";
 import { CheckboxGroupField } from "../ui/CheckboxGroupField";
 import { SelectField } from "../ui/selectField";
 import { DynamicInputListField } from "../ui/DynamicInputField";
-import { useMutation } from "@tanstack/react-query";
 import { FileUploadField } from "../ui/FileUploadField";
 import { Button } from "../ui/button";
+import { useCreateMovieMutation } from "@/api/movies/mutations";
+import { toast } from "sonner";
 type TMovieForm = z.infer<typeof movieSchema>;
 const genreOptions = [
   "Action",
@@ -23,6 +24,9 @@ const genreOptions = [
 const categoryOptions = ["featured", "trending_now", "top_rated"];
 
 const CreateMovie = () => {
+  const mutation = useCreateMovieMutation();
+  const navigate = useNavigate();
+
   const methods = useForm<TMovieForm>({
     resolver: zodResolver(movieSchema),
     defaultValues: {
@@ -36,15 +40,6 @@ const CreateMovie = () => {
       category: "featured",
     },
   });
-  useMutation({
-    mutationFn: async (formData: FormData) => {
-      console.log("FormData entries: ");
-      for (const [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
-      await axi;
-    },
-  });
 
   const { handleSubmit } = methods;
   const onSubmit = async (data: TMovieForm) => {
@@ -56,10 +51,20 @@ const CreateMovie = () => {
     formData.append("average_rating", data.average_rating.toString());
     formData.append("genre", JSON.stringify(data.genre));
     formData.append("cast", JSON.stringify(data.cast));
-
     formData.append("poster", data.poster[0]);
     formData.append("video", data.video[0]);
-    muta;
+    console.log("FOrm", formData);
+
+    mutation.mutate(formData, {
+      onSuccess: (res) => {
+        toast.success(res.message || "Movie created successfully!");
+        methods.reset();
+        navigate("/movies");
+      },
+      onError: (err) => {
+        toast.error(err.message || "Failed to create movie");
+      },
+    });
   };
 
   return (
@@ -161,9 +166,10 @@ const CreateMovie = () => {
           </div>
           <Button
             type="submit"
+            disabled={mutation.isPending}
             className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Create movie
+            {mutation.isPending ? "Creating..." : "Create Movie"}
           </Button>
         </form>
       </FormProvider>

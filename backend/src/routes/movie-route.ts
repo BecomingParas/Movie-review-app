@@ -8,7 +8,7 @@ import { authMiddlare } from "../utils/auth-middleware";
 export function createMovieRoutes(app: Express) {
   //mutation
 
-  app.post("/api/movies/create", authMiddlare, createMovieController);
+  app.post("/api/movies/create", createMovieController);
   app.put("/api/movies/update/:movieId", updateMovieController);
   app.delete("/api/movies/delete/:movieId", deleteMovieController);
   //queries

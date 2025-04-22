@@ -14,7 +14,8 @@ export async function loginController(
     const { email, password } = req.body;
     const user = await userMongoService.getUserByEmail({ email });
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      res.status(404).json({ message: "User not found" });
+      return;
     }
 
     const isPasswordCorrect = await comparePassword({
@@ -22,7 +23,8 @@ export async function loginController(
       plainTextPassword: password,
     });
     if (!isPasswordCorrect) {
-      return res.status(401).json({ message: "Incorrect email or password" });
+      res.status(401).json({ message: "Incorrect email or password" });
+      return;
     }
     const userPayload: TPayload = {
       id: user.id,
