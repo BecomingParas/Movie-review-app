@@ -8,6 +8,8 @@ import { CheckboxGroupField } from "../ui/CheckboxGroupField";
 import { SelectField } from "../ui/selectField";
 import { DynamicInputListField } from "../ui/DynamicInputField";
 import { useMutation } from "@tanstack/react-query";
+import { FileUploadField } from "../ui/FileUploadField";
+import { Button } from "../ui/button";
 type TMovieForm = z.infer<typeof movieSchema>;
 const genreOptions = [
   "Action",
@@ -143,6 +145,26 @@ const CreateMovie = () => {
               className="space-y-3"
             />
           </div>
+          <div>
+            <FileUploadField
+              name="poster"
+              label="Movie Poster:"
+              accept="image/*"
+            />
+          </div>
+          <div>
+            <FileUploadField
+              name="video"
+              label="Movie Video:"
+              accept="video/*"
+            />
+          </div>
+          <Button
+            type="submit"
+            className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Create movie
+          </Button>
         </form>
       </FormProvider>
     </div>
