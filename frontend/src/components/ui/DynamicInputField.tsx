@@ -1,28 +1,41 @@
 import { FC } from "react";
-import { useFieldArray, useFormContext } from "react-hook-form";
+import { useFormContext, useFieldArray } from "react-hook-form";
+
 interface DynamicInputListFieldProps {
   name: string;
   label: string;
   placeholder?: string;
   className?: string;
 }
+
 export const DynamicInputListField: FC<DynamicInputListFieldProps> = ({
-  label,
   name,
+  label,
+  placeholder = "Enter value",
   className = "",
-  placeholder,
 }) => {
   const {
     control,
     register,
     formState: { errors },
   } = useFormContext();
-  const { fields, remove, append } = useFieldArray({ control, name });
+  const {
+    fields: castFields,
+    remove: removeCast,
+    append: appendCast,
+  } = useFieldArray({
+    control,
+    name: "cast" as never,
+  });
+
   const fieldError = errors[name];
+
   return (
     <div className={className}>
-      <label className="text-white block mb-2">{label}</label>
-      {fields.map((field, index) => (
+      <label className="block text-lg font-medium text-white mb-2">
+        {label}
+      </label>
+      {castFields.map((field, index) => (
         <div key={field.id} className="flex gap-3 mb-2">
           <input
             {...register(`${name}.${index}`)}
@@ -31,15 +44,24 @@ export const DynamicInputListField: FC<DynamicInputListFieldProps> = ({
           />
           <button
             type="button"
-            onClick={() => remove(index)}
+            onClick={() => removeCast(index)}
             className="bg-red-600 px-3 py-2 rounded text-white"
-            disabled={}
+            disabled={castFields.length === 1}
           >
             Remove
           </button>
-          <button cl>Add {label}</button>
         </div>
       ))}
+      <button
+        type="button"
+        onClick={() => appendCast("")}
+        className="bg-blue-600 px-4 py-2 rounded text-white mt-2"
+      >
+        Add Cast Member +
+      </button>
+      {fieldError && (
+        <p className="text-red-400 mt-2">{String(fieldError?.message)}</p>
+      )}
     </div>
   );
 };

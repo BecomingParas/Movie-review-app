@@ -6,6 +6,8 @@ import { z } from "zod";
 import { InputField } from "../ui/InputField";
 import { CheckboxGroupField } from "../ui/CheckboxGroupField";
 import { SelectField } from "../ui/selectField";
+import { DynamicInputListField } from "../ui/DynamicInputField";
+import { useMutation } from "@tanstack/react-query";
 type TMovieForm = z.infer<typeof movieSchema>;
 const genreOptions = [
   "Action",
@@ -32,16 +34,30 @@ const CreateMovie = () => {
       category: "featured",
     },
   });
+  useMutation({
+    mutationFn: async (formData: FormData) => {
+      console.log("FormData entries: ");
+      for (const [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+      await axi;
+    },
+  });
 
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = methods;
+  const { handleSubmit } = methods;
   const onSubmit = async (data: TMovieForm) => {
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("description", data.description);
+    formData.append("director", data.director);
+    formData.append("release_year", data.release_year.toString());
+    formData.append("average_rating", data.average_rating.toString());
+    formData.append("genre", JSON.stringify(data.genre));
+    formData.append("cast", JSON.stringify(data.cast));
+
+    formData.append("poster", data.poster[0]);
+    formData.append("video", data.video[0]);
+    muta;
   };
 
   return (
@@ -120,7 +136,14 @@ const CreateMovie = () => {
               />
             </div>
           </div>
-          <div></div>
+          <div>
+            <DynamicInputListField
+              label="Cast Members"
+              name="cast"
+              placeholder="Cast name"
+              className="w-full bg-gray-700 text-white rounded"
+            />
+          </div>
         </form>
       </FormProvider>
     </div>
