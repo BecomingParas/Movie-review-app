@@ -10,6 +10,18 @@ export async function createMovieController(
   next: NextFunction
 ) {
   try {
+    const files = req.files as {
+      poster_url?: Express.Multer.File[];
+      video_url?: Express.Multer.File[];
+    };
+    if (!files?.poster_url?.[0] || !files?.video_url?.[0]) {
+      const invalidPayloadError = new InvalidMovieReviewPayload(
+        "Missing files"
+      );
+      next(invalidPayloadError);
+      return;
+    }
+
     const authenticatedUser = req.user as TPayload;
     const body = req.body;
     const parsed = CreateMovieSchema.safeParse(body);
