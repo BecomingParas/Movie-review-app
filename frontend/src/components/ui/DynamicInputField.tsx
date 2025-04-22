@@ -11,7 +11,7 @@ interface DynamicInputListFieldProps {
 export const DynamicInputListField: FC<DynamicInputListFieldProps> = ({
   name,
   label,
-  placeholder = "Enter value",
+  placeholder = "Cast member name",
   className = "",
 }) => {
   const {
@@ -32,20 +32,20 @@ export const DynamicInputListField: FC<DynamicInputListFieldProps> = ({
 
   return (
     <div className={className}>
-      <label className="block text-lg font-medium text-white mb-2">
+      <label className="block text-sm font-medium text-white mb-2">
         {label}
       </label>
       {castFields.map((field, index) => (
         <div key={field.id} className="flex gap-3 mb-2">
           <input
             {...register(`${name}.${index}`)}
-            className="flex-1 p-3 bg-gray-700 text-white rounded"
+            className="flex-1 px-4 py-3 bg-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
             placeholder={placeholder}
           />
           <button
             type="button"
             onClick={() => removeCast(index)}
-            className="bg-red-600 px-3 py-2 rounded text-white"
+            className="px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg transition-colors"
             disabled={castFields.length === 1}
           >
             Remove
@@ -55,7 +55,7 @@ export const DynamicInputListField: FC<DynamicInputListFieldProps> = ({
       <button
         type="button"
         onClick={() => appendCast("")}
-        className="bg-blue-600 px-4 py-2 rounded text-white mt-2"
+        className="mt-2 px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded-lg transition-colors"
       >
         Add Cast Member +
       </button>

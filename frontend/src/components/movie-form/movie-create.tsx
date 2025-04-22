@@ -138,10 +138,9 @@ const CreateMovie = () => {
           </div>
           <div>
             <DynamicInputListField
-              label="Cast Members"
+              label="Cast Members:"
               name="cast"
-              placeholder="Cast name"
-              className="w-full bg-gray-700 text-white rounded"
+              className="space-y-3"
             />
           </div>
         </form>
