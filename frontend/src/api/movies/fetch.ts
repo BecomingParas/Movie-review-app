@@ -13,8 +13,19 @@ export type TCreateMovieOutput = {
 export async function createMovie(
   input: TCreateMovieInput
 ): Promise<TCreateMovieOutput> {
+  const rawToken = localStorage.getItem("token");
+  const token = rawToken?.startsWith("Bearer ")
+    ? rawToken.split(" ")[1]
+    : rawToken;
+  // If no token found
+  if (!token) {
+    throw new Error("No authentication token found");
+  }
   const res = await fetch(`${env.BACKEND_URL}/api/movies/create`, {
     method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
     body: input,
   });
   const data = await res.json();

@@ -21,7 +21,7 @@ const genreOptions = [
   "Comedy",
 ];
 
-const categoryOptions = ["featured", "trending_now", "top_rated"];
+const categoryOptions = ["featured", "trending_now", "recent"];
 
 const CreateMovie = () => {
   const mutation = useCreateMovieMutation();
@@ -51,9 +51,17 @@ const CreateMovie = () => {
     formData.append("average_rating", data.average_rating.toString());
     formData.append("genre", JSON.stringify(data.genre));
     formData.append("cast", JSON.stringify(data.cast));
-    formData.append("poster", data.poster[0]);
-    formData.append("video", data.video[0]);
-    console.log("FOrm", formData);
+    // Check if poster and video files are present
+    console.log("Poster:", data.poster_url[0]);
+    console.log("Video:", data.video_url[0]);
+    if (data.poster_url[0]) {
+      formData.append("poster_url", data.poster_url[0]);
+    }
+    if (data.video_url[0]) {
+      formData.append("video_url", data.video_url[0]);
+    }
+
+    console.log("FormData being sent: ", formData); // Debugging FormData
 
     mutation.mutate(formData, {
       onSuccess: (res) => {
@@ -152,14 +160,14 @@ const CreateMovie = () => {
           </div>
           <div>
             <FileUploadField
-              name="poster"
+              name="poster_url"
               label="Movie Poster:"
               accept="image/*"
             />
           </div>
           <div>
             <FileUploadField
-              name="video"
+              name="video_url"
               label="Movie Video:"
               accept="video/*"
             />

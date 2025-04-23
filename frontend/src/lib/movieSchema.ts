@@ -15,10 +15,10 @@ export const movieSchema = z.object({
   category: z.enum(categoryOptions, {
     errorMap: () => ({ message: "Category is required" }),
   }),
-  poster: z
+  poster_url: z
     .instanceof(FileList)
     .refine((files) => files?.length === 1, "Poster is required"),
-  video: z
+  video_url: z
     .instanceof(FileList)
     .refine((files) => files?.length === 1, "Video is required"),
 });

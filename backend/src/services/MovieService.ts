@@ -11,11 +11,14 @@ async function createMovie(input: Omit<TMovies, "id">) {
     genre: input.genre,
     director: input.director,
     release_year: input.release_year,
+    average_rating: input.average_rating,
+    cast: input.cast,
     poster_url: input.poster_url,
     video_url: input.video_url,
     category: input.category,
   });
   await movie.save();
+  return movie;
 }
 
 // update the movie
@@ -54,6 +57,8 @@ async function updateMovie(
       poster_url: input.poster_url,
       video_url: input.video_url,
       category: input.category,
+      cast: input.cast,
+      average_rating: input.average_rating,
     }
   );
 }

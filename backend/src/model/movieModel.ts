@@ -42,7 +42,7 @@ const movieSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: ["featured", "top_rated", "recent"],
+      enum: ["featured", "trending_now", "recent"],
       default: "featured",
     },
     created_by_id: {

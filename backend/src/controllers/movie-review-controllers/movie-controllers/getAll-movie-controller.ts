@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { movieService } from "../../../services/movie";
+
 import { movieMongoService } from "../../../services/MovieService";
 import { MovieReviewAppError } from "../../../error";
 export async function getAllMovieController(
@@ -9,7 +9,7 @@ export async function getAllMovieController(
 ) {
   try {
     if (process.env.DATABASE_TYPE === "MYSQL") {
-      const movies = await movieService.getAllMovie();
+      const movies = await movieMongoService.getAllMovie();
 
       res.json({
         data: movies,
