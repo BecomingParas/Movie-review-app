@@ -3,11 +3,10 @@ export interface TMovie {
   title: string;
   description: string;
   release_year: string;
-  rating: number;
   genre: string[];
-  average_rating: number;
   director: string;
   cast: string[];
+  average_rating: number;
   poster_url?: string;
   video_url?: string;
   category: string;
