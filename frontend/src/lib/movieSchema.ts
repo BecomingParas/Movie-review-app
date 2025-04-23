@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const categoryOptions = ["featured", "top_rated", "recent"] as const;
+const categoryOptions = ["featured", "trending_now", "recent"] as const;
 
 export const movieSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -15,10 +15,10 @@ export const movieSchema = z.object({
   category: z.enum(categoryOptions, {
     errorMap: () => ({ message: "Category is required" }),
   }),
-  poster: z
+  poster_url: z
     .instanceof(FileList)
     .refine((files) => files?.length === 1, "Poster is required"),
-  video: z
+  video_url: z
     .instanceof(FileList)
     .refine((files) => files?.length === 1, "Video is required"),
 });

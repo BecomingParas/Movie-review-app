@@ -3,7 +3,13 @@ export type TMovies = {
   title: string;
   description: string;
   release_year: number;
-  genre: string;
-  created_by_id: string;
-  category: "featured" | "top_rated" | "recent";
+  genre: string[];
+  cast: string[];
+  director: string;
+  poster_url: string;
+  video_url: string;
+  average_rating?: number;
+  total_reviews?: number;
+  category: "featured" | "trending_now" | "recent";
+  created_by_id?: string;
 };

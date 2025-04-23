@@ -3,12 +3,15 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import { homeController } from "./controllers/home-controller";
 import { createMovieRoutes } from "./routes/movie-route";
-import { createReviewRoutes } from "./routes/review-route";
+// import { createReviewRoutes } from "./routes/review-route";
 import { createAuthRoutes } from "./routes/auth-route";
 import { MovieReviewAppError } from "./error";
-import "./db";
-import { connectMongoDb } from "./mongo-db";
+
+import { connectMongoDb } from "./utils/mongo-db";
 import { env } from "process";
+
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 const PORT = env.PORT || 4002;
@@ -36,7 +39,7 @@ app.use(express.json());
 app.get("/", homeController);
 
 createMovieRoutes(app);
-createReviewRoutes(app);
+// createReviewRoutes(app);
 createAuthRoutes(app);
 
 // Global Error Handler

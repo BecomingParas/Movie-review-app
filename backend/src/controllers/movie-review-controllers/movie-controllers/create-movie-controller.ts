@@ -1,64 +1,80 @@
 import { Request, Response, NextFunction } from "express";
-import { movieService } from "../../../services/movie";
-import { CreateMovieSchema } from "../../../services/movie-review-zodSchema";
-import { InvalidMovieReviewPayload } from "../../../services/movie-review-errors";
-import { movieMongoService } from "../../../mongo/movie/mongoMovieService";
+
+import { InvalidMovieReviewPayload } from "../../../utils/movie-review-errors";
+import { movieMongoService } from "../../../services/MovieService";
 import { MovieReviewAppError } from "../../../error";
 import { TPayload } from "../../../utils/jwt";
+import { createMovieSchema } from "../../../services/movie-review-zodSchema";
+import { uploadFile } from "../../../utils/cloudinaryUpload";
 export async function createMovieController(
   req: Request & { user?: TPayload },
   res: Response,
   next: NextFunction
-) {
+): Promise<void> {
   try {
-    const authenticatedUser = req.user as TPayload;
-    const body = req.body;
-    const parsed = CreateMovieSchema.safeParse(body);
-    if (!parsed.success) {
-      const parseError = parsed.error.flatten();
-      const invalidPayloadError = new InvalidMovieReviewPayload(parseError);
-      next(invalidPayloadError);
+    console.log("Files received:", req.files); // Debugging: Log received files
+    const files = req.files as {
+      poster_url?: Express.Multer.File[];
+      video_url?: Express.Multer.File[];
+    };
+
+    if (!files?.poster_url?.[0] || !files?.video_url?.[0]) {
+      next(new InvalidMovieReviewPayload("Missing poster or video file"));
       return;
     }
 
-    if (process.env.DATABASE_TYPE === "MYSQL") {
-      movieService.createMovie({
-        title: parsed.data.title,
-        description: parsed.data.description,
-        release_year: parsed.data.release_year,
-        genre: parsed.data.genre,
-      });
-      res.json({
-        message: "Movie added successfully.",
-      });
-    } else {
-      await movieMongoService.createMovie({
-        title: parsed.data.title,
-        description: parsed.data.description,
-        genre: parsed.data.genre,
-        release_year: parsed.data.release_year,
-        created_by_id: authenticatedUser.id,
-        category: parsed.data.category,
-      });
+    const [posterFile, videoFile] = [files.poster_url[0], files.video_url[0]];
+
+    const [posterUpload, videoUpload] = await Promise.all([
+      uploadFile(posterFile.path, {
+        folder: "movie-posters-url",
+        resource_type: "image",
+      }),
+      uploadFile(videoFile.path, {
+        folder: "movie-videos-url",
+        resource_type: "video",
+      }),
+    ]);
+
+    const authenticatedUser = req.user as TPayload;
+
+    const parsed = createMovieSchema.safeParse({
+      ...req.body,
+      poster_url: posterUpload.secure_url,
+      video_url: videoUpload.secure_url,
+    });
+
+    if (!parsed.success) {
+      next(new InvalidMovieReviewPayload(parsed.error.flatten()));
+      return;
     }
-    res.json({
-      message: "Movie added successfully.",
+
+    const movie = await movieMongoService.createMovie({
+      ...parsed.data,
+      created_by_id: authenticatedUser.id,
+    });
+
+    res.status(201).json({
+      message: "Movie created successfully",
+      data: movie,
     });
   } catch (error) {
     console.error(error);
     if ((error as any).errorResponse?.code === 11000) {
-      const movieError = new MovieReviewAppError(
-        "Failed to create the movie.please choose unique title",
-        400
+      next(
+        new MovieReviewAppError(
+          "Failed to create the movie. please choose a unique title.",
+          400
+        )
       );
-      next(movieError);
       return;
     }
 
-    const movieError = new MovieReviewAppError(
-      "Failed to create the movie. something went wrong in server",
-      500
+    next(
+      new MovieReviewAppError(
+        "Failed to create the movie. something went wrong on the server.",
+        500
+      )
     );
-    next(movieError);
   }
 }

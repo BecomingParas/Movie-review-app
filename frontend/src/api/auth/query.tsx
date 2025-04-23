@@ -13,6 +13,12 @@ import {
 export function useSignUpUserMutation() {
   return useMutation<TSignUpUserOutput, Error, TSignUpUserInput>({
     mutationFn: SignUpUser,
+    onSuccess: (data) => {
+      console.log("Signup success: ", data.message);
+    },
+    onError: (error) => {
+      console.log("signup failed", error.message);
+    },
   });
 }
 
@@ -21,5 +27,11 @@ export function useSignUpUserMutation() {
 export function useLoginUserMutation() {
   return useMutation<TLoginUserOutput, Error, TLoginUserInput>({
     mutationFn: loginUser,
+    onSuccess: (data) => {
+      console.log("Login success: ", data.message);
+    },
+    onError: (error) => {
+      console.error("Login failed: ", error.message);
+    },
   });
 }

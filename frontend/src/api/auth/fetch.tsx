@@ -1,12 +1,11 @@
 import { env } from "@/utils/config";
 
-// for register api
-
 export type TSignUpUserInput = {
   username: string;
   email: string;
   password: string;
 };
+
 export type TSignUpUserOutput = {
   message: string;
   isSuccess: boolean;
@@ -16,6 +15,7 @@ export type TSignUpUserOutput = {
     id: string;
   };
 };
+
 export async function SignUpUser(
   input: TSignUpUserInput
 ): Promise<TSignUpUserOutput> {
@@ -24,20 +24,14 @@ export async function SignUpUser(
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      username: input.username,
-      email: input.email,
-      password: input.password,
-    }),
+    body: JSON.stringify(input),
   });
+
   const data = await res.json();
-  if (!res.ok) {
-    throw new Error(data.message);
-  }
+  if (!res.ok) throw new Error(data.message);
   return data;
 }
 
-// for login api
 export type TLoginUserInput = {
   email: string;
   password: string;
@@ -55,6 +49,7 @@ export type TLoginUserOutput = {
     };
   };
 };
+
 export async function loginUser(
   input: TLoginUserInput
 ): Promise<TLoginUserOutput> {
@@ -64,17 +59,12 @@ export async function loginUser(
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      email: input.email,
-      password: input.password,
-    }),
+    body: JSON.stringify(input),
   });
-  const data = await res.json();
-  if (!res.ok) {
-    throw new Error(data.message);
-  }
 
-  // Store the token from the response
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message);
+
   if (data.data?.token) {
     localStorage.setItem("token", data.data.token);
   }
