@@ -8,20 +8,17 @@ export async function getAllMovieController(
   next: NextFunction
 ) {
   try {
-    if (process.env.DATABASE_TYPE === "MYSQL") {
-      const movies = await movieMongoService.getAllMovie();
-
-      res.json({
-        data: movies,
-        message: "Movie get all successfully.",
-      });
-    } else {
-      const movies = await movieMongoService.getAllMovie();
-      res.json({
-        data: movies,
-        message: "Movies get all successfully",
-      });
-    }
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const { movies, total } = await movieMongoService.getAllMovie({
+      page,
+      limit,
+    });
+    res.json({
+      data: movies,
+      pagination: { total, page, limit, totalPages: Math.ceil(total / limit) },
+      message: "Movies retrieved successfully",
+    });
   } catch (error) {
     const movieError = new MovieReviewAppError(
       "Failed to update the movie.something went wrong in server.",

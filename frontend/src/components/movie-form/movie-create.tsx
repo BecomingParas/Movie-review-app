@@ -9,7 +9,7 @@ import { SelectField } from "../ui/selectField";
 import { DynamicInputListField } from "../ui/DynamicInputField";
 import { FileUploadField } from "../ui/FileUploadField";
 import { Button } from "../ui/button";
-import { useCreateMovieMutation } from "@/api/movies/mutations";
+import { useCreateMovieMutation } from "@/api/movies/movie.mutations";
 import { toast } from "sonner";
 type TMovieForm = z.infer<typeof movieSchema>;
 const genreOptions = [
