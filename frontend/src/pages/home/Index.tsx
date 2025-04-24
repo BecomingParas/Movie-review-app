@@ -1,8 +1,34 @@
+import { useGetAllMoviesQuery } from "@/api/movies/movie.mutations";
 import HeroSection from "@/components/Herosection";
 import MovieList from "@/pages/movie/MovieList";
-import { featuredMovies, topRatedMovies, recentMovies } from "@/data/mockData";
+import { TMovie } from "@/types/movies.types";
 
 const Index = () => {
+  const { data, isLoading, isError } = useGetAllMoviesQuery();
+  if (isLoading) return <div className="text-white p-10">Loading…</div>;
+  if (isError || !data)
+    return <div className="text-red-500 p-10">Failed to load movies</div>;
+
+  const allMovies: TMovie[] = data.data;
+
+  const categories = [
+    {
+      categoryKey: "featured",
+      title: "Featured Movies",
+      wrapperClass: "",
+    },
+    {
+      categoryKey: "trending-now",
+      title: "Trending Now Movies",
+      wrapperClass: "bg-muted/50 py-12",
+    },
+    {
+      categoryKey: "recent",
+      title: "Recent Movies",
+      wrapperClass: "",
+    },
+  ] as const;
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-900">
       <main className="flex-grow pt-16">
@@ -11,25 +37,19 @@ const Index = () => {
           subtitle="Join our community of movie enthusiasts to discover new films, share your opinions, and explore what others are saying."
         />
 
-        <MovieList
-          title="Featured Movies"
-          movies={featuredMovies}
-          className="animate-fade-in"
-        />
-
-        <div className="bg-muted/50 py-12">
-          <MovieList
-            title="Top Rated Movies"
-            movies={topRatedMovies}
-            className="animate-fade-in"
-          />
-        </div>
-
-        <MovieList
-          title="Recent Movies"
-          movies={recentMovies}
-          className="animate-fade-in"
-        />
+        {categories.map(({ categoryKey, title, wrapperClass }) => {
+          const movies = allMovies.filter((m) => m.category === categoryKey);
+          if (!movies.length) return null;
+          return (
+            <div key={categoryKey} className={wrapperClass}>
+              <MovieList
+                title={title}
+                movies={movies}
+                className="animate-fade-in"
+              />
+            </div>
+          );
+        })}
       </main>
     </div>
   );

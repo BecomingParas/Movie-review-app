@@ -5,7 +5,7 @@ import {
   TCreateMovieInput,
   TCreateMovieOutput,
   TGetAllMoviesOutput,
-} from "./fetch";
+} from "./movie.fetch";
 
 export function useCreateMovieMutation() {
   return useMutation<TCreateMovieOutput, Error, TCreateMovieInput>({
@@ -19,9 +19,9 @@ export function useCreateMovieMutation() {
   });
 }
 
-export function useGetAllMoviesQuery(page = 1, limit = 10) {
+export function useGetAllMoviesQuery() {
   return useQuery<TGetAllMoviesOutput, Error>({
-    queryKey: ["movies", page, limit],
-    queryFn: () => getAllMovies({ page, limit }),
+    queryKey: ["movies"],
+    queryFn: () => getAllMovies(),
   });
 }

@@ -10,6 +10,6 @@ export type TMovies = {
   video_url: string;
   average_rating?: number;
   total_reviews?: number;
-  category: "featured" | "trending_now" | "recent";
+  category: "featured" | "trending-now" | "recent";
   created_by_id?: string;
 };

@@ -8,15 +8,9 @@ export async function getAllMovieController(
   next: NextFunction
 ) {
   try {
-    const page = parseInt(req.query.page as string) || 1;
-    const limit = parseInt(req.query.limit as string) || 10;
-    const { movies, total } = await movieMongoService.getAllMovie({
-      page,
-      limit,
-    });
+    const movies = await movieMongoService.getAllMovie();
     res.json({
       data: movies,
-      pagination: { total, page, limit, totalPages: Math.ceil(total / limit) },
       message: "Movies retrieved successfully",
     });
   } catch (error) {

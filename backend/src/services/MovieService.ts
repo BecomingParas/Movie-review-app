@@ -64,22 +64,13 @@ async function updateMovie(
 }
 // get all movie
 
-async function getAllMovie({
-  page = 1,
-  limit = 10,
-}: {
-  page: number;
-  limit: number;
-}) {
-  const skip = (page - 1) * limit;
-  const [movies, total] = await Promise.all([
-    MovieModel.find().skip(skip).limit(limit).lean(),
-    MovieModel.countDocuments(),
-  ]);
-  return {
-    movies,
-    total,
-  };
+async function getAllMovie() {
+  try {
+    const movies = await MovieModel.find().lean();
+    return movies;
+  } catch (error: any) {
+    throw new Error(`Failed to fetch movies: ${error.message}`);
+  }
 }
 
 // get by id movie

@@ -21,22 +21,11 @@ export const createMovieSchema = z.object({
   release_year: z.coerce.number().int().min(1900),
   average_rating: z.coerce.number().min(0).max(10),
   created_by_id: z.string().optional(),
-  poster_url: z
-    .string()
-    .url("Invalid poster URL format")
-    .regex(/\.(jpeg|jpg|png)$/i, "Poster must be a JPG or PNG image"),
-  video_url: z
-    .string()
-    .url("Invalid video URL format")
-    .regex(/\.(mp4|mov|avi)$/i, "Video must be MP4, MOV, or AVI format"),
+  poster_url: z.any(),
+  video_url: z.any(),
   category: z
-    .enum(["featured", "trending_now", "recent"])
-    .optional()
-    .default("featured"),
-});
-export const createReviewSchema = z.object({
-  movieId: z.string().min(1).max(100),
-  userId: z.number().min(1).max(100),
-  rating: z.number().min(1).max(5),
-  review: z.string().min(10).max(255),
+    .string()
+    .refine((val) => ["featured", "trending-now", "recent"].includes(val), {
+      message: "Invalid category",
+    }),
 });
