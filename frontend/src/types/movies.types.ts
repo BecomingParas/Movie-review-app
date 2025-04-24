@@ -1,17 +1,15 @@
-export interface Movie {
+export interface TMovie {
   id: string;
   title: string;
   description: string;
-  releaseDate: string;
-  rating: number;
-  imageUrl: string;
+  release_year: string;
   genre: string[];
   director: string;
   cast: string[];
-  plot?: string;
-  posterUrl?: string;
-  year?: number;
-  runtime?: number;
+  average_rating: number;
+  poster_url?: string;
+  video_url?: string;
+  category: string;
 }
 
 export interface Review {

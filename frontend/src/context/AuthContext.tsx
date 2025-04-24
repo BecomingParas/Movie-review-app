@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { User } from "@/types";
+import { User } from "@/types/movies.types";
 import { authService } from "@/services/authService";
 import { useNavigate } from "react-router-dom";
 

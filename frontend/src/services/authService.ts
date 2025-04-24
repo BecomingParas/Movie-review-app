@@ -1,4 +1,4 @@
-import { User } from "@/types";
+import { User } from "@/types/movies.types";
 import { api } from "./api";
 
 // ... existing interfaces ...
