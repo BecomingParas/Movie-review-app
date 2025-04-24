@@ -12,7 +12,7 @@ export async function createMovieController(
   next: NextFunction
 ): Promise<void> {
   try {
-    console.log("Files received:", req.files); // Debugging: Log received files
+    console.log("Files received:", req.files);
     const files = req.files as {
       poster_url?: Express.Multer.File[];
       video_url?: Express.Multer.File[];
@@ -51,6 +51,7 @@ export async function createMovieController(
 
     const movie = await movieMongoService.createMovie({
       ...parsed.data,
+
       created_by_id: authenticatedUser.id,
     });
 

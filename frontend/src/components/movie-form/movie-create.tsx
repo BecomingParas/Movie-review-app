@@ -21,7 +21,7 @@ const genreOptions = [
   "Comedy",
 ];
 
-const categoryOptions = ["featured", "trending_now", "recent"];
+const categoryOptions = ["featured", "trending-now", "recent"];
 
 const CreateMovie = () => {
   const mutation = useCreateMovieMutation();
@@ -51,6 +51,7 @@ const CreateMovie = () => {
     formData.append("average_rating", data.average_rating.toString());
     formData.append("genre", JSON.stringify(data.genre));
     formData.append("cast", JSON.stringify(data.cast));
+    formData.append("category", data.category);
     // Check if poster and video files are present
     console.log("Poster:", data.poster_url[0]);
     console.log("Video:", data.video_url[0]);

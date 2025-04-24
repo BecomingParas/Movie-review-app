@@ -5,7 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
 import Index from "@/pages/home/Index";
-import MovieDetails from "@/pages/movie/MovieDetails";
 import LoginForm from "@/pages/auth/LoginPage";
 import About from "./pages/about/About";
 import Contact from "./pages/contact/Contact";
@@ -19,9 +18,10 @@ import Watchlist from "./pages/watchlist/WatchList";
 import { setupAuthInterceptor } from "./services/authInterceptor";
 import { useEffect } from "react";
 import MovieForm from "./components/movie-form/movie-create";
-import MovieList from "./pages/movie/MovieList";
 import CreateMovie from "./components/movie-form/movie-create";
 import NotFound from "./pages/NotFound";
+import MovieDetails from "./pages/movie/MovieDetails";
+import MovieList from "./pages/movie/MovieList";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -85,8 +85,8 @@ const router = createBrowserRouter([
         element: <MovieForm />,
       },
       {
-        path: "/movielist",
-        element: <MovieList />,
+        path: "/movies/movielist",
+        element: <MovieList movies={[]} />,
       },
     ],
   },
