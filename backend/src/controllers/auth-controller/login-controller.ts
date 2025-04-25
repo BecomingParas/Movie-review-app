@@ -31,6 +31,7 @@ export async function loginController(
       id: user.id,
       username: user.username,
       email: user.email,
+      role: user.role,
     };
     const token = generateToken(userPayload);
 
