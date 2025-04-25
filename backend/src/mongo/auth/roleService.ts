@@ -1,5 +1,6 @@
-import { RoleModel, UserModel, UserRoleModel } from "./model";
 // Create role
+
+import { RoleModel, UserModel, UserRoleModel } from "../../model/user.model";
 
 async function createRole() {
   const role = new RoleModel({ name });

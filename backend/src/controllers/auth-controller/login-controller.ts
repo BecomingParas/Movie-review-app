@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import { userMongoService } from "../../mongo/auth/service";
 import { comparePassword } from "../../utils/bcrypt";
-import { generateToken, TPayload } from "../../utils/jwt";
+
 import { EXPIRY_TIME_IN_SECONDS } from "../../utils/constant";
 import { tokenService } from "../../mongo/auth/token-service";
+import { generateToken, TPayload } from "../../config/jwt";
 
 export async function loginController(
   req: Request,
@@ -30,6 +31,7 @@ export async function loginController(
       id: user.id,
       username: user.username,
       email: user.email,
+      role: user.role,
     };
     const token = generateToken(userPayload);
 

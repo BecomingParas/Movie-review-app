@@ -1,10 +1,12 @@
 import { sign, verify } from "jsonwebtoken";
-import { EXPIRY_TIME_IN_SECONDS } from "./constant";
+
 import { JwtPayload } from "jsonwebtoken";
+import { EXPIRY_TIME_IN_SECONDS } from "../utils/constant";
 export type TPayload = {
   id: string;
   username: string;
   email: string;
+  role: string;
 };
 
 function getJwtSecret(): string {
@@ -22,6 +24,7 @@ export function generateToken(payload: TPayload) {
   });
   return token;
 }
+
 export function verifyToken(token: string): TPayload {
   const validatedToken = verify(token, getJwtSecret());
 
