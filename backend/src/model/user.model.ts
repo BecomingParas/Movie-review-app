@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { date } from "zod";
 
 const userSchema = new mongoose.Schema(
   {
@@ -59,35 +58,3 @@ const userSchema = new mongoose.Schema(
 );
 
 export const UserModel = mongoose.model("User", userSchema);
-
-const roleSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-});
-
-export const RoleModel = mongoose.model("Role", roleSchema);
-
-// Pivot table schema  - userRole
-
-const userRoleSchema = new mongoose.Schema(
-  {
-    user_id: {
-      type: mongoose.Schema.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    role_id: {
-      type: mongoose.Schema.ObjectId,
-      ref: "Role",
-      required: true,
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
-
-export const UserRoleModel = mongoose.model("UserRole", userSchema);

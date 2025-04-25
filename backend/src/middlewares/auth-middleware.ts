@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { TPayload, verifyToken } from "./jwt";
 import { tokenService } from "../mongo/auth/token-service";
 import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
+import { TPayload, verifyToken } from "../config/jwt";
 export async function authMiddleware(
   req: Request & { user?: TPayload },
   res: Response,
@@ -9,7 +9,7 @@ export async function authMiddleware(
 ): Promise<void> {
   try {
     const authorizationHeader =
-      req.headers.authorization || req.cookies["authorization"];
+      req.headers.authorization || req.cookies?.authorization;
 
     if (!authorizationHeader || typeof authorizationHeader !== "string") {
       res
@@ -37,7 +37,7 @@ export async function authMiddleware(
     req.user = payload;
     next();
   } catch (error) {
-    console.error(error);
+    console.error("Authorization error: ", error);
 
     if (error instanceof TokenExpiredError) {
       res.status(401).json({ message: "Token expired" });
