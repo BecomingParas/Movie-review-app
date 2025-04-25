@@ -2,12 +2,7 @@ import { sign, verify } from "jsonwebtoken";
 
 import { JwtPayload } from "jsonwebtoken";
 import { EXPIRY_TIME_IN_SECONDS } from "../utils/constant";
-export type TPayload = {
-  id: string;
-  username: string;
-  email: string;
-  role: string;
-};
+import { TPayload } from "../types/payload.type";
 
 function getJwtSecret(): string {
   const jwtSecret = process.env.JWT_SECRET;

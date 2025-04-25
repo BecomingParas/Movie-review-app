@@ -1,11 +1,8 @@
-type TUser = {
-  id: string;
-  username: string;
-  email: string;
-};
-
-declare namespace Express {
-  export interface Request {
-    user?: TUser;
+import { TPayload } from "./types/payload.type";
+declare global {
+  declare namespace Express {
+    export interface Request {
+      user?: TPayload;
+    }
   }
 }

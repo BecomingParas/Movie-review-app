@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-import { userMongoService } from "../../mongo/auth/service";
+import { userMongoService } from "../../mongo/auth/authUser.service";
 import { comparePassword } from "../../utils/bcrypt";
 
 import { EXPIRY_TIME_IN_SECONDS } from "../../utils/constant";
 import { tokenService } from "../../mongo/auth/token-service";
-import { generateToken, TPayload } from "../../config/jwt";
+import { generateToken } from "../../config/jwt";
+import { TPayload } from "../../types/payload.type";
 
 export async function loginController(
   req: Request,

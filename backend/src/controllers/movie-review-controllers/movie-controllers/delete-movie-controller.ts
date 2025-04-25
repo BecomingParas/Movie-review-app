@@ -1,47 +1,47 @@
-// import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 
-// import {
-//   InvalidMovieReviewPayload,
-//   MovieNotFound,
-// } from "../../../utils/movie-review-errors";
-// import { MovieReviewAppError } from "../../../error";
-// import { movieMongoService } from "../../../services/MovieService";
+import {
+  InvalidMovieReviewPayload,
+  MovieNotFound,
+} from "../../../utils/movie-review-errors";
+import { MovieReviewAppError } from "../../../error";
+import { movieMongoService } from "../../../services/MovieService";
 
-// export async function deleteMovieController(
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) {
-//   try {
-//     const movieId = req.params.movieId;
-//     if (process.env.DATABASE_TYPE === "MYSQL") {
-//       const numReviewId = Number(movieId);
-//       if (!movieId) {
-//         const invalidPayLoadError = new InvalidMovieReviewPayload(movieId);
-//         next(invalidPayLoadError);
-//         return;
-//       }
+export async function deleteMovieController(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const movieId = req.params.movieId;
+    if (process.env.DATABASE_TYPE === "MYSQL") {
+      const numReviewId = Number(movieId);
+      if (!movieId) {
+        const invalidPayLoadError = new InvalidMovieReviewPayload(movieId);
+        next(invalidPayLoadError);
+        return;
+      }
 
-//       const movie = await movieMongoService.getByIdMovie();
-//       if (!movie) {
-//         const movieNotFoundError = new MovieNotFound();
-//         next(movieNotFoundError);
-//         return;
-//       }
+      const movie = await movieMongoService.getByIdMovie();
+      if (!movie) {
+        const movieNotFoundError = new MovieNotFound();
+        next(movieNotFoundError);
+        return;
+      }
 
-//       movieService.deleteMovie(numReviewId);
+      movieService.deleteMovie(numReviewId);
 
-//       res.json({
-//         message: "Movie deleted successfully.",
-//       });
-//     } else {
-//       await movieMongoService.deleteMovie(movieId);
-//       res.json({
-//         message: "Movies deleted successfully.",
-//       });
-//     }
-//   } catch (error) {
-//     const movieError = new MovieReviewAppError("Not found the MoviewID", 500);
-//     next(movieError);
-//   }
-// }
+      res.json({
+        message: "Movie deleted successfully.",
+      });
+    } else {
+      await movieMongoService.deleteMovie(movieId);
+      res.json({
+        message: "Movies deleted successfully.",
+      });
+    }
+  } catch (error) {
+    const movieError = new MovieReviewAppError("Not found the MoviewID", 500);
+    next(movieError);
+  }
+}

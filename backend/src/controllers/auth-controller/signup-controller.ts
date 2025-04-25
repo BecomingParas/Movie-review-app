@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { hashPassword } from "../../utils/bcrypt";
-import { userMongoService } from "../../mongo/auth/service";
+import { userMongoService } from "../../mongo/auth/authUser.service";
 
 export async function signUpController(
   req: Request,
@@ -8,17 +8,15 @@ export async function signUpController(
   next: NextFunction
 ) {
   try {
-    const body = req.body;
-    // validation
+    const { username, email, password, role } = req.body;
 
-    //hasing
-    const hashedPassword = await hashPassword(body.password);
+    const hashedPassword = await hashPassword(password);
     console.log("hashedPassword", hashedPassword);
     await userMongoService.createUser({
-      username: body.username,
-      email: body.email,
+      username: username,
+      email: email,
       password: hashedPassword,
-      // role: body.role,
+      role: role,
     });
     res.status(201).json({
       message: "You are signed up successfully!",

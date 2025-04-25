@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { tokenService } from "../mongo/auth/token-service";
 import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
-import { TPayload, verifyToken } from "../config/jwt";
+import { verifyToken } from "../config/jwt";
 export async function authMiddleware(
-  req: Request & { user?: TPayload },
+  req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
