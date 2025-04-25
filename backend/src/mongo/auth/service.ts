@@ -1,4 +1,4 @@
-import { UserModel } from "./model";
+import { UserModel } from "../../model/user.model";
 
 type TCreateUserInput = {
   username: string;

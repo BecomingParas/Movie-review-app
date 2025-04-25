@@ -7,10 +7,10 @@ import { createMovieRoutes } from "./routes/movie-route";
 import { createAuthRoutes } from "./routes/auth-route";
 import { MovieReviewAppError } from "./error";
 
-import { connectMongoDb } from "./utils/mongo-db";
 import { env } from "process";
 
 import dotenv from "dotenv";
+import { connectMongoDb } from "./config/db";
 dotenv.config();
 
 const app = express();

@@ -1,4 +1,4 @@
-import { TokenModel } from "./model";
+import { TokenModel } from "../../model/token.model";
 
 type TCreateTokenInput = {
   userId: string;
