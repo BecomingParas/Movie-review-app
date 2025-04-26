@@ -16,22 +16,32 @@ export async function updateMovieController(
     const movieId = req.params.movieId;
     const body = req.body;
     if (!movieId) {
-      const invalidPayloadError = new InvalidMovieReviewPayload(movieId);
-      next(invalidPayloadError);
+      next(new InvalidMovieReviewPayload("Movie ID is required"));
       return;
     }
 
-    await movieMongoService.updateMovie(movieId, {
+    const updatedMovie = await movieMongoService.updateMovie(movieId, {
       title: body.title,
       description: body.description,
       release_year: body.release_year,
       genre: body.genre,
+      average_rating: body.average_rating,
+      director: body.director,
+      cast: body.cast,
+      poster_url: body.poster_url,
+      video_url: body.video_url,
+      category: body.category,
+    });
+    res.status(200).json({
+      message: "Movie updated successfully",
+      data: updatedMovie,
     });
   } catch (error) {
-    const movieError = new MovieReviewAppError(
-      "Failed to update the movie. something went wrong in server.",
-      500
+    next(
+      new MovieReviewAppError(
+        "Failed to update the movie.something went wrong on the server.",
+        500
+      )
     );
-    next(movieError);
   }
 }

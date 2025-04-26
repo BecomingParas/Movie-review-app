@@ -16,6 +16,7 @@ async function createMovie(input: Omit<TMovies, "id">) {
     poster_url: input.poster_url,
     video_url: input.video_url,
     category: input.category,
+    created_by_id: input.created_by_id,
   });
   await movie.save();
   return movie;
@@ -89,7 +90,7 @@ async function getByIdMovie(toGetMovieId: string) {
 async function deleteMovie(toDeleteMovieId: string) {
   const movie = await MovieModel.findById(toDeleteMovieId);
   if (!movie) {
-    throw InvalidMovieReviewPayload;
+    throw new InvalidMovieReviewPayload("Movie not found");
   }
   await MovieModel.deleteOne({ _id: toDeleteMovieId });
   return movie;

@@ -3,15 +3,21 @@ import { Request, Response, NextFunction } from "express";
 import { InvalidMovieReviewPayload } from "../../../utils/movie-review-errors";
 import { movieMongoService } from "../../../services/MovieService";
 import { MovieReviewAppError } from "../../../error";
-import { TPayload } from "../../../utils/jwt";
 import { createMovieSchema } from "../../../services/movie-review-zodSchema";
 import { uploadFile } from "../../../utils/cloudinaryUpload";
+import { TPayload } from "../../../types/payload.type";
 export async function createMovieController(
-  req: Request & { user?: TPayload },
+  req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
   try {
+    const authenticatedUser = req.user as TPayload;
+
+    if (authenticatedUser?.role !== "admin") {
+      res.status(403).json({ message: "Only admins can create movies." });
+      return;
+    }
     console.log("Files received:", req.files);
     const files = req.files as {
       poster_url?: Express.Multer.File[];
@@ -36,8 +42,6 @@ export async function createMovieController(
       }),
     ]);
 
-    const authenticatedUser = req.user as TPayload;
-
     const parsed = createMovieSchema.safeParse({
       ...req.body,
       poster_url: posterUpload.secure_url,
@@ -51,7 +55,6 @@ export async function createMovieController(
 
     const movie = await movieMongoService.createMovie({
       ...parsed.data,
-
       created_by_id: authenticatedUser.id,
     });
 

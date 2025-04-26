@@ -3,8 +3,8 @@ export type TMovies = {
   title: string;
   description: string;
   release_year: number;
-  genre: string[];
-  cast: string[];
+  genre: [string, ...string[]];
+  cast: [string, ...string[]];
   director: string;
   poster_url: string;
   video_url: string;

@@ -20,12 +20,10 @@ export const createMovieSchema = z.object({
   ),
   release_year: z.coerce.number().int().min(1900),
   average_rating: z.coerce.number().min(0).max(10),
+
+  poster_url: z.string().url({ message: "Invalid poster URL" }),
+  video_url: z.string().url({ message: "Invalid video URL" }),
+  category: z.enum(["featured", "trending-now", "recent"]),
+
   created_by_id: z.string().optional(),
-  poster_url: z.any(),
-  video_url: z.any(),
-  category: z
-    .string()
-    .refine((val) => ["featured", "trending-now", "recent"].includes(val), {
-      message: "Invalid category",
-    }),
 });
