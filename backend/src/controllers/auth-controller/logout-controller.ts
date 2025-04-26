@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { tokenService } from "../../mongo/auth/token-service";
+import { tokenService } from "../../mongo/auth/token.service";
 
 export async function logoutController(
   req: Request & { user?: { id: string } },

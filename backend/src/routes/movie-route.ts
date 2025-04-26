@@ -1,13 +1,14 @@
 import { Express } from "express";
-import { createMovieController } from "../controllers/movie-review-controllers/movie-controllers/create-movie-controller";
-import { getAllMovieController } from "../controllers/movie-review-controllers/movie-controllers/getAll-movie-controller";
+import { createMovieController } from "../controllers/movie-review-controllers/movie-controllers/createMovie.controller";
+import { getAllMovieController } from "../controllers/movie-review-controllers/movie-controllers/getAllMovie.controller";
 
 import { upload } from "../utils/multer";
 import { authMiddleware } from "../middlewares/auth-middleware";
+
+import { updateMovieController } from "../controllers/movie-review-controllers/movie-controllers/updateMovie.controller";
+import { deleteMovieController } from "../controllers/movie-review-controllers/movie-controllers/deleteMovie.controller";
+import { getMovieByIdController } from "../controllers/movie-review-controllers/movie-controllers/getByIdMovie.controller";
 import { roleMiddleware } from "../middlewares/role-middleware";
-import { updateMovieController } from "../controllers/movie-review-controllers/movie-controllers/update-movie-controller";
-import { deleteMovieController } from "../controllers/movie-review-controllers/movie-controllers/delete-movie-controller";
-import { getMovieByIdController } from "../controllers/movie-review-controllers/movie-controllers/getById-movie-controller";
 
 export function createMovieRoutes(app: Express) {
   //mutation

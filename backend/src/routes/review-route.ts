@@ -1,19 +1,30 @@
-// import { Express } from "express";
-// import { createReviewController } from "../controllers/movie-review-controllers/review-controller/create-review-controller";
-// import { getAllReviewController } from "../controllers/movie-review-controllers/review-controller/getAll-review-controller";
-// import { updateReviewController } from "../controllers/movie-review-controllers/review-controller/update-review-controller";
-// import { getReviewByIdController } from "../controllers/movie-review-controllers/review-controller/getById-review-controller";
-// import { deleteReviewController } from "../controllers/movie-review-controllers/review-controller/delete-review-controller";
-// import { getReviewByMovieIdController } from "../controllers/movie-review-controllers/review-controller/getReviewByMovieId";
+import { Express } from "express";
+import { createReviewController } from "../controllers/movie-review-controllers/review-controller/createReview.controller";
+import { updateReviewController } from "../controllers/movie-review-controllers/review-controller/updateReview.controller";
+import { deleteReviewController } from "../controllers/movie-review-controllers/review-controller/deleteReview.controller";
+import { getAllReviewController } from "../controllers/movie-review-controllers/review-controller/getAllReview.controller";
+import { getReviewByMovieIdController } from "../controllers/movie-review-controllers/review-controller/getReviewByMovie.controller";
+import { roleMiddleware } from "../middlewares/role-middleware";
+import { authMiddleware } from "../middlewares/auth-middleware";
 
-// export function createReviewRoutes(app: Express) {
-//   //mutation
-//   app.post("/reviews/create", createReviewController);
-//   app.put("/reviews/update/:reviewId", updateReviewController);
-//   app.delete("/reviews/delete/:reviewId", deleteReviewController);
+export function createReviewRoutes(app: Express) {
+  //mutation
+  app.post(
+    "/reviews/create",
+    authMiddleware,
+    roleMiddleware(["Admin", "user"]),
+    createReviewController
+  );
+  app.put(
+    "/reviews/update/:reviewId",
+    authMiddleware,
+    roleMiddleware[("Admin", "user")],
+    updateReviewController
+  );
+  app.delete("/reviews/delete/:reviewId", deleteReviewController);
 
-//   //queries
-//   app.get("/reviews", getAllReviewController);
-//   app.get("/reviews/:reviewId", getReviewByIdController);
-//   app.get("/reviews/:movieId", getReviewByMovieIdController);
-// }
+  //queries
+  app.get("/reviews", getAllReviewController);
+  app.get("/reviews/:reviewId", getAllReviewController);
+  app.get("/reviews/:movieId", getReviewByMovieIdController);
+}

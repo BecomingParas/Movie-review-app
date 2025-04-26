@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { tokenService } from "../mongo/auth/token-service";
+
 import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 import { verifyToken } from "../config/jwt";
+import { tokenService } from "../services/token.service";
 export async function authMiddleware(
   req: Request,
   res: Response,
