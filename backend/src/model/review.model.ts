@@ -6,7 +6,7 @@ const reviewSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    movieId: {
+    movie_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Movie",
       required: true,
@@ -19,6 +19,7 @@ const reviewSchema = new mongoose.Schema(
     },
     comments: {
       type: String,
+      required: true,
     },
   },
   {

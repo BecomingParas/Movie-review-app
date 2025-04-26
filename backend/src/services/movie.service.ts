@@ -1,7 +1,7 @@
-import { MovieModel } from "../model/movieModel";
 import { InvalidMovieReviewPayload } from "../utils/movie-review-errors";
 
 import { TMovies } from "../types/movie.type";
+import { MovieModel } from "../model/movie.model";
 //create movie
 
 async function createMovie(input: Omit<TMovies, "id">) {
@@ -11,11 +11,13 @@ async function createMovie(input: Omit<TMovies, "id">) {
     genre: input.genre,
     director: input.director,
     release_year: input.release_year,
+    duration: input.duration,
     average_rating: input.average_rating,
     cast: input.cast,
     poster_url: input.poster_url,
     video_url: input.video_url,
     category: input.category,
+    created_by_id: input.created_by_id,
   });
   await movie.save();
   return movie;
@@ -53,6 +55,7 @@ async function updateMovie(
       description: input.description,
       genre: input.genre,
       release_year: input.release_year,
+      duration: input.duration,
       director: input.director,
       poster_url: input.poster_url,
       video_url: input.video_url,
@@ -89,7 +92,7 @@ async function getByIdMovie(toGetMovieId: string) {
 async function deleteMovie(toDeleteMovieId: string) {
   const movie = await MovieModel.findById(toDeleteMovieId);
   if (!movie) {
-    throw InvalidMovieReviewPayload;
+    throw new InvalidMovieReviewPayload("Movie not found");
   }
   await MovieModel.deleteOne({ _id: toDeleteMovieId });
   return movie;

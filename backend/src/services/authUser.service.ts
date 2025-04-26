@@ -1,9 +1,10 @@
-import { UserModel } from "../../model/user.model";
+import { UserModel } from "../model/user.model";
 
 type TCreateUserInput = {
   username: string;
   email: string;
   password: string;
+  role: string;
 };
 
 type TUpdateUserInput = Partial<TCreateUserInput>;
@@ -14,6 +15,7 @@ async function createUser(input: TCreateUserInput) {
     username: input.username,
     email: input.email,
     password: input.password,
+    role: input.role,
   });
   const createdUser = await user.save();
   return createdUser;
@@ -43,6 +45,7 @@ async function getUserById(toGetUserId: string) {
   if (!user) {
     throw new Error("User not found");
   }
+  return user;
 }
 
 // Delete user

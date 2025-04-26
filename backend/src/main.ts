@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { homeController } from "./controllers/home-controller";
+import { homeController } from "./controllers/home.controller";
 import { createMovieRoutes } from "./routes/movie-route";
 // import { createReviewRoutes } from "./routes/review-route";
 import { createAuthRoutes } from "./routes/auth-route";

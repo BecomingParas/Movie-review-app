@@ -1,19 +1,19 @@
 import { Request, Response } from "express";
-import { User } from "../../types/user.type";
+import { userMongoService } from "../../services/authUser.service";
 
 export const meController = async (req: Request, res: Response) => {
   try {
-    // The user data is already attached by the auth middleware
-    const user = req.user as User;
-
-    if (!user) {
-      res.status(401).json({ message: "Unauthorized" });
+    if (!req.user) {
+      res.status(401).json({ message: "unauthorized" });
       return;
     }
-
-    // Remove sensitive information
-    const { password, ...userWithoutPassword } = user;
-
+    const userId = req.user.id;
+    const user = await userMongoService.getUserById(userId);
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+    const { password, ...userWithoutPassword } = user.toObject();
     res.status(200).json(userWithoutPassword);
   } catch (error) {
     console.error("Error in me controller:", error);
