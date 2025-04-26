@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
-// import { reviewServices } from "../../../services/reviews";
 import { createReviewSchema } from "../../../utils/movie-review-zodSchema";
 import { InvalidMovieReviewPayload } from "../../../utils/movie-review-errors";
 import { MovieReviewAppError } from "../../../error";
 import { TPayload } from "../../../types/payload.type";
 import { reviewServices } from "../../../services/review.service";
+import updateMovieAverageRating from "../../updateMovieAverageRating";
 
 export async function createReviewController(
   req: Request,
@@ -30,11 +30,12 @@ export async function createReviewController(
     }
 
     await reviewServices.createReview({
-      movieId: parsed.data.movieId,
+      movie_id: parsed.data.movie_id,
       userId: loggedinUser.id,
       rating: parsed.data.rating,
       comments: parsed.data.comments,
     });
+    await updateMovieAverageRating(parsed.data.movie_id);
     res.json({
       message: "Review added successfully.",
     });

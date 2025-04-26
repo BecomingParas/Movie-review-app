@@ -3,7 +3,7 @@ import { createMovieController } from "../controllers/movie-review-controllers/m
 import { getAllMovieController } from "../controllers/movie-review-controllers/movie-controllers/getAllMovie.controller";
 
 import { upload } from "../utils/multer";
-import { authMiddleware } from "../middlewares/auth-middleware";
+import { authMiddleware } from "../middlewares/auth.middlewares";
 
 import { updateMovieController } from "../controllers/movie-review-controllers/movie-controllers/updateMovie.controller";
 import { deleteMovieController } from "../controllers/movie-review-controllers/movie-controllers/deleteMovie.controller";

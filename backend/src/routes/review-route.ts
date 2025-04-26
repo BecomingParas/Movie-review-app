@@ -5,7 +5,7 @@ import { deleteReviewController } from "../controllers/movie-review-controllers/
 import { getAllReviewController } from "../controllers/movie-review-controllers/review-controller/getAllReview.controller";
 import { getReviewByMovieIdController } from "../controllers/movie-review-controllers/review-controller/getReviewByMovie.controller";
 import { roleMiddleware } from "../middlewares/role.middleware";
-import { authMiddleware } from "../middlewares/auth-middleware";
+import { authMiddleware } from "../middlewares/auth.middlewares";
 import { reviewAccessMiddleware } from "../middlewares/reviewAccess.middleware";
 
 export function createReviewRoutes(app: Express) {

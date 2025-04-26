@@ -3,7 +3,7 @@ import { logoutController } from "../controllers/auth-controller/logout-controll
 import { signUpController } from "../controllers/auth-controller/signup-controller";
 import { meController } from "../controllers/auth-controller/me-controller";
 import { Express } from "express";
-import { authMiddleware } from "../middlewares/auth-middleware";
+import { authMiddleware } from "../middlewares/auth.middlewares";
 
 export function createAuthRoutes(app: Express) {
   // mutation

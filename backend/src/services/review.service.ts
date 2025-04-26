@@ -1,5 +1,5 @@
 // type declaration
-import { ReviewModel } from "../mongo/review/reviewModel";
+import { ReviewModel } from "../model/review.model";
 import {
   InvalidMovieReviewPayload,
   ReviewNotFound,
@@ -8,7 +8,7 @@ import {
 type TReviews = {
   id: string;
   userId: string;
-  movieId: string;
+  movie_id: string;
   rating: number;
   comments: string;
 };
@@ -18,7 +18,7 @@ type TReviews = {
 async function createReview(input: Omit<TReviews, "id">) {
   const review = new ReviewModel({
     userId: input.userId,
-    movieId: input.movieId,
+    movie_id: input.movie_id,
     rating: input.rating,
     comments: input.comments,
   });
@@ -30,7 +30,7 @@ async function createReview(input: Omit<TReviews, "id">) {
 
 async function updateReview(
   toUpdateReviewId: string,
-  input: Omit<TReviews, "id" | "movieId" | "userId">
+  input: Omit<TReviews, "id" | "movie_id" | "userId">
 ) {
   const review = await ReviewModel.findById(toUpdateReviewId);
 
@@ -62,8 +62,8 @@ async function getReviewById(toGetReviewId: string) {
 
 // get by id review by movieId
 
-async function getReviewByMovieId(movieId: string) {
-  const reviews = await ReviewModel.find({ movieId });
+async function getReviewByMovieId(movie_id: string) {
+  const reviews = await ReviewModel.find({ movie_id });
   return reviews;
 }
 

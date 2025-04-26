@@ -50,10 +50,11 @@ const movieSchema = new mongoose.Schema(
     category: {
       type: String,
       enum: ["featured", "trending-now", "recent"],
+      required: true,
     },
     created_by_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "user",
+      ref: "User",
       required: true,
     },
   },
@@ -61,4 +62,4 @@ const movieSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-export const MovieModel = mongoose.model("movie", movieSchema);
+export const MovieModel = mongoose.model("Movie", movieSchema);

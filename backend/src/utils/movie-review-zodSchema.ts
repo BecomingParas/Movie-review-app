@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { optional, z } from "zod";
 
 export const createMovieSchema = z.object({
   title: z
@@ -19,17 +19,17 @@ export const createMovieSchema = z.object({
     z.array(z.string()).nonempty()
   ),
   release_year: z.coerce.number().int().min(1900),
-  average_rating: z.coerce.number().min(0).max(10),
-
+  duration: z.coerce.number().int().min(1, "Duration is required"),
+  average_rating: z.coerce.number().min(0).max(10).optional(),
+  total_reviews: z.coerce.number().optional(),
   poster_url: z.string().url({ message: "Invalid poster URL" }),
   video_url: z.string().url({ message: "Invalid video URL" }),
   category: z.enum(["featured", "trending-now", "recent"]),
-
   created_by_id: z.string().optional(),
 });
 
 export const createReviewSchema = z.object({
-  movieId: z.string().min(1, "Movie ID is required"),
+  movie_id: z.string().min(1, "Movie ID is required"),
   rating: z
     .number()
     .min(1, "Rating must be at least 1")
