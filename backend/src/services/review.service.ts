@@ -1,6 +1,6 @@
 // type declaration
-import { ReviewModel } from "./reviewModel";
-import { InvalidMovieReviewPayload } from "../../utils/movie-review-errors";
+import { ReviewModel } from "../mongo/review/reviewModel";
+import { InvalidMovieReviewPayload } from "../utils/movie-review-errors";
 
 type TReviews = {
   id: string;

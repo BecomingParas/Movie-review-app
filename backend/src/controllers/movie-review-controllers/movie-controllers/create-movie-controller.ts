@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 
 import { InvalidMovieReviewPayload } from "../../../utils/movie-review-errors";
-import { movieMongoService } from "../../../services/MovieService";
+import { movieMongoService } from "../../../services/movie.service";
 import { MovieReviewAppError } from "../../../error";
-import { createMovieSchema } from "../../../services/movie-review-zodSchema";
+import { createMovieSchema } from "../../../utils/movie-review-zodSchema";
 import { uploadFile } from "../../../utils/cloudinaryUpload";
 import { TPayload } from "../../../types/payload.type";
 export async function createMovieController(

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { userMongoService } from "../../mongo/auth/authUser.service";
+import { userMongoService } from "../../services/authUser.service";
 import { comparePassword } from "../../utils/bcrypt";
 
 import { EXPIRY_TIME_IN_SECONDS } from "../../utils/constant";

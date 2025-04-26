@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { userMongoService } from "../mongo/auth/authUser.service";
+import { userMongoService } from "../services/authUser.service";
 
 export async function getAllUsersController(
   req: Request,

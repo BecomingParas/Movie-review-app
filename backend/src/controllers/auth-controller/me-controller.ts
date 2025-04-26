@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { User } from "../../types/user.type";
-import { userMongoService } from "../../mongo/auth/authUser.service";
+import { userMongoService } from "../../services/authUser.service";
 
 export const meController = async (req: Request, res: Response) => {
   try {

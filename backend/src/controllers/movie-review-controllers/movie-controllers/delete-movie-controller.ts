@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 
 import { MovieNotFound } from "../../../utils/movie-review-errors";
 import { MovieReviewAppError } from "../../../error";
-import { movieMongoService } from "../../../services/MovieService";
+import { movieMongoService } from "../../../services/movie.service";
 
 export async function deleteMovieController(
   req: Request,

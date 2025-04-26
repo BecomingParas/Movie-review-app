@@ -5,7 +5,7 @@ import {
   MovieNotFound,
 } from "../../../utils/movie-review-errors";
 import { MovieReviewAppError } from "../../../error";
-import { movieMongoService } from "../../../services/MovieService";
+import { movieMongoService } from "../../../services/movie.service";
 import { date, string } from "zod";
 export async function getMovieByIdController(
   req: Request,
