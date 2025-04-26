@@ -11,7 +11,7 @@ export const movieSchema = z.object({
     .min(1, "At least one cast member is required"),
   director: z.string().min(1, "Director name is required"),
   release_year: z.coerce.number().min(1990).max(2025),
-  average_rating: z.coerce.number().min(1).max(10),
+  duration: z.coerce.number().min(1, "Duration must be at least 1 minute"),
   category: z.enum(categoryOptions, {
     errorMap: () => ({ message: "Category is required" }),
   }),

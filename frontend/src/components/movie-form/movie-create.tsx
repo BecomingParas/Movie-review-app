@@ -36,7 +36,7 @@ const CreateMovie = () => {
       description: "",
       director: "",
       release_year: 2024,
-      average_rating: 5,
+      duration: 120,
       category: "featured",
     },
   });
@@ -48,11 +48,10 @@ const CreateMovie = () => {
     formData.append("description", data.description);
     formData.append("director", data.director);
     formData.append("release_year", data.release_year.toString());
-    formData.append("average_rating", data.average_rating.toString());
+    formData.append("duration", data.duration.toString());
     formData.append("genre", JSON.stringify(data.genre));
     formData.append("cast", JSON.stringify(data.cast));
     formData.append("category", data.category);
-    // Check if poster and video files are present
     console.log("Poster:", data.poster_url[0]);
     console.log("Video:", data.video_url[0]);
     if (data.poster_url[0]) {
@@ -144,10 +143,9 @@ const CreateMovie = () => {
             </div>
             <div>
               <InputField
-                label="Average Rating:"
+                label="Duration (minutes):"
                 type="number"
-                stepValueProp="0.1"
-                name="average_rating"
+                name="duration"
                 className="w-full p-3 bg-gray-700 text-white rounded"
               />
             </div>
