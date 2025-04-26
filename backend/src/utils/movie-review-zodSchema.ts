@@ -34,5 +34,5 @@ export const createReviewSchema = z.object({
     .number()
     .min(1, "Rating must be at least 1")
     .max(10, "Rating cannot exceed 10"),
-  comments: z.string().optional(),
+  comments: z.string().min(5, "minimum comments must be 5 character"),
 });

@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { InvalidMovieReviewPayload } from "../../../utils/movie-review-errors";
-import { reviewServices } from "../../../services/reviews";
 import { MovieReviewAppError } from "../../../error";
-import { reverse } from "dns";
+import { reviewServices } from "../../../services/review.service";
 
 export async function getReviewByMovieIdController(
   req: Request,
@@ -10,7 +9,7 @@ export async function getReviewByMovieIdController(
   next: NextFunction
 ) {
   try {
-    const movieId = Number(req.params.movieId);
+    const movieId = req.params.movieId;
     if (!movieId) {
       const invalidPayloadError = new InvalidMovieReviewPayload(movieId);
       next(invalidPayloadError);

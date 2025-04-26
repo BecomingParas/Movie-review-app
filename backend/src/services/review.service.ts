@@ -1,13 +1,16 @@
 // type declaration
 import { ReviewModel } from "../mongo/review/reviewModel";
-import { InvalidMovieReviewPayload } from "../utils/movie-review-errors";
+import {
+  InvalidMovieReviewPayload,
+  ReviewNotFound,
+} from "../utils/movie-review-errors";
 
 type TReviews = {
   id: string;
-  userId: number;
+  userId: string;
   movieId: string;
   rating: number;
-  review: string;
+  comments: string;
 };
 
 // create review
@@ -17,9 +20,10 @@ async function createReview(input: Omit<TReviews, "id">) {
     userId: input.userId,
     movieId: input.movieId,
     rating: input.rating,
-    review: input.review,
+    comments: input.comments,
   });
   await review.save();
+  return review;
 }
 
 //update the review
@@ -33,29 +37,11 @@ async function updateReview(
   if (!review) {
     throw new Error("Review not found!");
   }
-  await ReviewModel.replaceOne(
-    {
-      _id: toUpdateReviewId,
-    },
-    {
-      // userId: input.userId,
-      // movieId: input.movieId,
-      rating: input.rating,
-      review: input.review,
-    }
-  );
 
-  // await ReviewModel.updateOne(
-  //   {
-  //     _id: toUpdateReviewId,
-  //   },
-  //   {
-  //     userId: input.userId,
-  //     movieId: input.movieId,
-  //     rating: input.rating,
-  //     review: input.review,
-  //   }
-  // );
+  review.rating = input.rating;
+  review.comments = input.comments;
+  await review.save();
+  return review;
 }
 
 // get all reviews
@@ -66,21 +52,27 @@ async function getAllReviews() {
 }
 
 // get by id review
-
-async function getByIdReview(toGetReviewId: string) {
+async function getReviewById(toGetReviewId: string) {
   const review = await ReviewModel.findById(toGetReviewId);
   if (!review) {
-    throw new Error("Review not found");
+    throw new ReviewNotFound();
   }
   return review;
+}
+
+// get by id review by movieId
+
+async function getReviewByMovieId(movieId: string) {
+  const reviews = await ReviewModel.find({ movieId });
+  return reviews;
 }
 
 // delete review
 
 async function deleteReview(toDeleteReviewId: string) {
-  const review = await ReviewModel.findByIdAndDelete(toDeleteReviewId);
+  const review = await ReviewModel.findById(toDeleteReviewId);
   if (!review) {
-    throw InvalidMovieReviewPayload;
+    throw new InvalidMovieReviewPayload("Review not found to delete");
   }
   await ReviewModel.deleteOne({
     _id: toDeleteReviewId,
@@ -89,10 +81,11 @@ async function deleteReview(toDeleteReviewId: string) {
   return review;
 }
 
-export const mongoReviewServices = {
+export const reviewServices = {
   createReview,
   updateReview,
   getAllReviews,
-  getByIdReview,
+  getReviewByMovieId,
   deleteReview,
+  getReviewById,
 };
