@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-new mongoose.Schema({
+const auditSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -18,3 +18,4 @@ new mongoose.Schema({
     type: String,
   },
 });
+export const AuditModel = mongoose.model("Audit", auditSchema);

@@ -4,27 +4,34 @@ import { updateReviewController } from "../controllers/movie-review-controllers/
 import { deleteReviewController } from "../controllers/movie-review-controllers/review-controller/deleteReview.controller";
 import { getAllReviewController } from "../controllers/movie-review-controllers/review-controller/getAllReview.controller";
 import { getReviewByMovieIdController } from "../controllers/movie-review-controllers/review-controller/getReviewByMovie.controller";
-import { roleMiddleware } from "../middlewares/role-middleware";
+import { roleMiddleware } from "../middlewares/role.middleware";
 import { authMiddleware } from "../middlewares/auth-middleware";
+import { reviewAccessMiddleware } from "../middlewares/reviewAccess.middleware";
 
 export function createReviewRoutes(app: Express) {
   //mutation
   app.post(
     "/reviews/create",
     authMiddleware,
-    roleMiddleware(["Admin", "user"]),
+    roleMiddleware(["admin", "user"]),
     createReviewController
   );
   app.put(
     "/reviews/update/:reviewId",
     authMiddleware,
-    roleMiddleware[("Admin", "user")],
+    roleMiddleware(["admin", "user"]),
+    reviewAccessMiddleware,
     updateReviewController
   );
-  app.delete("/reviews/delete/:reviewId", deleteReviewController);
+  app.delete(
+    "/reviews/delete/:reviewId",
+    authMiddleware,
+    roleMiddleware(["admin", "user"]),
+    deleteReviewController
+  );
 
   //queries
-  app.get("/reviews", getAllReviewController);
-  app.get("/reviews/:reviewId", getAllReviewController);
-  app.get("/reviews/:movieId", getReviewByMovieIdController);
+  app.get("/reviews", authMiddleware, getAllReviewController);
+  app.get("/reviews/:reviewId", authMiddleware, getAllReviewController);
+  app.get("/reviews/:movieId", authMiddleware, getReviewByMovieIdController);
 }

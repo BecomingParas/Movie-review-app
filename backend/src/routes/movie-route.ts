@@ -8,7 +8,7 @@ import { authMiddleware } from "../middlewares/auth-middleware";
 import { updateMovieController } from "../controllers/movie-review-controllers/movie-controllers/updateMovie.controller";
 import { deleteMovieController } from "../controllers/movie-review-controllers/movie-controllers/deleteMovie.controller";
 import { getMovieByIdController } from "../controllers/movie-review-controllers/movie-controllers/getByIdMovie.controller";
-import { roleMiddleware } from "../middlewares/role-middleware";
+import { roleMiddleware } from "../middlewares/role.middleware";
 
 export function createMovieRoutes(app: Express) {
   //mutation
