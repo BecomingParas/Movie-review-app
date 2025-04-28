@@ -22,6 +22,8 @@ import CreateMovie from "./components/movie-form/movie-create";
 import NotFound from "./pages/NotFound";
 import MovieDetails from "./pages/movie/MovieDetails";
 import MovieList from "./pages/movie/MovieList";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import AdminRoute from "./routes/AdminRoute";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -43,27 +45,7 @@ const router = createBrowserRouter([
         path: "/movie/:id",
         element: <MovieDetails />,
       },
-      {
-        path: "/watchlist",
-        element: <Watchlist />,
-      },
-      {
-        path: "/movies",
-        element: <Movies />,
-      },
-      {
-        path: "/reviews",
-        element: <Reviews />,
-      },
-      {
-        path: "/movies/create-movie",
-        element: <CreateMovie />,
-      },
-      {
-        path: "/dashboard",
 
-        element: <DashboardPage />,
-      },
       {
         path: "/about",
         element: <About />,
@@ -81,12 +63,42 @@ const router = createBrowserRouter([
         element: <LoginForm />,
       },
       {
-        path: "/movieform",
-        element: <MovieForm />,
+        element: <ProtectedRoute />,
+        children: [
+          {
+            path: "/reviews",
+            element: <Reviews />,
+          },
+          {
+            path: "/watchlist",
+            element: <Watchlist />,
+          },
+        ],
       },
       {
-        path: "/movies/movielist",
-        element: <MovieList movies={[]} />,
+        element: <AdminRoute />,
+        children: [
+          {
+            path: "/movies",
+            element: <Movies />,
+          },
+          {
+            path: "/movies/create-movie",
+            element: <CreateMovie />,
+          },
+          {
+            path: "/movies/movielist",
+            element: <MovieList movies={[]} />,
+          },
+          {
+            path: "/dashboard",
+            element: <DashboardPage />,
+          },
+          {
+            path: "/movieform",
+            element: <MovieForm />,
+          },
+        ],
       },
     ],
   },
