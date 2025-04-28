@@ -1,6 +1,6 @@
 import { api } from "./api";
-import { useAuthStore } from "@/store/authStore";
-import { authService } from "./authService";
+import { useAuthStore } from "@/store/auth.store";
+import { authService } from "./auth.service";
 
 export const setupAuthInterceptor = () => {
   api.interceptors.response.use(

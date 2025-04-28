@@ -1,5 +1,5 @@
-import { useAuthStore } from "@/store/authStore";
-import { authService, LoginData, RegisterData } from "@/services/authService";
+import { useAuthStore } from "@/store/auth.store";
+import { authService, LoginData, RegisterData } from "@/services/auth.service";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import { toast } from "sonner";
@@ -24,7 +24,8 @@ export const useAuth = () => {
         const user = await authService.getCurrentUser();
         updateUser(user);
       }
-    } catch (error) {
+    } catch (error: any) {
+      throw new Error(error);
       clearAuth();
     } finally {
       setIsCheckingAuth(false);

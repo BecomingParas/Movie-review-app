@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { User } from "@/types/movies.types";
-import { authService } from "@/services/authService";
+import { authService } from "@/services/auth.service";
 import { useNavigate } from "react-router-dom";
 
 interface AuthContextType {
