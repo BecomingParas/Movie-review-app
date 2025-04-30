@@ -11,6 +11,7 @@ import { env } from "process";
 
 import dotenv from "dotenv";
 import { connectMongoDb } from "./config/db";
+import { Dashboard } from "./routes/dashboard.routes";
 dotenv.config();
 
 const app = express();
@@ -37,10 +38,12 @@ app.use(express.json());
 
 // Routes
 app.get("/", homeController);
-
+// create movoie routes
 createMovieRoutes(app);
 // createReviewRoutes(app);
 createAuthRoutes(app);
+// dashboard routes
+Dashboard(app);
 
 // Global Error Handler
 app.use(
