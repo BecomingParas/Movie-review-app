@@ -46,6 +46,7 @@ export type TLoginUserOutput = {
       username: string;
       email: string;
       id: string;
+      role: string;
     };
   };
 };

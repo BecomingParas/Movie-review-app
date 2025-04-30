@@ -17,13 +17,13 @@ import DashboardPage from "./pages/Dashboard/Dashboard";
 import Watchlist from "./pages/watchlist/WatchList";
 import { setupAuthInterceptor } from "./services/authInterceptor";
 import { useEffect } from "react";
-import MovieForm from "./components/movie-form/movie-create";
 import CreateMovie from "./components/movie-form/movie-create";
 import NotFound from "./pages/NotFound";
 import MovieDetails from "./pages/movie/MovieDetails";
 import MovieList from "./pages/movie/MovieList";
-import ProtectedRoute from "./routes/ProtectedRoute";
 import AdminRoute from "./routes/AdminRoute";
+import { ProtectedRoute } from "./routes/ProtectedRoute";
+import { useAuthStore } from "./store/auth.store";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -63,15 +63,27 @@ const router = createBrowserRouter([
         element: <LoginForm />,
       },
       {
+        path: "/movies",
+        element: <Movies />,
+      },
+      {
+        path: "/movies/movielist",
+        element: <MovieList movies={[]} />,
+      },
+      {
+        path: "/reviews",
+        element: <Reviews />,
+      },
+      {
         element: <ProtectedRoute />,
         children: [
           {
-            path: "/reviews",
-            element: <Reviews />,
-          },
-          {
             path: "/watchlist",
             element: <Watchlist />,
+          },
+          {
+            path: "/dashboard",
+            element: <DashboardPage />,
           },
         ],
       },
@@ -79,24 +91,8 @@ const router = createBrowserRouter([
         element: <AdminRoute />,
         children: [
           {
-            path: "/movies",
-            element: <Movies />,
-          },
-          {
             path: "/movies/create-movie",
             element: <CreateMovie />,
-          },
-          {
-            path: "/movies/movielist",
-            element: <MovieList movies={[]} />,
-          },
-          {
-            path: "/dashboard",
-            element: <DashboardPage />,
-          },
-          {
-            path: "/movieform",
-            element: <MovieForm />,
           },
         ],
       },
@@ -111,6 +107,7 @@ const router = createBrowserRouter([
 const App = () => {
   useEffect(() => {
     setupAuthInterceptor();
+    useAuthStore.getState().initialize();
   }, []);
   return (
     <QueryClientProvider client={queryClient}>
