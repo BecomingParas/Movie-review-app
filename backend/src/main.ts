@@ -3,16 +3,16 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import { homeController } from "./controllers/home.controller";
 import { createMovieRoutes } from "./routes/movie.routes";
-// import { createReviewRoutes } from "./routes/review-route";
+
 import { createAuthRoutes } from "./routes/auth.routes";
 import { MovieReviewAppError } from "./error";
 
 import { env } from "process";
 
 import dotenv from "dotenv";
+dotenv.config();
 import { connectMongoDb } from "./config/db";
 import { Dashboard } from "./routes/dashboard.routes";
-dotenv.config();
 
 const app = express();
 const PORT = env.PORT || 4002;

@@ -1,6 +1,17 @@
 import mongoose from "mongoose";
 
-const auditSchema = new mongoose.Schema(
+interface AuditDocument {
+  userId: mongoose.Types.ObjectId;
+  movieId?: mongoose.Types.ObjectId;
+  action: string;
+  details?: string;
+}
+
+interface AuditModelInterface extends mongoose.Model<AuditDocument> {
+  findRecentActivity(): Promise<mongoose.HydratedDocument<AuditDocument>[]>;
+}
+
+const auditSchema = new mongoose.Schema<AuditDocument, AuditModelInterface>(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -15,12 +26,20 @@ const auditSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    details: {
-      type: String,
-    },
+    details: String,
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
-export const AuditModel = mongoose.model("Audit", auditSchema);
+
+auditSchema.statics.findRecentActivity = function () {
+  return this.find()
+    .sort({ createdAt: -1 })
+    .limit(5)
+    .populate("userId", "username")
+    .populate("movieId", "title");
+};
+
+export const AuditModel = mongoose.model<AuditDocument, AuditModelInterface>(
+  "Audit",
+  auditSchema
+);

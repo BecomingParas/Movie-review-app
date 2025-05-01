@@ -15,7 +15,6 @@ import Reviews from "./pages/review/review";
 import Movies from "./pages/movie/movies";
 import DashboardPage from "./pages/Dashboard/Dashboard";
 import Watchlist from "./pages/watchlist/WatchList";
-import { setupAuthInterceptor } from "./services/authInterceptor";
 import { useEffect } from "react";
 import CreateMovie from "./components/movie-form/movie-create";
 import NotFound from "./pages/NotFound";
@@ -24,7 +23,7 @@ import MovieList from "./pages/movie/MovieList";
 import AdminRoute from "./routes/AdminRoute";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
 import { useAuthStore } from "./store/auth.store";
-
+import { AuthInitializer } from "./components/AuthInitializer";
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
   {
@@ -74,6 +73,7 @@ const router = createBrowserRouter([
         path: "/reviews",
         element: <Reviews />,
       },
+
       {
         element: <ProtectedRoute />,
         children: [
@@ -106,7 +106,6 @@ const router = createBrowserRouter([
 ]);
 const App = () => {
   useEffect(() => {
-    setupAuthInterceptor();
     useAuthStore.getState().initialize();
   }, []);
   return (
@@ -115,7 +114,9 @@ const App = () => {
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <RouterProvider router={router} />
+          <AuthInitializer>
+            <RouterProvider router={router} />
+          </AuthInitializer>
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>
