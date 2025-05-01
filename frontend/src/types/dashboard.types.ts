@@ -1,34 +1,22 @@
-// dashboard.types.ts
-export type TDashboardAdmin = {
-  role: "admin";
+// src/api/dashboard/dashboard.types.ts
+export type DashboardResponse = {
+  role: "admin" | "user";
+  username?: string;
+
+  // Admin stats
   totalUsers: number;
   totalMovies: number;
   totalReviews: number;
-  averageRating: number;
+
+  // User stats
+  moviesWatched?: number;
+  watchlistCount?: number;
+  hoursWatched?: number;
+
   recentActivity: {
     id: string;
-    user: string;
+    user?: string;
     action: string;
-    movieTitle?: string;
-    time: string;
+    movieTitle: string;
   }[];
 };
-
-export type TDashboardUser = {
-  role: "user";
-  username: string;
-  memberSince: string;
-  favoriteGenre?: string;
-  moviesWatched: number;
-  watchlistCount: number;
-  totalReviews: number;
-  hoursWatched: number;
-  recentActivity: {
-    id: string;
-    action: string;
-    movieTitle?: string;
-    time: string;
-  }[];
-};
-
-export type TDashboard = TDashboardAdmin | TDashboardUser;

@@ -1,10 +1,11 @@
-// dashboard.query.ts
+// src/api/dashboard/dashboard.query.ts
 import { useQuery } from "@tanstack/react-query";
-import { fetchDashboard, TDashboard } from "./dashboard.fetch";
+import { fetchDashboardData } from "./dashboard.fetch";
+import { DashboardResponse } from "@/types/dashboard.types";
 
 export function useDashboardQuery() {
-  return useQuery<TDashboard, Error>({
+  return useQuery<DashboardResponse>({
     queryKey: ["dashboard"],
-    queryFn: fetchDashboard,
+    queryFn: fetchDashboardData,
   });
 }

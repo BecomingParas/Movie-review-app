@@ -62,7 +62,7 @@ export const getCurrentUser = async () => {
   return await request<User>(`${env.BACKEND_URL}/api/auth/me`, {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     },
   });
 };

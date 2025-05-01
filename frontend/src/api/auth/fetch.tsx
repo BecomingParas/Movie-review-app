@@ -64,11 +64,11 @@ export async function loginUser(
   });
 
   const data = await res.json();
+
   if (!res.ok) throw new Error(data.message);
 
-  if (data.data?.token) {
-    localStorage.setItem("token", data.data.token);
-  }
+  const token = data.data.token; // already includes Bearer
+  localStorage.setItem("accessToken", token); // keep as is
 
-  return data;
+  return data as TLoginUserOutput;
 }

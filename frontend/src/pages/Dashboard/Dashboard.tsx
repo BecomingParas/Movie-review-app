@@ -321,8 +321,7 @@
 //   </Card>
 // );
 
-// export default Dashboard;// Dashboard.tsx
-import React from "react";
+// export default Dashboard;// Dashboard.tsximport React from "react";import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -335,6 +334,14 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { useDashboardQuery } from "@/api/dashboard/dashboard.query";
+
+// Define a type for recent activity items
+type Activity = {
+  id: string;
+  user?: string; // only for admin
+  action: string;
+  movieTitle: string;
+};
 
 export default function Dashboard() {
   const { data, isLoading, isError } = useDashboardQuery();
@@ -362,16 +369,16 @@ export default function Dashboard() {
       <div className="p-6">
         <h1 className="text-3xl mb-6">Admin Dashboard</h1>
         <div className="grid grid-cols-3 gap-4 mb-8">
-          <StatCard title="Users" value={data.totalUsers} icon={BookMarked} />
+          <StatCard title="Users" value={data?.totalUsers} icon={BookMarked} />
           <StatCard title="Movies" value={data.totalMovies} icon={Film} />
           <StatCard title="Reviews" value={data.totalReviews} icon={Star} />
         </div>
 
         <Section title="Recent Activity">
-          {data.recentActivity.map((act) => (
+          {(data.recentActivity as Activity[]).map((act) => (
             <ActivityItem
               key={act.id}
-              label={`${act.user} ${act.action}`}
+              label={`${act.user ?? "Unknown user"} ${act.action}`}
               sub={act.movieTitle}
             />
           ))}
@@ -385,18 +392,18 @@ export default function Dashboard() {
     <div className="p-6">
       <h1 className="text-3xl mb-6">Welcome back, {data.username}</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <StatCard title="Watched" value={data.moviesWatched} icon={Film} />
+        <StatCard title="Watched" value={data.moviesWatched ?? 0} icon={Film} />
         <StatCard
           title="Watchlist"
-          value={data.watchlistCount}
+          value={data.watchlistCount ?? 0}
           icon={BookMarked}
         />
-        <StatCard title="Reviews" value={data.totalReviews} icon={Star} />
-        <StatCard title="Hours" value={data.hoursWatched} icon={Clock} />
+        <StatCard title="Reviews" value={data.totalReviews ?? 0} icon={Star} />
+        <StatCard title="Hours" value={data.hoursWatched ?? 0} icon={Clock} />
       </div>
 
       <Section title="Recent Activity">
-        {data.recentActivity.map((act) => (
+        {(data.recentActivity as Activity[]).map((act) => (
           <ActivityItem key={act.id} label={act.action} sub={act.movieTitle} />
         ))}
       </Section>
@@ -404,6 +411,7 @@ export default function Dashboard() {
   );
 }
 
+// Reusable stat display card
 function StatCard({
   title,
   value,
@@ -424,6 +432,7 @@ function StatCard({
   );
 }
 
+// Section wrapper
 function Section({
   title,
   children,
@@ -439,6 +448,7 @@ function Section({
   );
 }
 
+// Individual recent activity item
 function ActivityItem({ label, sub }: { label: string; sub?: string | null }) {
   return (
     <div className="flex items-center justify-between bg-white p-3 rounded shadow">
