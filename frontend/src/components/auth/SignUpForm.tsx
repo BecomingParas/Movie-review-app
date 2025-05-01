@@ -4,7 +4,7 @@ import z from "zod";
 import { useSignUpUserMutation } from "../../api/auth/query";
 import { errorToast, successToast } from "../toaster";
 import { useNavigate } from "react-router-dom";
-import { FiFilm, FiStar, FiUsers } from "react-icons/fi";
+import { FiEye, FiEyeOff, FiFilm, FiStar, FiUsers } from "react-icons/fi";
 import { useState } from "react";
 import { InputField } from "../ui/InputField";
 
@@ -171,7 +171,9 @@ export function SignUpForm() {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  ></button>
+                  >
+                    {showPassword ? <FiEyeOff /> : <FiEye />}
+                  </button>
                 </div>
               </div>
 

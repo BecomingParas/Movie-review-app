@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-
 import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 import { verifyToken } from "../config/jwt";
 import { tokenService } from "../services/token.service";
+
 export async function authMiddleware(
   req: Request,
   res: Response,
@@ -19,11 +19,15 @@ export async function authMiddleware(
       return;
     }
 
-    const token = authorizationHeader.split(" ")[1];
-    if (!token) {
-      res.status(401).json({ message: "Token not found" });
+    // Defensive parsing
+    const parts = authorizationHeader.trim().split(" ").filter(Boolean);
+
+    if (parts.length !== 2 || parts[0] !== "Bearer") {
+      res.status(401).json({ message: "Invalid authorization header format" });
       return;
     }
+
+    const token = parts[1];
 
     const payload = verifyToken(token);
     const tokenInDb = await tokenService.getToken({ token });

@@ -4,9 +4,10 @@ import z from "zod";
 import { useLoginUserMutation } from "../../api/auth/query";
 import { errorToast, successToast } from "../toaster";
 import { useNavigate } from "react-router-dom";
-import { FiFilm, FiStar, FiUsers } from "react-icons/fi";
+import { FiEye, FiEyeOff, FiFilm, FiStar, FiUsers } from "react-icons/fi";
 import { useState } from "react";
 import { InputField } from "../ui/InputField";
+import { useAuthStore } from "@/store/auth.store";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email."),
@@ -41,9 +42,16 @@ export function LoginForm() {
       {
         onSuccess(response) {
           successToast(response.message);
-          localStorage.setItem("isLoggedIn", "true");
+          // Store the actual token from response
+          localStorage.setItem("accessToken", response.data.token);
+
+          // Update auth store state
+          useAuthStore
+            .getState()
+            .login(response.data.user, response.data.token);
           methods.reset();
           navigate("/dashboard");
+          console.log(response.message);
         },
         onError(error) {
           console.error("error", error);
@@ -151,7 +159,9 @@ export function LoginForm() {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  ></button>
+                  >
+                    {showPassword ? <FiEyeOff /> : <FiEye />}
+                  </button>
                 </div>
               </div>
 

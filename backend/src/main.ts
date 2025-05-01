@@ -2,15 +2,16 @@ import express, { Request, Response, NextFunction } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { homeController } from "./controllers/home.controller";
-import { createMovieRoutes } from "./routes/movie-route";
+import { createMovieRoutes } from "./routes/movie.routes";
 // import { createReviewRoutes } from "./routes/review-route";
-import { createAuthRoutes } from "./routes/auth-route";
+import { createAuthRoutes } from "./routes/auth.routes";
 import { MovieReviewAppError } from "./error";
 
 import { env } from "process";
 
 import dotenv from "dotenv";
 import { connectMongoDb } from "./config/db";
+import { Dashboard } from "./routes/dashboard.routes";
 dotenv.config();
 
 const app = express();
@@ -37,10 +38,12 @@ app.use(express.json());
 
 // Routes
 app.get("/", homeController);
-
+// create movoie routes
 createMovieRoutes(app);
 // createReviewRoutes(app);
 createAuthRoutes(app);
+// dashboard routes
+Dashboard(app);
 
 // Global Error Handler
 app.use(

@@ -1,8 +1,8 @@
-import { useAuthStore } from "@/store/authStore";
-import { authService, LoginData, RegisterData } from "@/services/authService";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useState, useEffect, useCallback } from "react";
 import { toast } from "sonner";
+import { useEffect, useCallback } from "react";
+import { useAuthStore } from "@/store/auth.store";
+import { authService, LoginData, RegisterData } from "@/services/auth.service";
 
 export const useAuth = () => {
   const navigate = useNavigate();
@@ -14,10 +14,13 @@ export const useAuth = () => {
     login: setAuth,
     logout: clearAuth,
     updateUser,
+    isLoading,
+    setIsLoading,
+    isCheckingAuth,
+    setIsCheckingAuth,
   } = useAuthStore();
-  const [isLoading, setIsLoading] = useState(false);
-  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
+  // Check if the user is authenticated
   const checkAuth = useCallback(async () => {
     try {
       if (accessToken) {
@@ -25,11 +28,12 @@ export const useAuth = () => {
         updateUser(user);
       }
     } catch (error) {
+      console.error(error);
       clearAuth();
     } finally {
       setIsCheckingAuth(false);
     }
-  }, [accessToken, clearAuth, updateUser]);
+  }, [accessToken, updateUser, clearAuth, setIsCheckingAuth]);
 
   useEffect(() => {
     if (!isAuthenticated && accessToken) {
@@ -37,20 +41,21 @@ export const useAuth = () => {
     } else {
       setIsCheckingAuth(false);
     }
-  }, [isAuthenticated, accessToken, checkAuth]);
+  }, [isAuthenticated, accessToken, checkAuth, setIsCheckingAuth]);
 
-  const handleAuthAction = async <T extends () => Promise<any>>(
+  // Helper for login/register/logout actions
+  const handleAuthAction = async <T extends () => Promise<unknown>>(
     action: T,
     successMessage: string
-  ): Promise<ReturnType<T>> => {
+  ): Promise<Awaited<ReturnType<T>>> => {
     setIsLoading(true);
     try {
       const response = await action();
       toast.success(successMessage);
-      return response;
+      return response as Awaited<ReturnType<T>>;
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Operation failed";
+        error instanceof Error ? error.message : "Something went wrong";
       toast.error(message);
       throw error;
     } finally {
