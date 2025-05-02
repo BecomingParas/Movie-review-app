@@ -14,7 +14,7 @@ export function createMovieRoutes(app: Express) {
   //mutation
   // admin only -create , update and delete  movie hai
   app.post(
-    "/api/movies/create",
+    "/api/dashboard/movies/create",
     authMiddleware,
     roleMiddleware(["admin"]),
     upload.fields([
@@ -25,7 +25,7 @@ export function createMovieRoutes(app: Express) {
   );
 
   app.put(
-    "/api/movies/update/:movieId",
+    "/api/dashboard/movies/update/:movieId",
     authMiddleware,
     roleMiddleware(["admin"]),
     upload.fields([
@@ -35,7 +35,7 @@ export function createMovieRoutes(app: Express) {
     updateMovieController
   );
   app.delete(
-    "/api/movies/delete/:movieId",
+    "/api/dashboard/movies/delete/:movieId",
     authMiddleware,
     roleMiddleware(["admin"]),
     deleteMovieController
