@@ -89,7 +89,7 @@ const CreateMovie = () => {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-white">Create New Movie</h1>
         <Link
-          to="/movies"
+          to="/dashboard"
           className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors"
         >
           Back to list
