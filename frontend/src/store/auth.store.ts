@@ -1,5 +1,5 @@
-import { authService } from "@/services/auth.service";
 import { create } from "zustand";
+import { authService } from "@/services/auth.service";
 interface User {
   id: string;
   username: string;
@@ -26,11 +26,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   isLoading: false,
   isCheckingAuth: false,
   login: (user, token) => {
-    set({
-      user,
-      accessToken: token,
-      isAuthenticated: true,
-    });
+    set({ user, accessToken: token, isAuthenticated: true });
   },
   logout: () => {
     localStorage.removeItem("accessToken");
@@ -55,7 +51,6 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({ isCheckingAuth: false });
       return;
     }
-
     try {
       const user = await authService.getCurrentUser();
       set({

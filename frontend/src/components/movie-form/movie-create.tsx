@@ -1,3 +1,4 @@
+// Updated CreateMovie.tsx with improvements
 import { movieSchema } from "@/lib/movieSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
@@ -11,7 +12,8 @@ import { FileUploadField } from "../ui/FileUploadField";
 import { Button } from "../ui/button";
 import { useCreateMovieMutation } from "@/api/movies/movie.mutations";
 import { toast } from "sonner";
-type TMovieForm = z.infer<typeof movieSchema>;
+import { useQueryClient } from "@tanstack/react-query";
+
 const genreOptions = [
   "Action",
   "Romantic",
@@ -20,14 +22,14 @@ const genreOptions = [
   "Horror",
   "Comedy",
 ];
-
 const categoryOptions = ["featured", "trending-now", "recent"];
 
 const CreateMovie = () => {
   const mutation = useCreateMovieMutation();
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const methods = useForm<TMovieForm>({
+  const methods = useForm<z.infer<typeof movieSchema>>({
     resolver: zodResolver(movieSchema),
     defaultValues: {
       genre: [],
@@ -42,7 +44,7 @@ const CreateMovie = () => {
   });
 
   const { handleSubmit } = methods;
-  const onSubmit = async (data: TMovieForm) => {
+  const onSubmit = async (data: z.infer<typeof movieSchema>) => {
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("description", data.description);
@@ -52,20 +54,27 @@ const CreateMovie = () => {
     formData.append("genre", JSON.stringify(data.genre));
     formData.append("cast", JSON.stringify(data.cast));
     formData.append("category", data.category);
-    console.log("Poster:", data.poster_url[0]);
-    console.log("Video:", data.video_url[0]);
+
     if (data.poster_url[0]) {
+      if (data.poster_url[0].size > 5 * 1024 * 1024) {
+        toast.error("Poster must be under 5MB.");
+        return;
+      }
       formData.append("poster_url", data.poster_url[0]);
     }
+
     if (data.video_url[0]) {
+      if (data.video_url[0].size > 100 * 1024 * 1024) {
+        toast.error("Video must be under 100MB.");
+        return;
+      }
       formData.append("video_url", data.video_url[0]);
     }
-
-    console.log("FormData being sent: ", formData); // Debugging FormData
 
     mutation.mutate(formData, {
       onSuccess: (res) => {
         toast.success(res.message || "Movie created successfully!");
+        queryClient.invalidateQueries({ queryKey: ["movies"] });
         methods.reset();
         navigate("/movies");
       },
@@ -77,104 +86,81 @@ const CreateMovie = () => {
 
   return (
     <div className="min-h-screen pt-20 p-6 max-w-2xl mx-auto">
-      <div className=" flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-white ">Create New Movie</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold text-white">Create New Movie</h1>
         <Link
-          to="/movies"
+          to="/dashboard"
           className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors"
         >
-          Bact to list
+          Back to list
         </Link>
       </div>
       <FormProvider {...methods}>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className=" space-y-6 bg-gray-800 p-8 rounded-xl shadow-xl"
+          className="space-y-6 bg-gray-800 p-8 rounded-xl shadow-xl"
         >
-          <div>
-            <InputField
-              label="Title: "
-              type="text"
-              name="title"
-              className=" text-white block mb-2"
-            />
-          </div>
-          <div>
-            <InputField
-              label="Description:"
-              type="text"
-              name="description"
-              className=" text-white block mb-2"
-            />
-          </div>
-          <div>
-            <CheckboxGroupField
-              label="Genres:"
-              name="genre"
-              options={genreOptions}
-              className="mb-4"
-            />
-          </div>
-          <div>
-            <SelectField
-              label="Category:"
-              name="category"
-              options={categoryOptions}
-              className="mb-4"
-            />
-          </div>
+          <InputField
+            label="Title:"
+            type="text"
+            name="title"
+            className="text-white"
+          />
+          <InputField
+            label="Description:"
+            type="text"
+            name="description"
+            className="text-white"
+          />
+          <CheckboxGroupField
+            label="Genres:"
+            name="genre"
+            options={genreOptions}
+          />
+          <SelectField
+            label="Category:"
+            name="category"
+            options={categoryOptions}
+          />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <InputField
-                label="Director:"
-                name="director"
-                type="text"
-                className="w-full p-3 bg-gray-700 text-white rounded"
-              />
-            </div>
-            <div>
-              <InputField
-                label="Release Year:"
-                name="release_year"
-                type="number"
-                className="w-full p-3 bg-gray-700 text-white rounded"
-                defaultValueProp="2020"
-              />
-            </div>
-            <div>
-              <InputField
-                label="Duration (minutes):"
-                type="number"
-                name="duration"
-                className="w-full p-3 bg-gray-700 text-white rounded"
-              />
-            </div>
-          </div>
-          <div>
-            <DynamicInputListField
-              label="Cast Members:"
-              name="cast"
-              className="space-y-3"
+            <InputField
+              label="Director:"
+              name="director"
+              type="text"
+              className="w-full bg-gray-700 text-white rounded"
+            />
+            <InputField
+              label="Release Year:"
+              name="release_year"
+              type="number"
+              className="w-full bg-gray-700 text-white rounded"
+            />
+            <InputField
+              label="Duration (minutes):"
+              type="number"
+              name="duration"
+              className="w-full bg-gray-700 text-white rounded"
             />
           </div>
-          <div>
-            <FileUploadField
-              name="poster_url"
-              label="Movie Poster:"
-              accept="image/*"
-            />
-          </div>
-          <div>
-            <FileUploadField
-              name="video_url"
-              label="Movie Video:"
-              accept="video/*"
-            />
-          </div>
+          <DynamicInputListField
+            label="Cast Members:"
+            name="cast"
+            className="space-y-3"
+          />
+          <FileUploadField
+            name="poster_url"
+            label="Movie Poster:"
+            accept="image/*"
+          />
+          <FileUploadField
+            name="video_url"
+            label="Movie Video:"
+            accept="video/*"
+          />
           <Button
             type="submit"
             disabled={mutation.isPending}
-            className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
           >
             {mutation.isPending ? "Creating..." : "Create Movie"}
           </Button>

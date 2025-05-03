@@ -5,17 +5,14 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
 import Index from "@/pages/home/Index";
-import LoginForm from "@/pages/auth/LoginPage";
 import About from "./pages/about/About";
 import Contact from "./pages/contact/Contact";
 import Footer from "./components/layout/Footer";
 import Navbar from "./components/layout/Navbar";
-import SignUpForm from "./components/auth/SignUpForm";
 import Reviews from "./pages/review/review";
 import Movies from "./pages/movie/movies";
 import DashboardPage from "./pages/Dashboard/Dashboard";
 import Watchlist from "./pages/watchlist/WatchList";
-import { setupAuthInterceptor } from "./services/authInterceptor";
 import { useEffect } from "react";
 import CreateMovie from "./components/movie-form/movie-create";
 import NotFound from "./pages/NotFound";
@@ -24,7 +21,9 @@ import MovieList from "./pages/movie/MovieList";
 import AdminRoute from "./routes/AdminRoute";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
 import { useAuthStore } from "./store/auth.store";
-
+import { AuthInitializer } from "./components/AuthInitializer";
+import SignupPage from "./pages/auth/SignupPage";
+import LoginPage from "@/pages/auth/LoginPage";
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
   {
@@ -56,11 +55,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/signup",
-        element: <SignUpForm />,
+        element: <SignupPage />,
       },
       {
         path: "/login",
-        element: <LoginForm />,
+        element: <LoginPage />,
       },
       {
         path: "/movies",
@@ -74,6 +73,7 @@ const router = createBrowserRouter([
         path: "/reviews",
         element: <Reviews />,
       },
+
       {
         element: <ProtectedRoute />,
         children: [
@@ -91,7 +91,7 @@ const router = createBrowserRouter([
         element: <AdminRoute />,
         children: [
           {
-            path: "/movies/create-movie",
+            path: "/dashboard/movies/create-movie",
             element: <CreateMovie />,
           },
         ],
@@ -106,7 +106,6 @@ const router = createBrowserRouter([
 ]);
 const App = () => {
   useEffect(() => {
-    setupAuthInterceptor();
     useAuthStore.getState().initialize();
   }, []);
   return (
@@ -115,7 +114,9 @@ const App = () => {
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <RouterProvider router={router} />
+          <AuthInitializer>
+            <RouterProvider router={router} />
+          </AuthInitializer>
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>

@@ -3,6 +3,36 @@ import { UserModel } from "../model/user.model";
 import { ReviewModel } from "../model/review.model";
 import { MovieModel } from "../model/movie.model";
 import { AuditModel } from "../model/userActivity.model";
+import mongoose from "mongoose";
+
+// Type Definitions
+interface PopulatedUser {
+  _id: mongoose.Types.ObjectId;
+  username: string;
+}
+
+interface PopulatedMovie {
+  _id: mongoose.Types.ObjectId;
+  title: string;
+}
+
+type LeanAuditDocument = {
+  _id: mongoose.Types.ObjectId;
+  userId?: PopulatedUser;
+  movieId?: PopulatedMovie;
+  action: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+// Type Guards
+function isPopulatedUser(user: any): user is PopulatedUser {
+  return user && user.username && user._id instanceof mongoose.Types.ObjectId;
+}
+
+function isPopulatedMovie(movie: any): movie is PopulatedMovie {
+  return movie && movie.title && movie._id instanceof mongoose.Types.ObjectId;
+}
 
 export async function getDashboard(req: Request, res: Response) {
   try {
@@ -15,68 +45,99 @@ export async function getDashboard(req: Request, res: Response) {
     }
 
     if (role === "admin") {
-      // Admin stats
-      const totalUsers = await UserModel.countDocuments();
-      const totalMovies = await MovieModel.countDocuments();
-      const totalReviews = await ReviewModel.countDocuments();
-      const avgRatingResult = await ReviewModel.aggregate([
-        { $group: { _id: null, avg: { $avg: "$rating" } } },
-      ]);
+      const [totalUsers, totalMovies, totalReviews, avgRatingResult] =
+        await Promise.all([
+          UserModel.countDocuments(),
+          MovieModel.countDocuments(),
+          ReviewModel.countDocuments(),
+          ReviewModel.aggregate([
+            { $group: { _id: null, avg: { $avg: "$rating" } } },
+          ]),
+        ]);
+
       const averageRating = avgRatingResult[0]?.avg || 0;
+
       const recentActivity = await AuditModel.find()
-        .sort({ _id: -1 })
+        .sort({ createdAt: -1 })
         .limit(5)
-        .populate("movieId", "title")
-        .populate("userId", "username");
+        .populate<{ userId: PopulatedUser }>("userId", "username")
+        .populate<{ movieId: PopulatedMovie }>("movieId", "title")
+        .lean<LeanAuditDocument[]>()
+        .exec();
 
       res.json({
         role: "admin",
-        totalUsers,
-        totalMovies,
+        name: "Admin",
+        avgRating: +averageRating.toFixed(2),
         totalReviews,
-        averageRating: +averageRating.toFixed(2),
+        moviesWatched: totalMovies,
+        watchlistCount: 0,
+        hoursWatched: 0,
+        favoriteGenre: "All",
+        memberSince: "N/A",
         recentActivity: recentActivity.map((a) => ({
           id: a._id,
-          user: (a.userId as any).username,
-          action: a.action,
-          movieTitle: (a.movieId as any)?.title,
+          action: `${
+            isPopulatedUser(a.userId) ? a.userId.username : "Unknown"
+          } ${a.action}`,
+          movieTitle: isPopulatedMovie(a.movieId) ? a.movieId.title : "Unknown",
           time: a.createdAt,
         })),
       });
       return;
     }
 
-    // Regular user
-    const user = await UserModel.findById(userId);
-    const stats = user?.stats || {
+    // User-specific dashboard
+    const [user, userReviews] = await Promise.all([
+      UserModel.findById(userId),
+      ReviewModel.find({ userId }),
+    ]);
+
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+
+    const stats = user.stats || {
       moviesWatched: 0,
       watchList: 0,
       reviews: 0,
       hoursWatched: 0,
     };
+
+    const userAvgRating =
+      userReviews.length > 0
+        ? userReviews.reduce((sum, r) => sum + r.rating, 0) / userReviews.length
+        : 0;
+
     const recentActivity = await AuditModel.find({ userId })
-      .sort({ _id: -1 })
+      .sort({ createdAt: -1 })
       .limit(5)
-      .populate("movieId", "title");
+      .populate<{ movieId: PopulatedMovie }>("movieId", "title")
+      .lean<LeanAuditDocument[]>()
+      .exec();
 
     res.json({
       role: "user",
-      username: user?.username,
-      memberSince: user?.memberSince,
-      favoriteGenre: user?.favoriteGenre,
+      name: user.username,
+      memberSince: user.memberSince,
+      favoriteGenre: user.favoriteGenre || "Not specified",
+      avgRating: +userAvgRating.toFixed(2),
+      totalReviews: stats.reviews,
       moviesWatched: stats.moviesWatched,
       watchlistCount: stats.watchList,
-      totalReviews: stats.reviews,
       hoursWatched: stats.hoursWatched,
       recentActivity: recentActivity.map((a) => ({
         id: a._id,
         action: a.action,
-        movieTitle: (a.movieId as any)?.title,
+        movieTitle: isPopulatedMovie(a.movieId) ? a.movieId.title : "Unknown",
         time: a.createdAt,
       })),
     });
+    return;
   } catch (err) {
-    console.error(err);
+    console.error("Dashboard Error:", err);
     res.status(500).json({ message: "Server error" });
+    return;
   }
 }

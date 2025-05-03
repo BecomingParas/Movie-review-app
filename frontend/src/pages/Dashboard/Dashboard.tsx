@@ -1,5 +1,4 @@
-// import React, { useState, useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
+// import React from "react";
 // import {
 //   Card,
 //   CardContent,
@@ -9,7 +8,6 @@
 // } from "@/components/ui/card";
 // import { Button } from "@/components/ui/button";
 // import { Separator } from "@/components/ui/separator";
-// import { Skeleton } from "@/components/ui/skeleton";
 // import {
 //   Film,
 //   Clock,
@@ -20,267 +18,151 @@
 //   BarChart,
 //   Loader,
 //   AlertCircle,
+//   Users,
+//   Database,
+//   Gauge,
 // } from "lucide-react";
-// import { useToast } from "@/hooks/use-toast";
-// import { featuredMovies } from "@/data/mockData";
-
-// interface UserData {
-//   username: string;
-//   role: string;
-
-//   memberSince: string;
-//   favoriteGenre: string;
-//   avgRating: number;
-//   totalReviews: number;
-//   moviesWatched: number;
-//   watchlistCount: number;
-//   hoursWatched: number;
-//   recentActivity: { id: number; action: string; time: string }[];
-// }
+// import { useDashboardQuery } from "@/api/dashboard/dashboard.query";
 
 // const Dashboard = () => {
-//   const [isLoading, setIsLoading] = useState(true);
-//   const [userData, setUserData] = useState<UserData | null>(null);
-//   const navigate = useNavigate();
-//   const { toast } = useToast();
-
-//   useEffect(() => {
-//     const fetchDashboardData = async () => {
-//       try {
-//         const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-//         if (!isLoggedIn) {
-//           toast({
-//             title: "Authentication required",
-//             description: "Please sign in to access your dashboard",
-//             variant: "destructive",
-//           });
-//           navigate("/login");
-//           return;
-//         }
-
-//         // Simulate real API call to fetch user dashboard data
-//         const response = await fetch("/api/dashboard"); // Replace with your API endpoint
-//         if (!response.ok) {
-//           throw new Error("Failed to fetch dashboard data");
-//         }
-//         const data: UserData = await response.json();
-//         setUserData(data);
-//       } catch (error) {
-//         console.error("Error fetching dashboard data:", error);
-//         toast({
-//           title: "Error",
-//           description: "Unable to load dashboard data. Please try again.",
-//           variant: "destructive",
-//         });
-//       } finally {
-//         setIsLoading(false);
-//       }
-//     };
-
-//     fetchDashboardData();
-//   }, [navigate, toast]);
+//   const { data, isLoading, isError } = useDashboardQuery();
 
 //   if (isLoading) {
 //     return (
-//       <div className="min-h-screen flex flex-col bg-background text-foreground">
-//         <main className="flex-grow pt-16 flex flex-col items-center justify-center">
-//           <Loader className="h-12 w-12 animate-spin text-primary mb-4" />
-//           <h2 className="text-2xl font-semibold">Loading your dashboard...</h2>
-//           <p className="text-muted-foreground mt-2">
-//             Please wait while we fetch your data
-//           </p>
-//           <div className="container mx-auto px-4 sm:px-6 py-12 mt-8">
-//             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-//               <LoadingSkeleton />
-//               <LoadingSkeleton />
-//               <LoadingSkeleton />
-//               <LoadingSkeleton />
-//             </div>
-//           </div>
-//         </main>
+//       <div className="min-h-screen flex items-center justify-center">
+//         <Loader className="animate-spin h-10 w-10 text-primary" />
 //       </div>
 //     );
 //   }
 
-//   if (!userData) {
+//   if (isError || !data) {
 //     return (
-//       <div className="min-h-screen flex flex-col bg-background text-foreground">
-//         <main className="flex-grow pt-16 flex flex-col items-center justify-center">
-//           <div className="text-center max-w-md mx-auto px-4">
-//             <div className="rounded-full bg-amber-100 dark:bg-amber-900 p-3 w-fit mx-auto mb-4">
-//               <AlertCircle className="h-8 w-8 text-amber-600 dark:text-amber-300" />
-//             </div>
-//             <h2 className="text-2xl font-semibold mb-2">
-//               Unable to load dashboard data
-//             </h2>
-//             <p className="text-muted-foreground mb-6">
-//               Please try again later.
-//             </p>
-//             <Button variant="outline" onClick={() => window.location.reload()}>
-//               Try Again
-//             </Button>
-//           </div>
-//         </main>
+//       <div className="min-h-screen flex items-center justify-center">
+//         <div className="text-center space-y-4">
+//           <AlertCircle className="mx-auto h-10 w-10 text-destructive" />
+//           <p>Something went wrong loading your dashboard.</p>
+//           <Button onClick={() => window.location.reload()}>Try Again</Button>
+//         </div>
 //       </div>
 //     );
 //   }
 
 //   return (
-//     <div className="min-h-screen flex flex-col bg-background text-foreground">
-//       <main className="flex-grow pt-16">
-//         <div className="container mx-auto px-4 sm:px-6 py-12">
-//           <h1 className="text-3xl md:text-4xl font-bold mb-4">Dashboard</h1>
-//           <p className="text-muted-foreground mb-8">
-//             Welcome back, {userData.name}!
-//           </p>
+//     <div className="container mx-auto py-12">
+//       <h1 className="text-3xl font-bold mb-4">Dashboard</h1>
+//       <p className="text-muted-foreground mb-6">
+//         Welcome back, {data.username ?? "Admin"}!
+//       </p>
 
-//           {/* Stats Cards */}
-//           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+//       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+//         {data.role === "user" ? (
+//           <>
 //             <StatCard
 //               title="Movies Watched"
-//               value={String(userData.moviesWatched)}
+//               value={data.moviesWatched!}
 //               icon={Film}
-//               description="All time"
 //             />
 //             <StatCard
 //               title="Watchlist"
-//               value={String(userData.watchlistCount)}
+//               value={data.watchlistCount!}
 //               icon={BookMarked}
-//               description="Movies to watch"
 //             />
-//             <StatCard
-//               title="Reviews"
-//               value={String(userData.totalReviews)}
-//               icon={Star}
-//               description="Written reviews"
-//             />
+//             <StatCard title="Reviews" value={data.totalReviews} icon={Star} />
 //             <StatCard
 //               title="Hours Watched"
-//               value={String(userData.hoursWatched)}
+//               value={data.hoursWatched!}
 //               icon={Clock}
-//               description="This month"
 //             />
-//           </div>
+//           </>
+//         ) : (
+//           <>
+//             <StatCard
+//               title="Total Users"
+//               value={data.totalUsers!}
+//               icon={Users}
+//             />
+//             <StatCard
+//               title="Total Movies"
+//               value={data.totalMovies!}
+//               icon={Database}
+//             />
+//             <StatCard title="Reviews" value={data.totalReviews} icon={Star} />
+//             <StatCard
+//               title="Avg Rating"
+//               value={data.avgRating?.toFixed(2) ?? "0.0"}
+//               icon={Gauge}
+//             />
+//           </>
+//         )}
+//       </div>
 
-//           {/* Main Content */}
-//           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-//             {/* Recent Activity */}
-//             <Card className="lg:col-span-2">
-//               <CardHeader>
-//                 <CardTitle className="flex items-center">
-//                   <BarChart className="mr-2 h-5 w-5" />
-//                   Recent Activity
-//                 </CardTitle>
-//                 <CardDescription>Your latest interactions</CardDescription>
-//               </CardHeader>
-//               <CardContent>
-//                 <div className="space-y-4">
-//                   {userData.recentActivity.map((activity) => (
-//                     <div key={activity.id}>
-//                       <div className="flex items-start justify-between">
-//                         <div className="space-y-1">
-//                           <p className="text-sm font-medium">
-//                             {activity.action}
+//       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+//         <Card className="lg:col-span-2">
+//           <CardHeader>
+//             <CardTitle className="flex items-center">
+//               <BarChart className="mr-2 h-5 w-5" />
+//               Recent Activity
+//             </CardTitle>
+//             <CardDescription>Latest interactions</CardDescription>
+//           </CardHeader>
+//           <CardContent>
+//             {data.recentActivity.length === 0 ? (
+//               <p className="text-muted-foreground text-sm">
+//                 No recent activity.
+//               </p>
+//             ) : (
+//               <div className="space-y-4">
+//                 {data.recentActivity.map((activity) => (
+//                   <div key={activity.id}>
+//                     <div className="flex justify-between items-start">
+//                       <div>
+//                         <p className="text-sm font-medium">{activity.action}</p>
+//                         <p className="text-xs text-muted-foreground">
+//                           {activity.movieTitle && (
+//                             <span>{activity.movieTitle} • </span>
+//                           )}
+//                           {new Date(activity.time).toLocaleString()}
+//                         </p>
+//                         {activity.user && (
+//                           <p className="text-xs text-muted-foreground">
+//                             By: {activity.user}
 //                           </p>
-//                           <p className="text-sm text-muted-foreground">
-//                             {activity.time}
-//                           </p>
-//                         </div>
-//                         <Button variant="ghost" size="icon">
-//                           <ChevronRight className="h-4 w-4" />
-//                         </Button>
+//                         )}
 //                       </div>
-//                       <Separator className="mt-4" />
+//                       <ChevronRight className="h-4 w-4 text-muted-foreground" />
 //                     </div>
-//                   ))}
-//                 </div>
-//                 <div className="mt-6">
-//                   <Button variant="outline" className="w-full">
-//                     View All Activity
-//                   </Button>
-//                 </div>
-//               </CardContent>
-//             </Card>
+//                     <Separator className="mt-2" />
+//                   </div>
+//                 ))}
+//               </div>
+//             )}
+//           </CardContent>
+//         </Card>
 
-//             {/* Profile Summary */}
-//             <Card>
-//               <CardHeader>
-//                 <CardTitle className="flex items-center">
-//                   <User className="mr-2 h-5 w-5" />
-//                   Profile Summary
-//                 </CardTitle>
-//                 <CardDescription>Your reviewer profile</CardDescription>
-//               </CardHeader>
-//               <CardContent>
-//                 <div className="flex flex-col items-center space-y-4">
-//                   <div className="h-20 w-20 rounded-full bg-primary/10 flex items-center justify-center">
-//                     <User className="h-10 w-10 text-primary" />
-//                   </div>
-//                   <div className="text-center">
-//                     <h3 className="text-lg font-medium">{userData.name}</h3>
-//                     <p className="text-sm text-muted-foreground">
-//                       Member since {userData.memberSince}
-//                     </p>
-//                   </div>
-//                   <Separator />
-//                   <div className="w-full space-y-2">
-//                     <div className="flex justify-between">
-//                       <span className="text-sm">Favorite Genre:</span>
-//                       <span className="text-sm font-medium">
-//                         {userData.favoriteGenre}
-//                       </span>
-//                     </div>
-//                     <div className="flex justify-between">
-//                       <span className="text-sm">Average Rating:</span>
-//                       <span className="text-sm font-medium">
-//                         {userData.avgRating}/5
-//                       </span>
-//                     </div>
-//                     <div className="flex justify-between">
-//                       <span className="text-sm">Total Reviews:</span>
-//                       <span className="text-sm font-medium">
-//                         {userData.totalReviews}
-//                       </span>
-//                     </div>
-//                   </div>
-//                   <Button className="w-full">Edit Profile</Button>
-//                 </div>
-//               </CardContent>
-//             </Card>
-//           </div>
-
-//           {/* Recommended Movies */}
-//           <h2 className="text-2xl font-bold mt-12 mb-6">Recommended For You</h2>
-//           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-//             {featuredMovies.slice(0, 4).map((movie) => (
-//               <Card key={movie.id} className="overflow-hidden group">
-//                 <div className="aspect-[2/3] relative">
-//                   <img
-//                     src={movie.posterUrl}
-//                     alt={`${movie.title} poster`}
-//                     className="h-full w-full object-cover transition-transform group-hover:scale-105"
-//                   />
-//                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-//                   <div className="absolute bottom-0 left-0 p-4">
-//                     <h3 className="text-white font-medium">{movie.title}</h3>
-//                     <div className="flex items-center text-yellow-400">
-//                       <Star className="h-3 w-3 fill-current mr-1" />
-//                       <span className="text-xs text-white">
-//                         {movie.rating.toFixed(1)}
-//                       </span>
-//                     </div>
-//                   </div>
-//                 </div>
-//               </Card>
-//             ))}
-//           </div>
-//           <div className="mt-6 text-center">
-//             <Button variant="outline" asChild>
-//               <a href="/movies">See All Recommendations</a>
-//             </Button>
-//           </div>
-//         </div>
-//       </main>
+//         {data.role === "user" && (
+//           <Card>
+//             <CardHeader>
+//               <CardTitle className="flex items-center">
+//                 <User className="mr-2 h-5 w-5" />
+//                 Profile Summary
+//               </CardTitle>
+//               <CardDescription>Your reviewer profile</CardDescription>
+//             </CardHeader>
+//             <CardContent className="space-y-2">
+//               <p className="text-sm">
+//                 <strong>Username:</strong> {data.username}
+//               </p>
+//               <p className="text-sm">
+//                 <strong>Member Since:</strong>{" "}
+//                 {new Date(data.memberSince!).toLocaleDateString()}
+//               </p>
+//               <p className="text-sm">
+//                 <strong>Favorite Genre:</strong> {data.favoriteGenre}
+//               </p>
+//             </CardContent>
+//           </Card>
+//         )}
+//       </div>
 //     </div>
 //   );
 // };
@@ -289,12 +171,10 @@
 //   title,
 //   value,
 //   icon: Icon,
-//   description,
 // }: {
 //   title: string;
-//   value: string;
+//   value: string | number;
 //   icon: React.ElementType;
-//   description: string;
 // }) => (
 //   <Card>
 //     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -303,162 +183,208 @@
 //     </CardHeader>
 //     <CardContent>
 //       <div className="text-2xl font-bold">{value}</div>
-//       <p className="text-xs text-muted-foreground">{description}</p>
 //     </CardContent>
 //   </Card>
 // );
 
-// const LoadingSkeleton = () => (
-//   <Card>
-//     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-//       <Skeleton className="h-4 w-[100px]" />
-//       <Skeleton className="h-4 w-4 rounded-full" />
-//     </CardHeader>
-//     <CardContent>
-//       <Skeleton className="h-8 w-[60px] mb-1" />
-//       <Skeleton className="h-3 w-[100px]" />
-//     </CardContent>
-//   </Card>
-// );
-
-// export default Dashboard;// Dashboard.tsximport React from "react";import React from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+// export default Dashboard;"use client"
+import { useState, useEffect } from "react";
+import { Film, Star, Users, BarChart3, PlusCircle } from "lucide-react";
+import { useAuthStore } from "@/store/auth.store";
+import { Link, useNavigate } from "react-router-dom";
 import {
-  Film,
-  BookMarked,
-  Star,
-  Clock,
-  ChevronRight,
-  Loader,
-  AlertCircle,
-} from "lucide-react";
-import { useDashboardQuery } from "@/api/dashboard/dashboard.query";
+  useGetAllMoviesQuery,
+  // useCreateMovieMutation,
+} from "@/api/movies/movie.mutations";
 
-// Define a type for recent activity items
-type Activity = {
-  id: string;
-  user?: string; // only for admin
-  action: string;
-  movieTitle: string;
-};
+const AdminDashboard = () => {
+  const navigate = useNavigate();
+  const { user, isAuthenticated, isCheckingAuth, logout } = useAuthStore();
+  const [loading, setLoading] = useState(true);
+  const { data: moviesData } = useGetAllMoviesQuery();
+  const [showMovieModal, setShowMovieModal] = useState(false);
+  const [showDeleteModal] = useState(false);
+  // // const [itemToDelete, setItemToDelete] = useState<{
+  //   id: string;
+  //   type: string;
+  // } | null>(null);
 
-export default function Dashboard() {
-  const { data, isLoading, isError } = useDashboardQuery();
+  useEffect(() => {
+    if (!isCheckingAuth) {
+      if (!isAuthenticated || user?.role !== "admin") {
+        navigate("/login");
+      }
+      setLoading(false);
+    }
+  }, [isAuthenticated, isCheckingAuth, navigate, user]);
 
-  if (isLoading) {
+  if (loading || isCheckingAuth) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader className="h-12 w-12 animate-spin text-primary" />
+        Loading...
       </div>
     );
   }
 
-  if (isError || !data) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center">
-        <AlertCircle className="h-12 w-12 text-destructive mb-4" />
-        <p className="text-lg">Failed to load dashboard.</p>
-      </div>
-    );
-  }
+  const stats = [
+    {
+      title: "Total Movies",
+      value: moviesData?.data.length || 0,
+      icon: Film,
+      color: "purple",
+    },
+    { title: "Total Reviews", value: 245, icon: Star, color: "pink" },
+    { title: "Active Users", value: 1543, icon: Users, color: "blue" },
+    { title: "Avg Rating", value: "4.8", icon: BarChart3, color: "green" },
+  ];
 
-  // Admin view
-  if (data.role === "admin") {
-    return (
-      <div className="p-6">
-        <h1 className="text-3xl mb-6">Admin Dashboard</h1>
-        <div className="grid grid-cols-3 gap-4 mb-8">
-          <StatCard title="Users" value={data?.totalUsers} icon={BookMarked} />
-          <StatCard title="Movies" value={data.totalMovies} icon={Film} />
-          <StatCard title="Reviews" value={data.totalReviews} icon={Star} />
+  // const handleDeleteConfirm = async () => {
+  //   if (!itemToDelete) return;
+  //   setShowDeleteModal(false);
+  //   // delete API call here
+  // };
+
+  return (
+    <div className="min-h-screen p-20 bg-gray-50">
+      <header className="bg-white shadow">
+        <div className="max-w-7xl mx-auto px-4 py-6 flex justify-between items-center">
+          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+          <button
+            onClick={logout}
+            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+          >
+            Logout
+          </button>
+        </div>
+      </header>
+
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {stats.map((stat, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-xl shadow p-6 flex items-start space-x-4"
+            >
+              <div className={`p-3 rounded-full bg-${stat.color}-100`}>
+                <stat.icon className={`h-6 w-6 text-${stat.color}-600`} />
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">{stat.title}</p>
+                <p className="text-2xl font-bold">{stat.value}</p>
+              </div>
+            </div>
+          ))}
         </div>
 
-        <Section title="Recent Activity">
-          {(data.recentActivity as Activity[]).map((act) => (
-            <ActivityItem
-              key={act.id}
-              label={`${act.user ?? "Unknown user"} ${act.action}`}
-              sub={act.movieTitle}
-            />
+        {/* Movies Section */}
+        <div className="bg-white shadow rounded-lg">
+          <div className="px-6 py-4 border-b flex justify-between items-center">
+            <h2 className="text-xl font-bold">Manage Movies</h2>
+            <Link
+              to="/dashboard/movies/create-movie"
+              onClick={() => setShowMovieModal(true)}
+              className="flex items-center px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+            >
+              <PlusCircle className="h-5 w-5 mr-2" />
+              Add Movie
+            </Link>
+          </div>
+          <div className="overflow-x-auto">{/* Movies Table here */}</div>
+        </div>
+      </div>
+
+      {/* Modals */}
+      {showMovieModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex">Movie Modal</div>
+      )}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex">Delete Modal</div>
+      )}
+    </div>
+  );
+};
+
+const UserDashboard = () => {
+  const { user, logout } = useAuthStore();
+  const [activeTab, setActiveTab] = useState("watchlist");
+
+  const userStats = [
+    { title: "Watched Movies", value: 42, icon: Film, color: "purple" },
+    { title: "Your Reviews", value: 15, icon: Star, color: "pink" },
+    { title: "Watchlist", value: 23, icon: Users, color: "blue" },
+    { title: "Avg Rating", value: "4.5", icon: BarChart3, color: "green" },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-white shadow">
+        <div className="max-w-7xl mx-auto px-4 py-6 flex justify-between items-center">
+          <h1 className="text-3xl font-bold">Welcome, {user?.username}</h1>
+          <button
+            onClick={logout}
+            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+          >
+            Logout
+          </button>
+        </div>
+      </header>
+
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {userStats.map((stat, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-xl shadow p-6 flex items-start space-x-4"
+            >
+              <div className={`p-3 rounded-full bg-${stat.color}-100`}>
+                <stat.icon className={`h-6 w-6 text-${stat.color}-600`} />
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">{stat.title}</p>
+                <p className="text-2xl font-bold">{stat.value}</p>
+              </div>
+            </div>
           ))}
-        </Section>
-      </div>
-    );
-  }
+        </div>
 
-  // User view
-  return (
-    <div className="p-6">
-      <h1 className="text-3xl mb-6">Welcome back, {data.username}</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <StatCard title="Watched" value={data.moviesWatched ?? 0} icon={Film} />
-        <StatCard
-          title="Watchlist"
-          value={data.watchlistCount ?? 0}
-          icon={BookMarked}
-        />
-        <StatCard title="Reviews" value={data.totalReviews ?? 0} icon={Star} />
-        <StatCard title="Hours" value={data.hoursWatched ?? 0} icon={Clock} />
-      </div>
+        <div className="bg-white shadow rounded-lg">
+          <div className="border-b">
+            <nav className="-mb-px flex">
+              {["watchlist", "reviews"].map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`px-6 py-4 font-medium ${
+                    activeTab === tab
+                      ? "border-b-2 border-purple-500 text-purple-600"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}
+                >
+                  {tab === "watchlist" ? "Watchlist" : "Your Reviews"}
+                </button>
+              ))}
+            </nav>
+          </div>
 
-      <Section title="Recent Activity">
-        {(data.recentActivity as Activity[]).map((act) => (
-          <ActivityItem key={act.id} label={act.action} sub={act.movieTitle} />
-        ))}
-      </Section>
+          <div className="p-6">
+            {activeTab === "watchlist" ? (
+              <div>Your Watchlist Content</div>
+            ) : (
+              <div>Your Reviews Content</div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
-}
+};
 
-// Reusable stat display card
-function StatCard({
-  title,
-  value,
-  icon: Icon,
-}: {
-  title: string;
-  value: number;
-  icon: React.ElementType;
-}) {
-  return (
-    <Card>
-      <CardHeader className="flex justify-between">
-        <CardTitle>{title}</CardTitle>
-        <Icon className="h-5 w-5 text-muted-foreground" />
-      </CardHeader>
-      <CardContent className="text-2xl font-bold">{value}</CardContent>
-    </Card>
-  );
-}
+const DashboardPage = () => {
+  const { user } = useAuthStore();
 
-// Section wrapper
-function Section({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="mb-8">
-      <h2 className="text-xl font-semibold mb-4">{title}</h2>
-      <div className="space-y-3">{children}</div>
-    </div>
-  );
-}
+  if (!user) return null;
 
-// Individual recent activity item
-function ActivityItem({ label, sub }: { label: string; sub?: string | null }) {
-  return (
-    <div className="flex items-center justify-between bg-white p-3 rounded shadow">
-      <div>
-        <p className="font-medium">{label}</p>
-        {sub && <p className="text-sm text-muted-foreground">{sub}</p>}
-      </div>
-      <Button variant="ghost" size="icon">
-        <ChevronRight />
-      </Button>
-    </div>
-  );
-}
+  return user.role === "admin" ? <AdminDashboard /> : <UserDashboard />;
+};
+
+export default DashboardPage;
