@@ -1,4 +1,5 @@
 import { env } from "@/utils/config";
+import { getAccessToken } from "@/utils/getAccessToken";
 type User = {
   id: string;
   email: string;
@@ -43,7 +44,7 @@ export const register = async (data: RegisterData) => {
 
 export const login = async (data: RegisterData) => {
   const result = await request<AuthResponse>(
-    `${env.BACKEND_URL}/api/auth/register`,
+    `${env.BACKEND_URL}/api/auth/login`,
     {
       method: "POST",
       body: JSON.stringify(data),
@@ -54,23 +55,25 @@ export const login = async (data: RegisterData) => {
 };
 
 export const getCurrentUser = async () => {
-  const token = localStorage.getItem("accessToken");
+  const token = getAccessToken();
   if (!token) throw new Error("No access token found");
+
   return await request<User>(`${env.BACKEND_URL}/api/auth/me`, {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: token,
     },
   });
 };
 
 export const logout = async () => {
-  const token = localStorage.getItem("accessToken");
+  const token = getAccessToken();
   if (!token) throw new Error("No access token found");
+
   await request(`${env.BACKEND_URL}/api/auth/logout`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: token,
     },
   });
   localStorage.removeItem("accessToken");

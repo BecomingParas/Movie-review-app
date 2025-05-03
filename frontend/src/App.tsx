@@ -91,7 +91,7 @@ const router = createBrowserRouter([
         element: <AdminRoute />,
         children: [
           {
-            path: "/movies/create-movie",
+            path: "/dashboard/movies/create-movie",
             element: <CreateMovie />,
           },
         ],
