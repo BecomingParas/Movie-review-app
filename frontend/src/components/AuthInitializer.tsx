@@ -1,6 +1,7 @@
 import { useAuthStore } from "@/store/auth.store";
+import { setupAuthInterceptor } from "@/utils/setupAuthInterceptor";
 import { Loader } from "lucide-react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export const AuthInitializer = ({
   children,
@@ -11,6 +12,7 @@ export const AuthInitializer = ({
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    setupAuthInterceptor();
     initialize().finally(() => setReady(true));
   }, [initialize]);
   if (isCheckingAuth || !ready) {

@@ -1,21 +1,19 @@
 import { env } from "@/utils/config";
-
-export type User = {
+type User = {
   id: string;
   email: string;
   username: string;
   role: string;
 };
-
-export type LoginData = { email: string; password: string };
 export type RegisterData = {
+  username: string;
   email: string;
   password: string;
-  username: string;
 };
-
-type AuthResponse = { user: User; token: string };
-
+type AuthResponse = {
+  user: User;
+  token: string;
+};
 async function request<T>(url: string, options?: RequestInit): Promise<T> {
   const response = await fetch(url, {
     ...options,
@@ -26,14 +24,14 @@ async function request<T>(url: string, options?: RequestInit): Promise<T> {
   });
   if (!response.ok) {
     const errorBody = await response.json();
-    throw new Error(errorBody.message || "Something went wrong");
+    throw new Error(errorBody.message || "something went wrong");
   }
   return response.json() as Promise<T>;
 }
 
-export const login = async (data: LoginData) => {
+export const register = async (data: RegisterData) => {
   const result = await request<AuthResponse>(
-    `${env.BACKEND_URL}/api/auth/login`,
+    `${env.BACKEND_URL}/api/auth/register`,
     {
       method: "POST",
       body: JSON.stringify(data),
@@ -43,7 +41,7 @@ export const login = async (data: LoginData) => {
   return result;
 };
 
-export const register = async (data: RegisterData) => {
+export const login = async (data: RegisterData) => {
   const result = await request<AuthResponse>(
     `${env.BACKEND_URL}/api/auth/register`,
     {
@@ -58,11 +56,10 @@ export const register = async (data: RegisterData) => {
 export const getCurrentUser = async () => {
   const token = localStorage.getItem("accessToken");
   if (!token) throw new Error("No access token found");
-
   return await request<User>(`${env.BACKEND_URL}/api/auth/me`, {
     method: "GET",
     headers: {
-      Authorization: `${token}`,
+      Authorization: `Bearer ${token}`,
     },
   });
 };
@@ -70,14 +67,12 @@ export const getCurrentUser = async () => {
 export const logout = async () => {
   const token = localStorage.getItem("accessToken");
   if (!token) throw new Error("No access token found");
-
   await request(`${env.BACKEND_URL}/api/auth/logout`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-
   localStorage.removeItem("accessToken");
 };
 
