@@ -69,7 +69,7 @@ async function updateMovie(
 
 async function getAllMovie() {
   try {
-    const movies = await MovieModel.find().lean();
+    const movies = await MovieModel.find();
     return movies;
   } catch (error: any) {
     throw new Error(`Failed to fetch movies: ${error.message}`);
