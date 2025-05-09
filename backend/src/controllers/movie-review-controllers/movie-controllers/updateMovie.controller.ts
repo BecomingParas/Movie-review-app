@@ -31,6 +31,7 @@ export async function updateMovieController(
       poster_url: body.poster_url,
       video_url: body.video_url,
       category: body.category,
+      duration: body.duration,
     });
     res.status(200).json({
       message: "Movie updated successfully",

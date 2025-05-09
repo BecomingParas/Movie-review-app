@@ -15,7 +15,6 @@ export async function authMiddleware(
       res.status(401).json("Authorization token not provided or invalid");
       return;
     }
-    console.log("Authorization Headers: ", authorizationHeader);
 
     const parts = authorizationHeader.trim().split(" ").filter(Boolean);
     let token: string;
