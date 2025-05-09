@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { UserModel } from "../model/user.model";
 import { ReviewModel } from "../model/review.model";
 import { MovieModel } from "../model/movie.model";
-import { AuditModel } from "../model/userActivity.model";
+import { UserActivityModel } from "../model/userActivity.model";
 import mongoose from "mongoose";
 
 // Type Definitions
@@ -57,7 +57,7 @@ export async function getDashboard(req: Request, res: Response) {
 
       const averageRating = avgRatingResult[0]?.avg || 0;
 
-      const recentActivity = await AuditModel.find()
+      const recentActivity = await UserActivityModel.find()
         .sort({ createdAt: -1 })
         .limit(5)
         .populate<{ userId: PopulatedUser }>("userId", "username")
@@ -110,7 +110,7 @@ export async function getDashboard(req: Request, res: Response) {
         ? userReviews.reduce((sum, r) => sum + r.rating, 0) / userReviews.length
         : 0;
 
-    const recentActivity = await AuditModel.find({ userId })
+    const recentActivity = await UserActivityModel.find({ userId })
       .sort({ createdAt: -1 })
       .limit(5)
       .populate<{ movieId: PopulatedMovie }>("movieId", "title")

@@ -11,21 +11,28 @@ export type TCreateMovieOutput = {
   };
 };
 
+export type TGetAllMoviesOutput = {
+  message: string;
+  data: TMovie[];
+};
+
+// get token for auth
+
+function getAuthToken(): string {
+  const rawToken = localStorage.getItem("accessToken");
+  if (!rawToken) throw new Error("No authentication token found");
+  return rawToken.startsWith("Bearer ") ? rawToken : `Bearer ${rawToken}`;
+}
+
+// create movie
+
 export async function createMovie(
   input: TCreateMovieInput
 ): Promise<TCreateMovieOutput> {
-  const rawToken = localStorage.getItem("accessToken");
-  const token = rawToken?.startsWith("Bearer ")
-    ? rawToken
-    : `Bearer ${rawToken}`;
-  // If no token found
-  if (!token) {
-    throw new Error("No authentication token found");
-  }
-  const res = await fetch(`${env.BACKEND_URL}/api/dashboard/movies/create`, {
+  const res = await fetch(`${env.BACKEND_URL}/api/movies/create`, {
     method: "POST",
     headers: {
-      Authorization: token,
+      Authorization: getAuthToken(),
     },
     body: input,
   });
@@ -37,10 +44,27 @@ export async function createMovie(
   return data;
 }
 
-export type TGetAllMoviesOutput = {
-  message: string;
-  data: TMovie[];
-};
+// update movie
+
+export async function updateMovie(
+  movieId: string,
+  input: FormData
+): Promise<TCreateMovieOutput> {
+  const res = await fetch(`${env.BACKEND_URL}/api/movies/update/${movieId}`, {
+    method: "PUT",
+    headers: {
+      Authorization: getAuthToken(),
+    },
+    body: input,
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.message || "Failed to update movie");
+  }
+  return data;
+}
+
+// get all movies
 
 export async function getAllMovies(): Promise<TGetAllMoviesOutput> {
   const res = await fetch(`${env.BACKEND_URL}/api/movies`);
@@ -50,5 +74,23 @@ export async function getAllMovies(): Promise<TGetAllMoviesOutput> {
   }
   console.log(data);
 
+  return data;
+}
+
+// delete movie
+
+export async function deleteMovie(
+  movieId: string
+): Promise<Omit<TCreateMovieOutput, "data">> {
+  const res = await fetch(`${env.BACKEND_URL}/api/movies/delete/${movieId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: getAuthToken(),
+    },
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.message || "Failed to delete movie");
+  }
   return data;
 }

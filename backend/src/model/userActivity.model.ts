@@ -39,7 +39,7 @@ auditSchema.statics.findRecentActivity = function () {
     .populate("movieId", "title");
 };
 
-export const AuditModel = mongoose.model<AuditDocument, AuditModelInterface>(
-  "Audit",
-  auditSchema
-);
+export const UserActivityModel = mongoose.model<
+  AuditDocument,
+  AuditModelInterface
+>("Audit", auditSchema);
