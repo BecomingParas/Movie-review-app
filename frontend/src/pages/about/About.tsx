@@ -53,10 +53,10 @@ function AboutPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white pt-16">
+    <div className="min-h-screen bg-white text-black dark:bg-gray-900 dark:text-white pt-16">
       {/* Hero Section */}
       <div className="relative py-20">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/50 to-purple-900/50"></div>
+        <div className="absolute inset-0  dark:bg-gradient-to-r from-blue-900/50 to-purple-900/50"></div>
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
@@ -66,7 +66,7 @@ function AboutPage() {
         ></div>
         <div className="relative container mx-auto px-4 text-center">
           <h1 className="text-5xl font-bold mb-6">About MovieReviews</h1>
-          <p className="text-xl text-gray-200 max-w-2xl mx-auto">
+          <p className="text-xl  max-w-2xl mx-auto">
             Your ultimate destination for discovering, discussing, and sharing
             your love for cinema.
           </p>
@@ -89,22 +89,30 @@ function AboutPage() {
         {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
           {features.map((feature, index) => (
-            <div key={index} className="bg-gray-800 rounded-lg p-6 text-center">
+            <div
+              key={index}
+              className="bg-pink-100  shadow dark:bg-gray-800 rounded-lg p-6 text-center"
+            >
               <div className="inline-block p-3 bg-blue-500 rounded-full mb-4">
                 <feature.icon className="text-white" size={24} />
               </div>
               <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-              <p className="text-gray-400">{feature.description}</p>
+              <p className="text-black dark:text-gray-400">
+                {feature.description}
+              </p>
             </div>
           ))}
         </div>
 
         {/* Team Section */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 ">
           <h2 className="text-3xl font-bold mb-12">Meet Our Team</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {team.map((member, index) => (
-              <div key={index} className="bg-gray-800 rounded-lg p-6">
+              <div
+                key={index}
+                className="bg-pink-100  shadow dark:bg-gray-800 rounded-lg p-6"
+              >
                 <img
                   src={member.image}
                   alt={member.name}
@@ -112,21 +120,21 @@ function AboutPage() {
                 />
                 <h3 className="text-xl font-semibold mb-1">{member.name}</h3>
                 <p className="text-blue-400 mb-2">{member.role}</p>
-                <p className="text-gray-400">{member.bio}</p>
+                <p className="text-black dark:text-gray-400">{member.bio}</p>
               </div>
             ))}
           </div>
         </div>
 
         {/* Call to Action */}
-        <div className="bg-gray-800 rounded-lg p-8 text-center">
+        <div className="bg-pink-100  shadow dark:bg-gray-800 rounded-lg p-8 text-center">
           <h2 className="text-3xl font-bold mb-4">Join Our Community</h2>
-          <p className="text-gray-400 mb-6 max-w-2xl mx-auto">
+          <p className="text-black dark:text-gray-400 mb-6 max-w-2xl mx-auto">
             Become a part of our growing community of movie enthusiasts. Share
             your reviews, discover new films, and connect with fellow movie
             lovers.
           </p>
-          <button className="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 transition-colors">
+          <button className="bg-blue-500 text-black dark:text-gray-400 px-8 py-3 rounded-lg hover:bg-blue-600 transition-colors">
             Get Started
           </button>
         </div>
