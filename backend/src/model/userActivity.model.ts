@@ -1,4 +1,10 @@
-import mongoose from "mongoose";
+import mongoose, {
+  Schema,
+  Document,
+  Model,
+  HydratedDocument,
+  QueryWithHelpers,
+} from "mongoose";
 
 interface AuditDocument {
   userId: mongoose.Types.ObjectId;
@@ -7,19 +13,23 @@ interface AuditDocument {
   details?: string;
 }
 
-interface AuditModelInterface extends mongoose.Model<AuditDocument> {
-  findRecentActivity(): Promise<mongoose.HydratedDocument<AuditDocument>[]>;
+interface AuditModelInterface extends Model<AuditDocument> {
+  findRecentActivity(): QueryWithHelpers<
+    HydratedDocument<AuditDocument>[],
+    HydratedDocument<AuditDocument>,
+    {}
+  >;
 }
 
-const auditSchema = new mongoose.Schema<AuditDocument, AuditModelInterface>(
+const auditSchema = new Schema<AuditDocument, AuditModelInterface>(
   {
     userId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
     movieId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Movie",
     },
     action: {
@@ -31,11 +41,12 @@ const auditSchema = new mongoose.Schema<AuditDocument, AuditModelInterface>(
   { timestamps: true }
 );
 
+// Static method returning a Mongoose Query, not a Promise
 auditSchema.statics.findRecentActivity = function () {
   return this.find()
     .sort({ createdAt: -1 })
     .limit(5)
-    .populate("userId", "username")
+    .populate("userId", "username email")
     .populate("movieId", "title");
 };
 
