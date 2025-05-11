@@ -11,27 +11,31 @@ import { reviewAccessMiddleware } from "../middlewares/reviewAccess.middleware";
 export function createReviewRoutes(app: Express) {
   //mutation
   app.post(
-    "/reviews/create",
+    "/api/reviews/create",
     authMiddleware,
     roleMiddleware(["admin", "user"]),
     createReviewController
   );
   app.put(
-    "/reviews/update/:reviewId",
+    "/api/reviews/update/:reviewId",
     authMiddleware,
     roleMiddleware(["admin", "user"]),
     reviewAccessMiddleware,
     updateReviewController
   );
   app.delete(
-    "/reviews/delete/:reviewId",
+    "/api/reviews/delete/:reviewId",
     authMiddleware,
     roleMiddleware(["admin", "user"]),
     deleteReviewController
   );
 
   //queries
-  app.get("/reviews", authMiddleware, getAllReviewController);
-  app.get("/reviews/:reviewId", authMiddleware, getAllReviewController);
-  app.get("/reviews/:movieId", authMiddleware, getReviewByMovieIdController);
+  app.get("/api/reviews", authMiddleware, getAllReviewController);
+  app.get("/api/reviews/:reviewId", authMiddleware, getAllReviewController);
+  app.get(
+    "/api/reviews/:movieId",
+    authMiddleware,
+    getReviewByMovieIdController
+  );
 }

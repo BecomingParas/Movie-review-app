@@ -12,6 +12,7 @@ export async function fetchDashboardData(): Promise<DashboardResponse> {
   });
 
   const data = await res.json();
+  console.log("dashboard", data);
   if (!res.ok) throw new Error(data.message);
   return data;
 }

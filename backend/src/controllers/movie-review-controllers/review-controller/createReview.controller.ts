@@ -30,12 +30,12 @@ export async function createReviewController(
     }
 
     await reviewServices.createReview({
-      movie_id: parsed.data.movie_id,
+      movieId: parsed.data.movieId,
       userId: loggedinUser.id,
       rating: parsed.data.rating,
       comments: parsed.data.comments,
     });
-    await updateMovieAverageRating(parsed.data.movie_id);
+    await updateMovieAverageRating(parsed.data.movieId);
     res.json({
       message: "Review added successfully.",
     });

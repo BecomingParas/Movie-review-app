@@ -29,7 +29,7 @@ export const createMovieSchema = z.object({
 });
 
 export const createReviewSchema = z.object({
-  movie_id: z.string().min(1, "Movie ID is required"),
+  movieId: z.string().min(1, "Movie ID is required"),
   rating: z
     .number()
     .min(1, "Rating must be at least 1")

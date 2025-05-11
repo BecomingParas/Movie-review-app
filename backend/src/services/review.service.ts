@@ -8,7 +8,7 @@ import {
 type TReviews = {
   id: string;
   userId: string;
-  movie_id: string;
+  movieId: string;
   rating: number;
   comments: string;
 };
@@ -18,7 +18,7 @@ type TReviews = {
 async function createReview(input: Omit<TReviews, "id">) {
   const review = new ReviewModel({
     userId: input.userId,
-    movie_id: input.movie_id,
+    movie_id: input.movieId,
     rating: input.rating,
     comments: input.comments,
   });
