@@ -52,7 +52,7 @@ const Watchlist = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-900 text-foreground">
+    <div className="min-h-screen flex flex-col bg-white text-black dark:bg-gray-900 dark:text-white">
       <main className="flex-grow pt-16">
         <div className="container mx-auto px-4 sm:px-6 py-12">
           <h1 className="text-3xl md:text-4xl font-bold mb-8">My Watchlist</h1>
@@ -61,7 +61,10 @@ const Watchlist = () => {
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 {watchlistMovies.map((movie) => (
-                  <Card key={movie.id} className="overflow-hidden bg-gray-800">
+                  <Card
+                    key={movie.id}
+                    className="overflow-hidden dark:bg-gray-800"
+                  >
                     <div className="flex flex-col sm:flex-row">
                       <div className="w-full sm:w-1/3 h-48 sm:h-auto">
                         <img

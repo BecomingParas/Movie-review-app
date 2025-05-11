@@ -1,27 +1,46 @@
 // src/api/dashboard/dashboard.types.ts
+interface Profile {
+  username: string;
+  email: string;
+}
+interface ActivityItemBase {
+  id: string;
+  title: string;
+  duration: string;
+}
+interface UserActivityItem extends ActivityItemBase {
+  action: string;
+}
 
-export type DashboardResponse = {
-  role: "admin" | "user";
-  username?: string;
+interface AdminActivityItem extends ActivityItemBase {
+  action: string;
+}
 
-  // Admin stats
-  totalUsers: number;
-  totalMovies: number;
-  totalReviews: number;
-  avgRating?: number; // ✅ Added
+export interface UserDashboardData {
+  role: "user";
+  profile: Profile;
+  stats: {
+    memberSince: string;
+    favoriteGenre: string | null;
+    avgRating: number;
+    totalReviews: number;
+    moviesWatched: number;
+    watchlistCount: number;
+    hoursWatched: number;
+  };
+  recentActivity: UserActivityItem[];
+}
 
-  // User stats
-  moviesWatched?: number;
-  watchlistCount?: number;
-  hoursWatched?: number;
-  memberSince?: string; // ✅ Added
-  favoriteGenre?: string; // ✅ Added
+export interface AdminDashboardData {
+  role: "admin";
+  profile: Profile;
+  stats: {
+    totalUsers: number;
+    totalMovies: number;
+    totalReviews: number;
+    avgRating: number;
+  };
+  recentActivity: AdminActivityItem[];
+}
 
-  recentActivity: {
-    id: string;
-    user?: string;
-    action: string;
-    movieTitle?: string;
-    time: string; // ✅ Added
-  }[];
-};
+export type DashboardResponse = UserDashboardData | AdminDashboardData;

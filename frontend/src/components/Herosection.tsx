@@ -35,7 +35,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   return (
     <section
       className={cn(
-        "relative h-[70vh] min-h-[500px]  w-full flex items-center justify-center overflow-hidden",
+        "relative h-[70vh] min-h-[500px]  w-full flex items-center justify-center overflow-hidden bg-white text-black dark:bg-gray-900 dark:text-white",
         className
       )}
     >

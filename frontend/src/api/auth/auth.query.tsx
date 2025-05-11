@@ -6,7 +6,7 @@ import {
   TLoginUserOutput,
   TSignUpUserInput,
   TSignUpUserOutput,
-} from "./fetch";
+} from "./auth.fetch";
 
 // for signup api
 
@@ -33,5 +33,15 @@ export function useLoginUserMutation() {
     onError: (error) => {
       console.error("Login failed: ", error.message);
     },
+  });
+}
+
+import { useQuery } from "@tanstack/react-query";
+import { getMe, TMeResponse } from "./auth.fetch";
+
+export function useMeQuery() {
+  return useQuery<TMeResponse, Error>({
+    queryKey: ["me"],
+    queryFn: getMe,
   });
 }

@@ -30,7 +30,7 @@ const Index = () => {
   ] as const;
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-900">
+    <div className="min-h-screen flex flex-col  bg-white text-black dark:bg-gray-900 dark:text-white">
       <main className="flex-grow pt-16">
         <HeroSection
           title="Discover & Share Your Thoughts on Films"

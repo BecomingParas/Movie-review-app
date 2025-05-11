@@ -11,7 +11,7 @@ import Footer from "./components/layout/Footer";
 import Navbar from "./components/layout/Navbar";
 import Reviews from "./pages/review/review";
 import Movies from "./pages/movie/movies";
-import DashboardPage from "./pages/Dashboard/Dashboard";
+import DashboardPage from "./pages/Dashboard/DashboardPage";
 import Watchlist from "./pages/watchlist/WatchList";
 import { useEffect } from "react";
 import CreateMovie from "./components/movie-form/movie-create";
