@@ -4,6 +4,7 @@ import { UserModel } from "../model/user.model";
 import { ReviewModel } from "../model/review.model";
 import { MovieModel } from "../model/movie.model";
 import { UserActivityModel } from "../model/userActivity.model";
+
 interface PopulatedUser {
   _id: mongoose.Types.ObjectId;
   username: string;
@@ -17,8 +18,8 @@ interface PopulatedMovie {
 
 type LeanAuditDocument = {
   _id: mongoose.Types.ObjectId;
-  userId?: PopulatedUser;
-  movieId?: PopulatedMovie;
+  userId?: PopulatedUser; // Made userId optional as it's populated
+  movieId?: PopulatedMovie; // Made movieId optional
   action: string;
   createdAt: Date;
   updatedAt: Date;
@@ -27,14 +28,18 @@ type LeanAuditDocument = {
 function isPopulatedUser(user: any): user is PopulatedUser {
   return (
     user &&
-    user.username &&
-    user.email &&
+    typeof user.username === "string" && // Added typeof checks for robustness
+    typeof user.email === "string" &&
     user._id instanceof mongoose.Types.ObjectId
   );
 }
 
 function isPopulatedMovie(movie: any): movie is PopulatedMovie {
-  return movie && movie.title && movie._id instanceof mongoose.Types.ObjectId;
+  return (
+    movie &&
+    typeof movie.title === "string" &&
+    movie._id instanceof mongoose.Types.ObjectId
+  );
 }
 
 export async function getDashboard(req: Request, res: Response): Promise<void> {
@@ -67,7 +72,7 @@ export async function getDashboard(req: Request, res: Response): Promise<void> {
         ReviewModel.aggregate([
           { $group: { _id: null, avg: { $avg: "$rating" } } },
         ]),
-        UserActivityModel.findRecentActivity().lean<LeanAuditDocument[]>(),
+        UserActivityModel.findRecentActivity().lean<LeanAuditDocument[]>(), // Assuming findRecentActivity populates correctly
       ]);
 
       const averageRating = avgRatingResult[0]?.avg || 0;
@@ -87,14 +92,16 @@ export async function getDashboard(req: Request, res: Response): Promise<void> {
         recentActivity: recentActivity.map((a) => ({
           id: a._id,
           action: `${
-            isPopulatedUser(a.userId) ? a.userId.username : "Unknown"
+            isPopulatedUser(a.userId) ? a.userId.username : "Unknown User" // Changed to "Unknown User" for clarity
           } ${a.action}`,
-          movieTitle: isPopulatedMovie(a.movieId) ? a.movieId.title : "Unknown",
+          movieTitle: isPopulatedMovie(a.movieId) ? a.movieId.title : "N/A", // Changed to "N/A" for clarity
           time: a.createdAt,
         })),
       });
+      return; // <--- ***** ADD THIS RETURN STATEMENT *****
     }
 
+    // This part will now only execute if role is NOT "admin"
     const userReviews = await ReviewModel.find({ userId });
 
     const stats = user.stats || {
@@ -109,10 +116,10 @@ export async function getDashboard(req: Request, res: Response): Promise<void> {
         ? userReviews.reduce((sum, r) => sum + r.rating, 0) / userReviews.length
         : 0;
 
-    const recentActivity = await UserActivityModel.find({ userId })
+    const recentActivityForUser = await UserActivityModel.find({ userId }) // Renamed variable to avoid confusion
       .sort({ createdAt: -1 })
       .limit(5)
-      .populate<{ movieId: PopulatedMovie }>("movieId", "title")
+      .populate<{ movieId: PopulatedMovie }>("movieId", "title") // Assuming this populates movieId correctly
       .lean<LeanAuditDocument[]>();
 
     res.json({
@@ -130,15 +137,21 @@ export async function getDashboard(req: Request, res: Response): Promise<void> {
         watchlistCount: stats.watchList,
         hoursWatched: stats.hoursWatched,
       },
-      recentActivity: recentActivity.map((a) => ({
+      recentActivity: recentActivityForUser.map((a) => ({
+        // Used renamed variable
         id: a._id,
         action: a.action,
-        movieTitle: isPopulatedMovie(a.movieId) ? a.movieId.title : "Unknown",
+        movieTitle: isPopulatedMovie(a.movieId) ? a.movieId.title : "N/A", // Changed to "N/A" for clarity
         time: a.createdAt,
       })),
     });
+    // No explicit return needed here as it's the end of the function's successful path
   } catch (err) {
     console.error("Dashboard Error:", err);
-    res.status(500).json({ message: "Server error" });
+    // It's good practice to check if headers have already been sent before trying to send an error response,
+    // though with the fix above, this specific scenario of ERR_HTTP_HEADERS_SENT being caught here should be resolved.
+    if (!res.headersSent) {
+      res.status(500).json({ message: "Server error" });
+    }
   }
 }

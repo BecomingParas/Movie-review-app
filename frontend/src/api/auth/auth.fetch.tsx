@@ -72,3 +72,29 @@ export async function loginUser(
 
   return data as TLoginUserOutput;
 }
+
+export type TMeResponse = {
+  username: string;
+  email: string;
+  id: string;
+  role?: string;
+};
+
+export async function getMe(): Promise<TMeResponse> {
+  const token = localStorage.getItem("accessToken");
+  if (!token) throw new Error("No access token found");
+
+  const res = await fetch(`${env.BACKEND_URL}/api/auth/me`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token, // Bearer token format already included
+    },
+    credentials: "include",
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message);
+
+  return data;
+}

@@ -13,10 +13,10 @@ const Movies = () => {
   );
   const recentMovies = movies.filter((movie) => movie.category === "recent");
   return (
-    <div className="min-h-screen flex flex-col bg-gray-900">
+    <div className="min-h-screen flex flex-col bg-white text-black dark:bg-gray-900 dark:text-white">
       <main className="flex-grow pt-16">
         <div className="container mx-auto px-4 sm:px-6 py-12">
-          <h1 className="text-3xl md:text-4xl font-bold mb-8 text-white">
+          <h1 className="text-3xl md:text-4xl font-bold mb-8 ">
             Movie Collection
           </h1>
           {isLoading ? (

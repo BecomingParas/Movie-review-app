@@ -1,5 +1,6 @@
 import { useGetAllMoviesQuery } from "@/api/movies/movie.mutations";
 import { useAuthStore } from "@/store/auth.store";
+import { AdminDashboardData } from "@/types/dashboard.types";
 import { TMovie } from "@/types/movies.types";
 import {
   BarChart3,
@@ -18,11 +19,15 @@ interface StatItem {
   icon: ComponentType<{ className?: string }>;
   color: "purple" | "pink" | "blue" | "green";
 }
-const AdminDashboard = () => {
+const AdminDashboard = ({ data }: { data: AdminDashboardData }) => {
   const navigate = useNavigate();
   const { user, isAuthenticated, isCheckingAuth, logout } = useAuthStore();
-  const [loading, setLoading] = useState(true);
-  const { data: moviesData } = useGetAllMoviesQuery();
+  const [authLoading, setAuthLoading] = useState(true);
+  const {
+    data: moviesQueryResult,
+    isLoading: moviesLoading,
+    isError: moviesError,
+  } = useGetAllMoviesQuery();
   const [showMovieModal, setShowMovieModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<TMovie | null>(null);
@@ -32,7 +37,7 @@ const AdminDashboard = () => {
       if (!isAuthenticated || user?.role !== "admin") {
         navigate("/login");
       }
-      setLoading(false);
+      setAuthLoading(false);
     }
   }, [isAuthenticated, isCheckingAuth, navigate, user]);
 
@@ -42,41 +47,72 @@ const AdminDashboard = () => {
   };
 
   const handleDeleteConfirmation = (movieId: string) => {
-    setSelectedMovie(moviesData?.data.find((m) => m._id === movieId) || null);
+    const movieToSelect =
+      moviesQueryResult?.data.find((m) => m._id === movieId) || null;
+    setSelectedMovie(movieToSelect);
     setShowDeleteModal(true);
   };
 
   const handleDeleteMovie = async () => {
     if (!selectedMovie) return;
     // Add your delete API call here
+    console.log("Deleting movie: ", selectedMovie._id);
+
     setShowDeleteModal(false);
+    setSelectedMovie(null);
   };
 
-  if (loading || isCheckingAuth) {
+  if (authLoading || isCheckingAuth || moviesLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        Loading...
+        Loading Admin Dashboard...
       </div>
     );
   }
 
-  const stats: StatItem[] = [
+  if (moviesError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Error loading movies. Please try again
+      </div>
+    );
+  }
+
+  const dashboardStats: StatItem[] = [
     {
       title: "Total Movies",
-      value: moviesData?.data.length || 0,
+      value: data.stats.totalMovies,
       icon: Film,
       color: "purple",
     },
-    { title: "Total Reviews", value: 245, icon: Star, color: "pink" },
-    { title: "Active Users", value: 1543, icon: Users, color: "blue" },
-    { title: "Avg Rating", value: "4.8", icon: BarChart3, color: "green" },
+    {
+      title: "Total Reviews",
+      value: data.stats.totalReviews,
+      icon: Star,
+      color: "pink",
+    },
+    {
+      title: "Active Users",
+      value: data.stats.totalUsers,
+      icon: Users,
+      color: "blue",
+    },
+    {
+      title: "Avg Rating",
+      value: data.stats.avgRating.toFixed(1),
+      icon: BarChart3,
+      color: "green",
+    },
   ];
+  const moviesForTable = moviesQueryResult?.data || [];
 
   return (
-    <div className="min-h-screen p-20 bg-gray-50">
+    <div className=" bg-[rgb(var(--background))] text-[rgb(var(--foreground))] transition-colors min-h-screen p-20 ">
       <header className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-4 py-6 flex justify-between items-center">
-          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+          <h1 className="text-3xl font-bold">
+            Admin Dashboard ({data.profile.username})
+          </h1>
           <button
             onClick={logout}
             className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
@@ -88,7 +124,7 @@ const AdminDashboard = () => {
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {stats.map((stat, index) => (
+          {dashboardStats.map((stat, index) => (
             <div
               key={index}
               className="bg-white rounded-xl shadow p-6 flex items-start space-x-4"
@@ -139,8 +175,8 @@ const AdminDashboard = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {moviesData?.data && moviesData.data.length > 0 ? (
-                  moviesData.data.map((movie: TMovie) => (
+                {moviesForTable.length > 0 ? (
+                  moviesForTable.map((movie: TMovie) => (
                     <tr key={movie._id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">

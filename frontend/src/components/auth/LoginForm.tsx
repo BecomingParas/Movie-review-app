@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import z from "zod";
-import { useLoginUserMutation } from "../../api/auth/query";
+import { useLoginUserMutation } from "../../api/auth/auth.query";
 import { errorToast, successToast } from "../toaster";
 import { useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff, FiFilm, FiStar, FiUsers } from "react-icons/fi";

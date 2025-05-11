@@ -24,7 +24,7 @@ const Reviews = () => {
   }));
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white text-black dark:bg-gray-900 dark:text-white">
       <main className="flex-grow pt-16">
         <div className="container mx-auto px-4 sm:px-6 py-12">
           <h1 className="text-3xl md:text-4xl font-bold mb-8">
@@ -33,7 +33,10 @@ const Reviews = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {mockReviews.map((review) => (
-              <Card key={review.id} className="animate-fade-in">
+              <Card
+                key={review.id}
+                className="animate-fade-in dark:bg-gray-800"
+              >
                 <CardHeader className="pb-3">
                   <div className="flex justify-between items-start">
                     <div className="flex items-center space-x-4">

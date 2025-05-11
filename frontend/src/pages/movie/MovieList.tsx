@@ -10,7 +10,7 @@ interface MovieListProps {
 
 const MovieList: React.FC<MovieListProps> = ({ title, className, movies }) => {
   return (
-    <section className={cn("py-10 px-4", className)}>
+    <section className={cn("py-10 px-4 ", className)}>
       <div className="container px-4 sm:px-6 mx-auto">
         {title && <h2 className="text-2xl font-bold mb-6">{title}</h2>}
       </div>
