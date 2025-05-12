@@ -93,7 +93,10 @@ const Contact = () => {
                           required
                         ></textarea>
                       </div>
-                      <Button type="submit" className="w-full sm:w-auto">
+                      <Button
+                        type="submit"
+                        className="w-full sm:w-auto bg-blue-500 hover:bg-blue-700 text-white"
+                      >
                         Send Message
                       </Button>
                     </form>

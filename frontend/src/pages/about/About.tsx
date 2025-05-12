@@ -77,7 +77,7 @@ function AboutPage() {
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-3xl mx-auto text-center mb-16">
           <h2 className="text-3xl font-bold mb-6">Our Mission</h2>
-          <p className="text-gray-400 text-lg">
+          <p className="text-black dark:text-gray-400  text-lg">
             At MovieReviews, we believe that every movie has a story to tell,
             and every viewer has a unique perspective to share. Our mission is
             to create a vibrant community where movie enthusiasts can discover

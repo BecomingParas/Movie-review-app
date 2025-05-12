@@ -45,12 +45,11 @@ function Footer() {
               Your ultimate destination for discovering, discussing, and sharing
               your love for cinema.
             </p>
-            <div className="flex space-x-4">
+            <div className="flex space-x-4 text-black dark:text-white transition-colors">
               <a
                 href="https://github.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors"
               >
                 <FiGithub size={20} />
               </a>
@@ -58,7 +57,6 @@ function Footer() {
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors"
               >
                 <FiTwitter size={20} />
               </a>
@@ -66,7 +64,6 @@ function Footer() {
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors"
               >
                 <FiLinkedin size={20} />
               </a>

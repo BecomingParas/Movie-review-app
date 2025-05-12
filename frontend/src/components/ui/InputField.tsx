@@ -4,7 +4,7 @@ import clsx from "clsx";
 interface InputFieldProps {
   label: string;
   type?: string;
-  placeholder?: string;
+  placeholder: string;
   name: string;
   className?: string;
   defaultValueProp?: string;
@@ -26,7 +26,7 @@ export const InputField: FC<InputFieldProps> = ({
   const hasError = !!errors[name];
   return (
     <div>
-      <label className=" block text-sm font-medium mb-1 text-white">
+      <label className=" block text-sm font-medium mb-1 text-black dark:text-white">
         {label}
       </label>
       <input
@@ -35,7 +35,7 @@ export const InputField: FC<InputFieldProps> = ({
         defaultValue={defaultValueProp}
         step={stepValueProp}
         className={clsx(
-          "w-full px-4 py-2 border  rounded-md focus:ring-2  focus:outline-none transition duration-150",
+          "w-full px-4 py-2 border  rounded-md focus:ring-2 text-black dark:text-white  focus:outline-none transition ",
           hasError
             ? "border-red-500 focus:ring-red-400"
             : "border-gray-300 focus:ring-gray-500",

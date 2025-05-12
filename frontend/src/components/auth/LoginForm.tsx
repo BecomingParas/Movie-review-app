@@ -62,9 +62,9 @@ export function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex  text-black dark:bg-gray-900 dark:text-white">
       {/* Left Side - Movie Background */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gray-900 relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2  relative overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
@@ -72,11 +72,11 @@ export function LoginForm() {
               "url('https://image.tmdb.org/t/p/original/qJ2tW6WMUDux911r6m7haRef0WH.jpg')",
           }}
         >
-          <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+          <div className="absolute inset-0 bg-opacity-60"></div>
         </div>
         <div className="relative z-10 flex flex-col justify-center items-center text-white p-8 text-center">
           <h1 className="text-4xl font-bold mb-4">Welcome Back</h1>
-          <p className="text-xl text-gray-300 mb-8">
+          <p className="text-xl text-black dark:text-white mb-8">
             Continue your movie journey with us
           </p>
           <div className="space-y-4">
@@ -86,7 +86,9 @@ export function LoginForm() {
               </div>
               <div className="text-left">
                 <h3 className="font-semibold">Track Your Reviews</h3>
-                <p className="text-gray-300">Keep up with your movie history</p>
+                <p className="text-black dark:text-white">
+                  Keep up with your movie history
+                </p>
               </div>
             </div>
             <div className="flex items-center justify-center space-x-2">
@@ -114,11 +116,11 @@ export function LoginForm() {
       </div>
 
       {/* Right Side - Login Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center bg-gray-900 p-8">
+      <div className="w-full lg:w-1/2 flex items-center justify-center  p-8">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-white mb-2">Welcome Back</h2>
-            <p className="text-gray-400">
+            <p className="text-black dark:text-white">
               Don't have an account?{" "}
               <button
                 onClick={() => navigate("/signup")}
@@ -139,9 +141,10 @@ export function LoginForm() {
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"></div>
                   <InputField
                     name="email"
-                    label="Email"
+                    label="Email:"
                     type="email"
                     placeholder="Enter your email"
+                    className=""
                   />
                 </div>
               </div>
@@ -151,14 +154,14 @@ export function LoginForm() {
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"></div>
                   <InputField
                     name="password"
-                    label="Password"
+                    label="Password:"
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                    className="absolute right-0 "
                   >
                     {showPassword ? <FiEyeOff /> : <FiEye />}
                   </button>
@@ -171,11 +174,11 @@ export function LoginForm() {
                     id="remember-me"
                     name="remember-me"
                     type="checkbox"
-                    className="h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-700 rounded bg-gray-800"
+                    className="h-4 w-4  text-blue-500 focus:ring-blue-500 border-gray-700 rounded bg-gray-800"
                   />
                   <label
                     htmlFor="remember-me"
-                    className="ml-2 block text-sm text-gray-300"
+                    className="ml-2 block text-sm text-black dark:text-white"
                   >
                     Remember me
                   </label>
@@ -199,7 +202,7 @@ export function LoginForm() {
           </FormProvider>
 
           <div className="mt-6 text-center">
-            <p className="text-gray-400 text-sm">
+            <p className="text-black dark:text-white text-sm">
               By signing in, you agree to our{" "}
               <button
                 onClick={() => navigate("/terms")}
