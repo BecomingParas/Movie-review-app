@@ -62,7 +62,7 @@ export function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen flex  text-black dark:bg-gray-900 dark:text-white">
+    <div className="min-h-screen flex bg-white text-black dark:bg-gray-900 dark:text-white">
       {/* Left Side - Movie Background */}
       <div className="hidden lg:flex lg:w-1/2  relative overflow-hidden">
         <div
@@ -76,7 +76,7 @@ export function LoginForm() {
         </div>
         <div className="relative z-10 flex flex-col justify-center items-center text-white p-8 text-center">
           <h1 className="text-4xl font-bold mb-4">Welcome Back</h1>
-          <p className="text-xl text-black dark:text-white mb-8">
+          <p className="text-xl text-white mb-8">
             Continue your movie journey with us
           </p>
           <div className="space-y-4">
@@ -86,9 +86,7 @@ export function LoginForm() {
               </div>
               <div className="text-left">
                 <h3 className="font-semibold">Track Your Reviews</h3>
-                <p className="text-black dark:text-white">
-                  Keep up with your movie history
-                </p>
+                <p className="text-white">Keep up with your movie history</p>
               </div>
             </div>
             <div className="flex items-center justify-center space-x-2">
