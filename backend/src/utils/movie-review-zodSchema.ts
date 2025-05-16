@@ -1,4 +1,4 @@
-import { optional, z } from "zod";
+import { z } from "zod";
 
 export const createMovieSchema = z.object({
   title: z
@@ -20,8 +20,6 @@ export const createMovieSchema = z.object({
   ),
   release_year: z.coerce.number().int().min(1900),
   duration: z.coerce.number().int().min(1, "Duration is required"),
-  average_rating: z.coerce.number().min(0).max(10).optional(),
-  total_reviews: z.coerce.number().optional(),
   poster_url: z.string().url({ message: "Invalid poster URL" }),
   video_url: z.string().url({ message: "Invalid video URL" }),
   category: z.enum(["featured", "trending-now", "recent"]),

@@ -35,7 +35,7 @@ export const InputField: FC<InputFieldProps> = ({
         defaultValue={defaultValueProp}
         step={stepValueProp}
         className={clsx(
-          "w-full px-4 py-2 border  rounded-md focus:ring-2 text-black dark:text-white  focus:outline-none transition ",
+          "w-full px-4 py-2 border bg-pink-200  rounded-md focus:ring-2 text-black dark:text-white  focus:outline-none transition ",
           hasError
             ? "border-red-500 focus:ring-red-400"
             : "border-gray-300 focus:ring-gray-500",

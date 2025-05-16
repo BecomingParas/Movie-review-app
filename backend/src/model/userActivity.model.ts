@@ -1,6 +1,5 @@
 import mongoose, {
   Schema,
-  Document,
   Model,
   HydratedDocument,
   QueryWithHelpers,
@@ -41,7 +40,6 @@ const auditSchema = new Schema<AuditDocument, AuditModelInterface>(
   { timestamps: true }
 );
 
-// Static method returning a Mongoose Query, not a Promise
 auditSchema.statics.findRecentActivity = function () {
   return this.find()
     .sort({ createdAt: -1 })

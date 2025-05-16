@@ -26,5 +26,6 @@ const reviewSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
+// One user can review a movie only once
+reviewSchema.index({ userId: 1, movieId: 1 }, { unique: true });
 export const ReviewModel = mongoose.model("Review", reviewSchema);
