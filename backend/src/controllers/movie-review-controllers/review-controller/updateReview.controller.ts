@@ -17,15 +17,19 @@ export async function updateReviewController(
   try {
     const reviewId = req.params.reviewId;
     const body = req.body;
+
     if (!reviewId) {
       return next(new InvalidMovieReviewPayload(reviewId));
     }
+
     const parsed = createReviewSchema
       .pick({ rating: true, comments: true })
       .safeParse(body);
+
     if (!parsed.success) {
       return next(new InvalidMovieReviewPayload(parsed.error.flatten()));
     }
+
     const reviewToBeUpdated = await reviewServices.getReviewById(reviewId);
 
     if (!reviewToBeUpdated) {
@@ -43,23 +47,26 @@ export async function updateReviewController(
       return next(new UnAuthorized());
     }
 
+    // Update only allowed fields: rating and comments
     await reviewServices.updateReview(reviewId, {
       rating: parsed.data.rating,
       comments: parsed.data.comments,
     });
+
     await UserActivityModel.create({
       userId: req.user?.id,
       movieId: reviewToBeUpdated.movieId,
       action: "UPDATE_REVIEW",
       details: `User ${req.user?.email} updated a review`,
     });
+
     res.json({
       message: "Review updated successfully.",
     });
   } catch (error) {
     return next(
       new MovieReviewAppError(
-        "Failed to update the review. something went wrong in server.",
+        "Failed to update the review. Something went wrong in the server.",
         500
       )
     );
