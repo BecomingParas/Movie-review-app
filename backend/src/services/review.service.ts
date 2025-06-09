@@ -18,7 +18,7 @@ type TReviews = {
 async function createReview(input: Omit<TReviews, "id">) {
   const review = new ReviewModel({
     userId: input.userId,
-    movie_id: input.movieId,
+    movieId: input.movieId,
     rating: input.rating,
     comments: input.comments,
   });
@@ -30,7 +30,7 @@ async function createReview(input: Omit<TReviews, "id">) {
 
 async function updateReview(
   toUpdateReviewId: string,
-  input: Omit<TReviews, "id" | "movie_id" | "userId">
+  input: Omit<TReviews, "id" | "movieId" | "userId">
 ) {
   const review = await ReviewModel.findById(toUpdateReviewId);
 
@@ -62,8 +62,8 @@ async function getReviewById(toGetReviewId: string) {
 
 // get by id review by movieId
 
-async function getReviewByMovieId(movie_id: string) {
-  const reviews = await ReviewModel.find({ movie_id });
+async function getReviewByMovieId(movieId: string) {
+  const reviews = await ReviewModel.find({ movieId });
   return reviews;
 }
 

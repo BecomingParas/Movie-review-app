@@ -14,7 +14,7 @@ import Movies from "./pages/movie/movies";
 import DashboardPage from "./pages/Dashboard/DashboardPage";
 import Watchlist from "./pages/watchlist/WatchList";
 import { useEffect } from "react";
-import CreateMovie from "./components/movie-form/movie-create";
+import CreateMovie from "./components/movieForm/createMovie";
 import NotFound from "./pages/NotFound";
 import MovieDetails from "./pages/movie/MovieDetails";
 import MovieList from "./pages/movie/MovieList";

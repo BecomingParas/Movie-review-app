@@ -45,12 +45,11 @@ function Footer() {
               Your ultimate destination for discovering, discussing, and sharing
               your love for cinema.
             </p>
-            <div className="flex space-x-4">
+            <div className="flex space-x-4 text-black dark:text-white transition-colors">
               <a
                 href="https://github.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors"
               >
                 <FiGithub size={20} />
               </a>
@@ -58,7 +57,6 @@ function Footer() {
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors"
               >
                 <FiTwitter size={20} />
               </a>
@@ -66,7 +64,6 @@ function Footer() {
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors"
               >
                 <FiLinkedin size={20} />
               </a>
@@ -81,7 +78,7 @@ function Footer() {
                 <li key={link.name}>
                   <Link
                     to={link.path}
-                    className="text-gray-400 hover:text-white transition-colors"
+                    className="text-black dark:text-white transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -98,7 +95,7 @@ function Footer() {
                 <li key={link.name}>
                   <Link
                     to={link.path}
-                    className="text-gray-400 hover:text-white transition-colors"
+                    className="text-black dark:text-white transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -113,15 +110,19 @@ function Footer() {
             <ul className="space-y-3">
               <li className="flex items-start space-x-3">
                 <FiMail className="text-blue-500 mt-1" size={18} />
-                <span className="text-gray-400">support@moviereviews.com</span>
+                <span className="text-black dark:text-white">
+                  support@moviereviews.com
+                </span>
               </li>
               <li className="flex items-start space-x-3">
                 <FiPhone className="text-blue-500 mt-1" size={18} />
-                <span className="text-gray-400">+1 (555) 123-4567</span>
+                <span className="text-black dark:text-white">
+                  +1 (555) 123-4567
+                </span>
               </li>
               <li className="flex items-start space-x-3">
                 <FiMapPin className="text-blue-500 mt-1" size={18} />
-                <span className="text-gray-400">
+                <span className="text-black dark:text-white">
                   123 Movie Street
                   <br />
                   Cinema City, CC 12345
@@ -134,25 +135,25 @@ function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-gray-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 text-sm">
+            <p className="text-black dark:text-white text-sm">
               © {currentYear} MovieReviews. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <Link
                 to="/privacy"
-                className="text-gray-400 hover:text-white text-sm transition-colors"
+                className="text-black dark:text-white hover:text-white text-sm transition-colors"
               >
                 Privacy Policy
               </Link>
               <Link
                 to="/terms"
-                className="text-gray-400 hover:text-white text-sm transition-colors"
+                className="text-black dark:text-white text-sm transition-colors"
               >
                 Terms of Service
               </Link>
               <Link
                 to="/cookies"
-                className="text-gray-400 hover:text-white text-sm transition-colors"
+                className="text-black dark:text-white text-sm transition-colors"
               >
                 Cookie Policy
               </Link>

@@ -5,6 +5,7 @@ import { MovieReviewAppError } from "../../../error";
 import { TPayload } from "../../../types/payload.type";
 import { reviewServices } from "../../../services/review.service";
 import updateMovieAverageRating from "../../updateMovieAverageRating";
+import { UserActivityModel } from "../../../model/userActivity.model";
 
 export async function createReviewController(
   req: Request,
@@ -15,10 +16,7 @@ export async function createReviewController(
     const body = req.body;
     const parsed = createReviewSchema.safeParse(body);
     if (!parsed.success) {
-      const parseError = parsed.error.flatten();
-      const invalidPayloadError = new InvalidMovieReviewPayload(parseError);
-      next(invalidPayloadError);
-      return;
+      return next(new InvalidMovieReviewPayload(parsed.error.flatten()));
     }
     // check
     const loggedinUser = req.user as TPayload;
@@ -36,15 +34,27 @@ export async function createReviewController(
       comments: parsed.data.comments,
     });
     await updateMovieAverageRating(parsed.data.movieId);
+
+    await UserActivityModel.create({
+      userId: loggedinUser.id,
+      movieId: parsed.data.movieId,
+      action: "CREATE_REVIEW",
+      details: `User ${loggedinUser.email} added a review.`,
+    });
     res.json({
       message: "Review added successfully.",
     });
-  } catch (error) {
-    console.log(error);
-    const reviewError = new MovieReviewAppError(
-      "Failed to create the review. Something went wrong in server.",
-      500
+  } catch (error: any) {
+    if (error.code === 11000) {
+      return next(
+        new MovieReviewAppError("You have already reviewed this movie.", 400)
+      );
+    }
+    return next(
+      new MovieReviewAppError(
+        "Failed to create the review. something went wrong in server.",
+        500
+      )
     );
-    next(reviewError);
   }
 }

@@ -35,7 +35,7 @@ const Reviews = () => {
             {mockReviews.map((review) => (
               <Card
                 key={review.id}
-                className="animate-fade-in dark:bg-gray-800"
+                className="animate-fade-in bg-pink-100  shadow dark:bg-gray-800 "
               >
                 <CardHeader className="pb-3">
                   <div className="flex justify-between items-start">

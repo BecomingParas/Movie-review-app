@@ -44,6 +44,7 @@ export async function createReview(
       Authorization: getAuthToken(),
     },
     body: JSON.stringify(input),
+    credentials: "include",
   });
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || "Failed to create reveiw");
@@ -63,6 +64,7 @@ export async function updateReview(
         "Content-Type": "application/json",
         Authorization: getAuthToken(),
       },
+      credentials: "include",
       body: JSON.stringify(input),
     }
   );
@@ -81,6 +83,7 @@ export async function deleteReview(
     headers: {
       Authorization: getAuthToken(),
     },
+    credentials: "include",
   });
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || "Failed to delete review");

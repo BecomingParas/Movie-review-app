@@ -20,10 +20,12 @@ export const SelectField: FC<SelectFieldProps> = ({
   const fieldError = errors[name];
   return (
     <div className={className}>
-      <label className=" text-white block mb-2">{label}</label>
+      <label className=" text-black dark:text-white bg-pink-100 block mb-2">
+        {label}
+      </label>
       <select
         {...register(name)}
-        className="w-full p-4 bg-gray-700 text-white rounded "
+        className="w-full p-4  bg-pink-200 dark:bg-gray-700 rounded "
       >
         <option value="">{`Select ${label}`}</option>
         {options.map((option) => (

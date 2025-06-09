@@ -16,7 +16,7 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen  flex flex-col">
+    <div className="min-h-screen  flex flex-col bg-white text-black dark:bg-gray-900 dark:text-white">
       <main className="flex-grow pt-16">
         <div className="container mx-auto px-4 sm:px-6 py-12">
           <div className="max-w-5xl mx-auto">
@@ -29,7 +29,7 @@ const Contact = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in">
               <div className="lg:col-span-2">
-                <Card>
+                <Card className=" bg-pink-100  shadow dark:bg-gray-800">
                   <CardHeader>
                     <CardTitle className="flex items-center">
                       <MessageSquare className="h-5 w-5 mr-2" />
@@ -37,7 +37,7 @@ const Contact = () => {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <form onSubmit={handleSubmit} className="space-y-4 ">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <label htmlFor="name" className="text-sm font-medium">
@@ -93,7 +93,10 @@ const Contact = () => {
                           required
                         ></textarea>
                       </div>
-                      <Button type="submit" className="w-full sm:w-auto">
+                      <Button
+                        type="submit"
+                        className="w-full sm:w-auto bg-blue-500 hover:bg-blue-700 text-white"
+                      >
                         Send Message
                       </Button>
                     </form>
@@ -101,9 +104,9 @@ const Contact = () => {
                 </Card>
               </div>
 
-              <div className="space-y-6">
-                <Card>
-                  <CardContent className="pt-6">
+              <div className="space-y-6 ">
+                <Card className=" bg-pink-100  shadow dark:bg-gray-800">
+                  <CardContent className="pt-6 ">
                     <ContactInfo
                       icon={<Mail className="h-5 w-5" />}
                       title="Email"
@@ -112,7 +115,7 @@ const Contact = () => {
                   </CardContent>
                 </Card>
 
-                <Card>
+                <Card className=" bg-pink-100  shadow dark:bg-gray-800">
                   <CardContent className="pt-6">
                     <ContactInfo
                       icon={<Phone className="h-5 w-5" />}
@@ -122,7 +125,7 @@ const Contact = () => {
                   </CardContent>
                 </Card>
 
-                <Card>
+                <Card className=" bg-pink-100  shadow dark:bg-gray-800">
                   <CardContent className="pt-6">
                     <ContactInfo
                       icon={<MapPin className="h-5 w-5" />}
@@ -132,7 +135,7 @@ const Contact = () => {
                   </CardContent>
                 </Card>
 
-                <Card>
+                <Card className=" bg-pink-100  shadow dark:bg-gray-800">
                   <CardContent className="pt-6">
                     <h3 className="font-medium mb-2">Follow Us</h3>
                     <div className="flex space-x-4">

@@ -114,10 +114,10 @@ function Navbar() {
           <div className="flex items-center space-x-4">
             <button
               onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className="text-gray-300 hover:text-white"
+              className="text-black  dark:text-white "
               aria-label="Toggle Search"
             >
-              <FiSearch size={20} />
+              <FiSearch size={20} className="text-black dark:text-white" />
             </button>
             <ThemeToggle />
 
@@ -162,7 +162,7 @@ function Navbar() {
               </div>
             ) : (
               <div className="hidden md:flex items-center space-x-4">
-                <Link to="/login" className="text-gray-300 hover:text-white">
+                <Link to="/login" className="text-black dark:text-white ">
                   Login
                 </Link>
                 <Link
@@ -194,11 +194,11 @@ function Navbar() {
                 placeholder="Search movies..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 bg-white text-black dark:bg-gray-800 dark:text-white border border-gray-700 rounded-lg  placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <button
                 type="submit"
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-white text-black dark:text-white dark:bg-gray-800 "
               >
                 <FiSearch size={20} />
               </button>
@@ -214,7 +214,7 @@ function Navbar() {
                 <Link
                   key={link.name}
                   to={link.path}
-                  className="text-gray-300 hover:text-white flex items-center space-x-2"
+                  className="text-black dark:text-white flex items-center space-x-2"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <link.icon size={18} />
@@ -227,7 +227,7 @@ function Navbar() {
                     <Link
                       key={link.name}
                       to={link.path}
-                      className="text-gray-300 hover:text-white"
+                      className="text-black dark:text-white"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       {link.name}
@@ -248,14 +248,14 @@ function Navbar() {
                 <div className="flex flex-col space-y-2 pt-4 border-t border-gray-700">
                   <Link
                     to="/login"
-                    className="text-gray-300 hover:text-white"
+                    className="text-black dark:text-white"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Login
                   </Link>
                   <Link
                     to="/signup"
-                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                    className="bg-blue-500 text-black dark:text-white px-4 py-2 rounded-lg hover:bg-blue-600"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Sign Up

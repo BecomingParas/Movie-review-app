@@ -22,7 +22,7 @@ export const FileUploadField: FC<FileUploadFieldProps> = ({
   return (
     <div className={`w-full ${className}`}>
       <div className="flex items-center gap-8 mb-2">
-        <label className="block text-sm font-medium text-white flex-shrink-0">
+        <label className="block text-sm font-medium  flex-shrink-0">
           {label}
         </label>
 
@@ -34,7 +34,7 @@ export const FileUploadField: FC<FileUploadFieldProps> = ({
               type="file"
               accept={accept}
               onChange={(e) => field.onChange(e.target.files)}
-              className=" flex-1 bg-gray-800 text-white border border-gray-600 rounded-lg px-4 py-2 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-indigo-600 file:text-white hover:file:bg-indigo-700"
+              className=" flex-1 border border-gray-600 rounded-lg px-4 py-2 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium bg-pink-200 file:bg-indigo-600 file:text-white hover:file:bg-indigo-700"
             />
           )}
         />

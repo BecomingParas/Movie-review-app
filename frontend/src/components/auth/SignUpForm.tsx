@@ -63,9 +63,9 @@ export function SignUpForm() {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex bg-white text-black dark:bg-gray-900 dark:text-white">
       {/* Left Side - Movie Background */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gray-900 relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2  relative overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
@@ -73,11 +73,11 @@ export function SignUpForm() {
               "url('https://image.tmdb.org/t/p/original/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg')",
           }}
         >
-          <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+          <div className="absolute inset-0  bg-opacity-60"></div>
         </div>
-        <div className="relative z-10 flex flex-col justify-center items-center text-white p-8 text-center">
+        <div className="relative z-10 flex flex-col justify-center items-center text-black dark:text-white p-8 text-center">
           <h1 className="text-4xl font-bold mb-4">Welcome to MovieReviews</h1>
-          <p className="text-xl text-gray-300 mb-8">
+          <p className="text-xl  mb-8">
             Join our community of movie enthusiasts
           </p>
           <div className="space-y-4">
@@ -87,7 +87,9 @@ export function SignUpForm() {
               </div>
               <div className="text-left">
                 <h3 className="font-semibold">Discover Movies</h3>
-                <p className="text-gray-300">Explore our vast collection</p>
+                <p className="text-black dark:text-white">
+                  Explore our vast collection
+                </p>
               </div>
             </div>
             <div className="flex items-center justify-center space-x-2">
@@ -96,7 +98,9 @@ export function SignUpForm() {
               </div>
               <div className="text-left">
                 <h3 className="font-semibold">Write Reviews</h3>
-                <p className="text-gray-300">Share your thoughts</p>
+                <p className="text-black dark:text-white">
+                  Share your thoughts
+                </p>
               </div>
             </div>
             <div className="flex items-center justify-center space-x-2">
@@ -105,7 +109,9 @@ export function SignUpForm() {
               </div>
               <div className="text-left">
                 <h3 className="font-semibold">Join Community</h3>
-                <p className="text-gray-300">Connect with others</p>
+                <p className="text-black dark:text-white">
+                  Connect with others
+                </p>
               </div>
             </div>
           </div>
@@ -113,13 +119,13 @@ export function SignUpForm() {
       </div>
 
       {/* Right Side - Sign Up Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center bg-gray-900 p-8">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-white mb-2">
+            <h2 className="text-3xl font-bold text-black dark:text-white mb-2">
               Create Account
             </h2>
-            <p className="text-gray-400">
+            <p className="text-black dark:text-white">
               Already have an account?{" "}
               <button
                 onClick={() => navigate("/login")}
@@ -191,7 +197,7 @@ export function SignUpForm() {
 
               <button
                 type="submit"
-                className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition-colors font-medium"
+                className="w-full bg-blue-500 text-black dark:text-white py-3 rounded-lg hover:bg-blue-600 transition-colors font-medium"
               >
                 {signUpUserMutation.isPending
                   ? "Creating Account..."
@@ -201,7 +207,7 @@ export function SignUpForm() {
           </FormProvider>
 
           <div className="mt-6 text-center">
-            <p className="text-gray-400 text-sm">
+            <p className="text-black dark:text-white text-sm">
               By signing up, you agree to our{" "}
               <button
                 onClick={() => navigate("/terms")}

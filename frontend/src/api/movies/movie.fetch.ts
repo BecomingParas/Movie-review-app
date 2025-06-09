@@ -94,3 +94,7 @@ export async function deleteMovie(
   }
   return data;
 }
+
+export async function getMovieById(movieId: string) {
+  await fetch(`${env.BACKEND_URL}/api/moovies/${movieId}`);
+}
