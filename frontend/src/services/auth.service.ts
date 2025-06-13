@@ -1,20 +1,18 @@
+// src/services/auth.service.ts
 import { env } from "@/utils/config";
 import { getAccessToken } from "@/utils/getAccessToken";
-type User = {
-  id: string;
+export type LoginData = {
   email: string;
-  username: string;
-  role: string;
+  password: string;
 };
+
 export type RegisterData = {
   username: string;
   email: string;
   password: string;
 };
-type AuthResponse = {
-  user: User;
-  token: string;
-};
+import type { User, AuthResponse } from "@/types/movies.types";
+
 async function request<T>(url: string, options?: RequestInit): Promise<T> {
   const response = await fetch(url, {
     ...options,
@@ -25,12 +23,12 @@ async function request<T>(url: string, options?: RequestInit): Promise<T> {
   });
   if (!response.ok) {
     const errorBody = await response.json();
-    throw new Error(errorBody.message || "something went wrong");
+    throw new Error(errorBody.message || "Something went wrong");
   }
   return response.json() as Promise<T>;
 }
 
-export const register = async (data: RegisterData) => {
+export const register = async (data: RegisterData): Promise<AuthResponse> => {
   const result = await request<AuthResponse>(
     `${env.BACKEND_URL}/api/auth/register`,
     {
@@ -42,7 +40,7 @@ export const register = async (data: RegisterData) => {
   return result;
 };
 
-export const login = async (data: RegisterData) => {
+export const login = async (data: LoginData): Promise<AuthResponse> => {
   const result = await request<AuthResponse>(
     `${env.BACKEND_URL}/api/auth/login`,
     {
@@ -51,22 +49,35 @@ export const login = async (data: RegisterData) => {
     }
   );
   localStorage.setItem("accessToken", result.token);
-  return result;
+
+  // Normalize the role string to your Role type:
+  const normalizedUser: User = {
+    ...result.user,
+    role: result.user.role === "admin" ? "admin" : "user",
+  };
+
+  return { token: result.token, user: normalizedUser };
 };
 
-export const getCurrentUser = async () => {
+export const getCurrentUser = async (): Promise<User> => {
   const token = getAccessToken();
   if (!token) throw new Error("No access token found");
 
-  return await request<User>(`${env.BACKEND_URL}/api/auth/me`, {
+  const user = await request<User>(`${env.BACKEND_URL}/api/auth/me`, {
     method: "GET",
     headers: {
       Authorization: token,
     },
   });
+
+  // Normalize role here too:
+  return {
+    ...user,
+    role: user.role === "admin" ? "admin" : "user",
+  };
 };
 
-export const logout = async () => {
+export const logout = async (): Promise<void> => {
   const token = getAccessToken();
   if (!token) throw new Error("No access token found");
 
@@ -79,4 +90,4 @@ export const logout = async () => {
   localStorage.removeItem("accessToken");
 };
 
-export const authService = { login, register, getCurrentUser, logout };
+export const authService = { register, login, getCurrentUser, logout };

@@ -1,5 +1,6 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { User } from "@/types/movies.types";
+// src/context/AuthContext.tsx
+import { createContext, useEffect, useState } from "react";
+import type { User } from "@/types/movies.types";
 import { authService } from "@/services/auth.service";
 import { useNavigate } from "react-router-dom";
 
@@ -21,47 +22,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    checkAuth();
+    (async () => {
+      const token = localStorage.getItem("accessToken");
+      if (token) {
+        try {
+          const currentUser = await authService.getCurrentUser();
+          setUser(currentUser);
+        } catch {
+          localStorage.removeItem("accessToken");
+          setUser(null);
+        }
+      }
+      setIsLoading(false);
+    })();
   }, []);
 
-  const checkAuth = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if (token) {
-        const user = await authService.getCurrentUser();
-        setUser(user);
-      }
-    } catch (error) {
-      localStorage.removeItem("token");
-      setUser(null);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const login = async (email: string, password: string) => {
-    try {
-      const response = await authService.login({ email, password });
-      localStorage.setItem("token", response.token);
-      setUser(response.user);
-      navigate("/dashboard");
-    } catch (error) {
-      throw error;
-    }
+    const response = await authService.login({ email, password });
+    localStorage.setItem("accessToken", response.token);
+    setUser(response.user);
+    navigate("/dashboard");
   };
 
   const logout = async () => {
-    try {
-      await authService.logout();
-      localStorage.removeItem("token");
-      setUser(null);
-      navigate("/login");
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
+    await authService.logout();
+    localStorage.removeItem("accessToken");
+    setUser(null);
+    navigate("/login");
   };
 
-  const value = {
+  const value: AuthContextType = {
     user,
     isLoading,
     isAuthenticated: !!user,
@@ -72,12 +62,4 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
-
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
 }

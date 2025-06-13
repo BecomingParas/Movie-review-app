@@ -27,7 +27,7 @@ export function ReviewForm({
   isEdit = false,
 }: ReviewFormProps) {
   // In a real app, this would come from your auth context/provider
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn] = useState(false);
   const [rating, setRating] = useState(initialData?.rating || 0);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
