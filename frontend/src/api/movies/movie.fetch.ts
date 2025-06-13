@@ -36,6 +36,7 @@ export async function createMovie(
     },
     body: input,
   });
+  console.log("Backend URL:", env.BACKEND_URL);
   const data = await res.json();
 
   if (!res.ok) {

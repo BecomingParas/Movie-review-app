@@ -15,12 +15,20 @@ import { connectMongoDb } from "./config/db";
 import { Dashboard } from "./routes/dashboard.routes";
 
 const app = express();
-const PORT = env.PORT || 4002;
+const PORT = Number(env.PORT) || 4002;
 
 // Connect to MongoDB
-connectMongoDb().then(() => {
-  console.log(`MongoDB connected ✅`);
-});
+connectMongoDb()
+  .then(() => {
+    console.log("MongoDB connected ✅");
+    app.listen(PORT, () => {
+      console.log(`Server started at http://localhost:${PORT} 🚀`);
+    });
+  })
+  .catch((error) => {
+    console.error("Failed to connect to MongoDB, exiting...", error);
+    process.exit(1);
+  });
 
 // CORS Setup
 app.use(
