@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   loginUser,
   SignUpUser,
@@ -6,42 +6,43 @@ import {
   TLoginUserOutput,
   TSignUpUserInput,
   TSignUpUserOutput,
+  getMe,
+  TMeResponse,
 } from "./auth.fetch";
 
-// for signup api
-
+// Signup mutation hook
 export function useSignUpUserMutation() {
   return useMutation<TSignUpUserOutput, Error, TSignUpUserInput>({
     mutationFn: SignUpUser,
     onSuccess: (data) => {
-      console.log("Signup success: ", data.message);
+      console.log("Signup success:", data.message);
+      // You can add any post-signup logic here (e.g., redirect)
     },
     onError: (error) => {
-      console.log("signup failed", error.message);
+      console.error("Signup failed:", error.message);
     },
   });
 }
 
-// for login api
-
+// Login mutation hook
 export function useLoginUserMutation() {
   return useMutation<TLoginUserOutput, Error, TLoginUserInput>({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      console.log("Login success: ", data.message);
+      console.log("Login success:", data.message);
+      // Post-login logic here (e.g., update global state, redirect)
     },
     onError: (error) => {
-      console.error("Login failed: ", error.message);
+      console.error("Login failed:", error.message);
     },
   });
 }
 
-import { useQuery } from "@tanstack/react-query";
-import { getMe, TMeResponse } from "./auth.fetch";
-
+// Query hook to get current logged-in user info
 export function useMeQuery() {
   return useQuery<TMeResponse, Error>({
     queryKey: ["me"],
     queryFn: getMe,
+    // You can add options like staleTime, cacheTime, retry, etc. here
   });
 }
