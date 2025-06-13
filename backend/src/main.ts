@@ -35,6 +35,7 @@ app.use(
         "http://localhost:4200",
         "https://movie-review-6u4tpbxic-menu-2a8d524d.vercel.app",
         "https://movie-review-app-neon.vercel.app",
+        "https://nepalimoviereview.vercel.app",
       ];
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
