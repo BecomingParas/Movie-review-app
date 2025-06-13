@@ -24,15 +24,30 @@ export interface Review {
   likes: number;
 }
 
-// types.ts
-export type User = {
+export type Role = "user" | "admin";
+
+export interface User {
   id: string;
   username: string;
   email: string;
-  role?: "user" | "admin";
-  avatar?: string;
-};
+  role: Role; // only "user" or "admin"
+}
 
+export interface AuthResponse {
+  user: User;
+  token: string;
+}
+
+export interface LoginData {
+  email: string;
+  password: string;
+}
+
+export interface RegisterData {
+  username: string;
+  email: string;
+  password: string;
+}
 export interface PaginatedResponse<T> {
   data: T[];
   total: number;
