@@ -3,12 +3,9 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import { homeController } from "./controllers/home.controller";
 import { createMovieRoutes } from "./routes/movie.routes";
-
 import { createAuthRoutes } from "./routes/auth.routes";
 import { MovieReviewAppError } from "./error";
-
 import { env } from "process";
-
 import dotenv from "dotenv";
 dotenv.config();
 import { connectMongoDb } from "./config/db";
@@ -56,11 +53,8 @@ app.use(express.json());
 
 // Routes
 app.get("/", homeController);
-// create movoie routes
 createMovieRoutes(app);
-// createReviewRoutes(app);
 createAuthRoutes(app);
-// dashboard routes
 Dashboard(app);
 
 // Global Error Handler
@@ -72,15 +66,9 @@ app.use(
     next: NextFunction
   ) => {
     console.error("App error: ", error);
-
     res.status(error.status || 500).json({
       message: error.message,
       meta: error.meta,
     });
   }
 );
-
-// Start Server
-app.listen(PORT, () => {
-  console.log(`Server started at http://localhost:${PORT} 🚀`);
-});
