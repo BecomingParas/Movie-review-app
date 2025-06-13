@@ -25,7 +25,10 @@ connectMongoDb().then(() => {
 // CORS Setup
 app.use(
   cors({
-    origin: ["http://localhost:4200", "http://localhost:5173"],
+    origin: [
+      "http://localhost:4200",
+      "https://movie-review-6u4tpbxic-menu-2a8d524d.vercel.app",
+    ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
