@@ -23,6 +23,7 @@ export function LoginForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const loginUserMutation = useLoginUserMutation();
+  const login = useAuthStore((state) => state.login);
 
   const methods = useForm<LoginFormData>({
     mode: "all",
@@ -35,26 +36,17 @@ export function LoginForm() {
 
   const onSubmit: SubmitHandler<LoginFormData> = (data) => {
     loginUserMutation.mutateAsync(
-      {
-        email: data.email,
-        password: data.password,
-      },
+      { email: data.email, password: data.password },
       {
         onSuccess(response) {
           successToast(response.message);
-          // Store the actual token from response
           localStorage.setItem("accessToken", response.data.token);
-
-          // Update auth store state
-          useAuthStore
-            .getState()
-            .login(response.data.user, response.data.token);
+          login(response.data.user, response.data.token);
           methods.reset();
           navigate("/dashboard");
           console.log(response.message);
         },
         onError(error) {
-          console.error("error", error);
           errorToast(error.message);
         },
       }
@@ -182,20 +174,12 @@ export function LoginForm() {
                   </label>
                 </div>
                 <button
-                  type="button"
-                  onClick={() => navigate("/forgot-password")}
-                  className="text-sm text-blue-500 hover:text-blue-400"
+                  type="submit"
+                  className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition-colors font-medium"
                 >
-                  Forgot password?
+                  {loginUserMutation.isPending ? "Signing in..." : "Sign In"}
                 </button>
               </div>
-
-              <button
-                type="submit"
-                className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition-colors font-medium"
-              >
-                {loginUserMutation.isPending ? "Signing in..." : "Sign In"}
-              </button>
             </form>
           </FormProvider>
 
